@@ -21,7 +21,7 @@ namespace Projet_IMA
             Couleur CSphere = Couleur.Red;
 
 
-            float pas = 0.05f;
+            float pas = 0.005f;
             for (float u = 0; u < 2 * IMA.PI ; u += pas)  // echantillonage fnt paramétrique
                 for (float v = -IMA.PI / 2 ; v < IMA.PI / 2 ; v += pas)
                 {
@@ -35,9 +35,9 @@ namespace Projet_IMA
                     int x_ecran = (int)(x3D);  
                     int y_ecran = (int)(z3D);
 
-                    
-                    for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
-                       BitmapEcran.DrawPixel(x_ecran, y_ecran, CSphere);
+                    /* 
+                     for (int i = 0; i < 100; i++) */ // pour ralentir et voir l'animation - devra être retiré
+                    BitmapEcran.DrawPixel(x_ecran, y_ecran, CSphere);
                     
                 }
 
