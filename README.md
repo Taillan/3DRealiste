@@ -15,7 +15,7 @@ On sait déjà que pour modéliser un parallélogramme, on utilise la fonction s
 
 Pour modéliser un triangle dans l'espace, (prisme triangulaire), on utilise la même chose en rajoutant simplement la condition **u+v >=1** : 
 
-![](images\triangle3d.png)
+![](images/triangle3d.png)
 
 On obtient donc le code suivant, avec un simple rajout de la condition if(u+v>=1) par rapport au rendu du parallélogramme: 
 
