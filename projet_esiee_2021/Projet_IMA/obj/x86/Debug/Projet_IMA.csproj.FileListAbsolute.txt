@@ -1,0 +1,9 @@
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\bin\Debug\Projet_IMA.exe
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\bin\Debug\Projet_IMA.pdb
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\obj\x86\Debug\Projet_IMA.csprojAssemblyReference.cache
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\obj\x86\Debug\Projet_IMA.Form1.resources
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\obj\x86\Debug\Projet_IMA.Properties.Resources.resources
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\obj\x86\Debug\Projet_IMA.csproj.GenerateResource.cache
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\obj\x86\Debug\Projet_IMA.csproj.CoreCompileInputs.cache
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\obj\x86\Debug\Projet_IMA.exe
+C:\Users\taill\Documents\ESIEE\E4FI\projet\core_proj_esiee\Projet_IMA\obj\x86\Debug\Projet_IMA.pdb
