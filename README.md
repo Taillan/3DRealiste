@@ -9,13 +9,13 @@
 
 On sait déjà que pour modéliser un parallélogramme, on utilise la fonction suivante en utilisant u comme axe des abscisses et v en axe des ordonnées :
 
-![](D:\Documents\ESIEE\E4\Projet_3D_Realiste\3DRealiste\images\rectangle3d.png)
+![](images\rectangle3d.png)
 
 
 
 Pour modéliser un triangle dans l'espace, (prisme triangulaire), on utilise la même chose en rajoutant simplement la condition **u+v >=1** : 
 
-![](D:\Documents\ESIEE\E4\Projet_3D_Realiste\3DRealiste\images\triangle3d.png)
+![](images\triangle3d.png)
 
 On obtient donc le code suivant, avec un simple rajout de la condition if(u+v>=1) par rapport au rendu du parallélogramme: 
 
