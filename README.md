@@ -9,7 +9,7 @@
 
 On sait déjà que pour modéliser un parallélogramme, on utilise la fonction suivante en utilisant u comme axe des abscisses et v en axe des ordonnées :
 
-![](images\rectangle3d.png)
+![](images/rectangle3d.png)
 
 
 
