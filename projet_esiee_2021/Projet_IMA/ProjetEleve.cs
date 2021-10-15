@@ -21,7 +21,7 @@ namespace Projet_IMA
             Couleur CSphere = Couleur.Red;
 
 
-            float pas = 0.05f;
+            float pas = 0.005f;
             for (float u = 0; u < 2 * IMA.PI ; u += pas)  // echantillonage fnt paramétrique
                 for (float v = -IMA.PI / 2 ; v < IMA.PI / 2 ; v += pas)
                 {
@@ -36,7 +36,7 @@ namespace Projet_IMA
                     int y_ecran = (int)(z3D);
 
                     
-                    for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
+                    //for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
                        BitmapEcran.DrawPixel(x_ecran, y_ecran, CSphere);
                     
                 }
@@ -57,14 +57,17 @@ namespace Projet_IMA
             for (float u = 0; u < 1; u += pas)  // echantillonage fnt paramétrique
                 for (float v = 0; v < 1; v += pas)
                 {
-                    V3 P3D = Origine + u * Coté1 + v * Coté2;
-  
-                    // projection orthographique => repère écran
+                    if (u+v >=1) 
+                    {
+                        V3 P3D = Origine + u * Coté1 + v * Coté2;
 
-                    int x_ecran = (int)(P3D.x);
-                    int y_ecran = (int)(P3D.y);
-                    for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
+                        // projection orthographique => repère écran
+
+                        int x_ecran = (int)(P3D.x);
+                        int y_ecran = (int)(P3D.y);
+                        //for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
                         BitmapEcran.DrawPixel(x_ecran, y_ecran, CRect);
+                    }
                 }
 
             // Gestion des textures
