@@ -1,0 +1,8 @@
+# Config Visual Studio
+projet_esiee_2021/.vs/
+projet_esiee_2021/.vsconfig
+
+#Config CSharp
+projet_esiee_2021/Projet_IMA/*.csproj
+projet_esiee_2021/Projet_IMA/obj/
+
