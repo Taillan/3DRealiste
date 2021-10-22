@@ -60,7 +60,7 @@ namespace Projet_IMA
 
 
 
-        public void DrawSphere(float pas)
+        public void DrawSphere(float pas, Lumiere lumiere)
         {
             for (float u = 0; u < 2 * IMA.PI; u += pas)  // echantillonage fnt paramétrique
                 for (float v = -IMA.PI / 2; v < IMA.PI / 2; v += pas)
@@ -70,14 +70,21 @@ namespace Projet_IMA
                     float y3D = Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.CentreSphere.y;
                     float z3D = Rayon * IMA.Sinf(v) + this.CentreSphere.z;
 
+                    V3 normalizedPixelNormal = (new V3(x3D - this.CentreSphere.x, y3D - this.CentreSphere.y, z3D - this.CentreSphere.z));
+                    normalizedPixelNormal.Normalize();
+                    V3 normalizedLumiereDirection = lumiere.getDirectionLumiere();
+                    normalizedLumiereDirection.Normalize();
+
+
                     // projection orthographique => repère écran
 
                     int x_ecran = (int)(x3D);
                     int y_ecran = (int)(y3D);
-
+                    Couleur nvcouleur = new Couleur();
 
                     // for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, this.CSphere);
+                    BitmapEcran.DrawPixel(x_ecran, y_ecran, nvcouleur*(normalizedPixelNormal*normalizedLumiereDirection));
+                    Console.WriteLine((normalizedPixelNormal * normalizedLumiereDirection));
 
                 }
         }
