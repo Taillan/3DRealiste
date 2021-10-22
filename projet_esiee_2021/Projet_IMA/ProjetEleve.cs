@@ -16,27 +16,14 @@ namespace Projet_IMA
             /// 
             //////////////////////////////////////////////////////////////////////////
 
-            V3 Origine = new V3(50, 20, 30) + offsetx+offsety;
-            V3 Cote1 = new V3(30, 00, 00);
-            V3 Cote2 = new V3(00, 20, 00);
-            Couleur CRect = color * lampe;
+            V3 CentreSphere = new V3(50, 20, 30) + offsetx + offsety;
+            float Rayon = 30;
+            Couleur CSphere = color * lampe;
+            Sphere3D SphereA = new Sphere3D(CentreSphere, Rayon, CSphere);
 
-            float pas = 0.002f;
-            for (float u = 0; u < 1; u += pas)  // echantillonage fnt paramétrique
-                for (float v = 0; v < 1; v += pas)
-                {
-                    //  if (u+v >= 1)
-                    //  {
-                    V3 P3D = Origine + u * Cote1 + v * Cote2;
+            float pas = 0.05f;
 
-                    // projection orthographique => repère écran
-
-                    int x_ecran = (int)(P3D.x);
-                    int y_ecran = (int)(P3D.y);
-                    //   for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, CRect);
-                    //}
-                }
+            SphereA.DrawSphere(pas);
 
             // Gestion des textures
             // Texture T1 = new Texture("brick01.jpg");
@@ -51,30 +38,7 @@ namespace Projet_IMA
             /// 
             //////////////////////////////////////////////////////////////////////////
 
-            /*  V3 CentreSphere = new V3(300,200,300);
-              float Rayon = 150;
-              Couleur CSphere = Couleur.Red;
-
-
-              float pas = 0.005f;
-              for (float u = 0; u < 2 * IMA.PI ; u += pas)  // echantillonage fnt paramétrique
-                  for (float v = -IMA.PI / 2 ; v < IMA.PI / 2 ; v += pas)
-                  {
-                      // calcul des coordoonées dans la scène 3D
-                      float x3D = Rayon * IMA.Cosf(v) * IMA.Cosf(u) + CentreSphere.x;
-                      float y3D = Rayon * IMA.Cosf(v) * IMA.Sinf(u) + CentreSphere.y;
-                      float z3D = Rayon * IMA.Sinf(v) + CentreSphere.z;
-
-                      // projection orthographique => repère écran
-
-                      int x_ecran = (int)(x3D);  
-                      int y_ecran = (int)(z3D);
-
-
-                      //for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
-                         BitmapEcran.DrawPixel(x_ecran, y_ecran, CSphere);
-
-                  }*/
+            
             var couleurs = new Dictionary<string, Couleur>()
             {
                 { "Blanc", new Couleur(255,255,255) },
@@ -112,7 +76,7 @@ namespace Projet_IMA
                     offsetx += new V3(50, 00, 00);
                 }
                 offsetx = new V3(00, 00, 00);
-                offsety += new V3(00, 50, 00);
+                offsety += new V3(00, 100, 00);
             }
 
         }

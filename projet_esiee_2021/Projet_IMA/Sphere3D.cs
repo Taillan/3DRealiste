@@ -73,7 +73,7 @@ namespace Projet_IMA
                     // projection orthographique => repère écran
 
                     int x_ecran = (int)(x3D);
-                    int y_ecran = (int)(z3D);
+                    int y_ecran = (int)(y3D);
 
 
                     // for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
