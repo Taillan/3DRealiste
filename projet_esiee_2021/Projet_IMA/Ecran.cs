@@ -21,6 +21,7 @@ namespace Projet_IMA
         static private int Hauteur;
         static private int stride;
         static private BitmapData data;
+        static private Couleur background;
 
         static public Bitmap Init(int largeur, int hauteur)
         {
@@ -61,8 +62,9 @@ namespace Projet_IMA
 
         /// /////////////////   public methods ///////////////////////
 
-        static public void RefreshScreen(Couleur c)
+        static public void RefreshScreen()
         {
+            Couleur c = background;
             if (Program.MyForm.Checked())
             {
                 Mode = ModeAff.SLOW_MODE;
@@ -106,5 +108,10 @@ namespace Projet_IMA
 
         static public int GetWidth() { return Largeur; }
         static public int GetHeight() { return Hauteur; }
+
+        static public void setBackground(Couleur c)
+        {
+            background = c;
+        }
     }
 }
