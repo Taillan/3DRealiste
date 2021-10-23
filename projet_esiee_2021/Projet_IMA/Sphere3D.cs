@@ -79,10 +79,10 @@ namespace Projet_IMA
                     normalizedPixelNormal.Normalize();
 
                     float NL = normalizedPixelNormal * normalizedLumiereDirection;
-                    Couleur nvCouleurDiffuse = nvCouleurAmbiante * 0;
+                    Couleur nvCouleurDiffuse = nvCouleurAmbiante * 0.0008f;
                     if (NL > 0)
                     {
-                        nvCouleurDiffuse = nvCouleurAmbiante * (normalizedPixelNormal * normalizedLumiereDirection) * 0.009f;
+                        nvCouleurDiffuse += nvCouleurAmbiante * (normalizedPixelNormal * normalizedLumiereDirection) * 0.006f;
                     }
 
                     // projection orthographique => repère écran
