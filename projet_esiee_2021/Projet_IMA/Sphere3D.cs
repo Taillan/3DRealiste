@@ -62,7 +62,12 @@ namespace Projet_IMA
 
         public void DrawSphere(float pas, Lumiere lumiere)
         {
-            for (float u = 0; u < 2 * IMA.PI; u += pas)  // echantillonage fnt paramétrique
+            V3 normalizedLumiereDirection = lumiere.getDirectionLumiere();
+            normalizedLumiereDirection.Normalize();
+
+            Couleur nvCouleurAmbiante = new Couleur(this.CSphere * lumiere.getCouleur());
+
+            for (float u = 0; u < 2 * IMA.PI; u += pas){  // echantillonage fnt paramétrique
                 for (float v = -IMA.PI / 2; v < IMA.PI / 2; v += pas)
                 {
                     // calcul des coordoonées dans la scène 3D
@@ -72,21 +77,22 @@ namespace Projet_IMA
 
                     V3 normalizedPixelNormal = (new V3(x3D - this.CentreSphere.x, y3D - this.CentreSphere.y, z3D - this.CentreSphere.z));
                     normalizedPixelNormal.Normalize();
-                    V3 normalizedLumiereDirection = lumiere.getDirectionLumiere();
-                    normalizedLumiereDirection.Normalize();
 
+                    float NL = normalizedPixelNormal * normalizedLumiereDirection;
+                    Couleur nvCouleurDiffuse = nvCouleurAmbiante * 0;
+                    if (NL > 0)
+                    {
+                        nvCouleurDiffuse = nvCouleurAmbiante * (normalizedPixelNormal * normalizedLumiereDirection) * 0.009f;
+                    }
 
                     // projection orthographique => repère écran
 
                     int x_ecran = (int)(x3D);
-                    int y_ecran = (int)(y3D);
-                    Couleur nvcouleur = new Couleur();
+                    int y_ecran = (int)(z3D);
 
-                    // for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, nvcouleur*(normalizedPixelNormal*normalizedLumiereDirection));
-                    Console.WriteLine((normalizedPixelNormal * normalizedLumiereDirection));
-
+                    BitmapEcran.DrawPixel(x_ecran, y_ecran, nvCouleurDiffuse);
                 }
+            }
         }
     }
 }
