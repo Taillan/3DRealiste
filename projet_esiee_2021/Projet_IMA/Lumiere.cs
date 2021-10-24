@@ -7,35 +7,17 @@ namespace Projet_IMA
 {
     class Lumiere
     {
-        private V3 directionLumiere;
-        private Couleur couleur;
+        public V3 Direction { get; set; }
+        public V3 NormalizedDirection { get; set; }
+        public Couleur Couleur { get; set; }
 
         public Lumiere(V3 directionLumiere, Couleur couleur)
         {
-            this.directionLumiere = directionLumiere;
-            this.couleur = couleur;
-
+            this.Direction = directionLumiere;
+            this.Couleur = couleur;
+            this.NormalizedDirection = Direction;
+            this.NormalizedDirection.Normalize();
         }
-        public V3 getDirectionLumiere()
-        {
-            return this.directionLumiere;
-        }
-        
-        public Couleur getCouleur()
-        {
-            return this.couleur;
-        }
-
-        public void setDirectionLumiere(V3 point)
-        {
-            this.directionLumiere = point;
-        }
-
-        public void setCouleur(Couleur Couleur)
-        {
-            this.couleur = Couleur;
-        }
-
 
     }
 }

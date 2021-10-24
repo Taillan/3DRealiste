@@ -72,9 +72,5 @@ namespace Projet_IMA
                         BitmapEcran.DrawPixel(x_ecran, y_ecran, CRect);
                 }
         }
-
-
-
-
     }
 }
