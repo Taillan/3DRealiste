@@ -38,5 +38,10 @@ namespace Projet_IMA
         {
             BitmapEcran.setBackground(new Couleur(255, 255, 255));
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
