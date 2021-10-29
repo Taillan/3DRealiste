@@ -41,7 +41,10 @@ namespace Projet_IMA
                         int x_ecran = (int)(x3D);
                         int y_ecran = (int)(z3D);
 
-                        BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleurDiffuse(normalizedPixelNormal));
+                        float u1 = (x) / (2 * IMA.PI);
+                        float v1 = (y) / (2 * IMA.PI);
+
+                        BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleurDiffuse(normalizedPixelNormal, u1, -v1));
                     }
 
                 }

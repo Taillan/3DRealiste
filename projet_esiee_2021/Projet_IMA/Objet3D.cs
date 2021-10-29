@@ -11,6 +11,7 @@ namespace Projet_IMA
         protected Couleur CouleurObjet { get; set; }
         protected Couleur CouleurAmbiante{ get; set; }
         protected Lumiere Lumiere { get; set; }
+        protected Texture texture { get; set; }
         protected float CoefficientDiffus { get; set; }
         
         public Objet3D(V3 centre, Couleur couleur, Lumiere lumiere, float coefficient_diffus)
@@ -19,13 +20,16 @@ namespace Projet_IMA
             CouleurObjet = couleur;
             Lumiere = lumiere;
             CoefficientDiffus = coefficient_diffus;
-            CouleurAmbiante = new Couleur(this.CouleurObjet * Lumiere.Couleur);
+          //  CouleurAmbiante = new Couleur(this.CouleurObjet * Lumiere.Couleur);
+            texture = new Texture("brick01.jpg");
         }
 
         public abstract void Draw(float pas);
 
-        public Couleur getCouleurDiffuse(V3 normalizedPixelNormal)
+        public Couleur getCouleurDiffuse(V3 normalizedPixelNormal, float x_ecran, float y_ecran)
         {
+            CouleurObjet = texture.LireCouleur(x_ecran, y_ecran);
+            CouleurAmbiante = new Couleur(this.CouleurObjet * Lumiere.Couleur);
             float NL = normalizedPixelNormal * Lumiere.NormalizedDirection;
             Couleur nvCouleurDiffuse = CouleurAmbiante * 0.0008f;
             if (NL > 0)
