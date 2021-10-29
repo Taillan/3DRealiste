@@ -12,7 +12,7 @@ namespace Projet_IMA
         public V3 m_Hauteur { get; set; }
         public V3 m_Origine { get; set; }
 
-        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Couleur couleur, Lumiere lumiere, float coefficient_diffus = 0.006f) : base(centre, couleur, lumiere, coefficient_diffus)
+        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Couleur couleur, Lumiere lumiere, Texture texture, float coefficient_diffus = 0.006f) : base(centre, couleur, lumiere, texture, coefficient_diffus)
         {
             m_Longueur = longueur;
             m_Largeur = largeur;
