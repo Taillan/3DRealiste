@@ -14,7 +14,7 @@ namespace Projet_IMA
             this.m_Rayon = rayon;
         }
 
-        public override void Draw(float pas=0.005f)
+        public override void Draw(float pas=.005f)
         {
             for (float u = 0; u < 2 * IMA.PI; u += pas)
             {  // echantillonage fnt paramétrique
