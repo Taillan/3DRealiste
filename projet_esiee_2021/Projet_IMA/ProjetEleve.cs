@@ -10,7 +10,7 @@ namespace Projet_IMA
     {
         public static void Go()
         {
-            Lumiere lumiere = new Lumiere(new V3(1, -1.5f, 1), new Couleur(155, 155, 155));
+            Lumiere lumiere = new Lumiere(new V3(1, -1, 1), new Couleur(155, 155, 155));
             Sphere3D SphereA = new Sphere3D(new V3(200, 200, 300), 150, Couleur.Red, lumiere);
             SphereA.Draw();
 

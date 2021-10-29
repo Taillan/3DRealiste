@@ -24,13 +24,15 @@ namespace Projet_IMA
                     float x3D = Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.CentreObjet.x;
                     float y3D = Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.CentreObjet.y;
                     float z3D = Rayon * IMA.Sinf(v) + this.CentreObjet.z;
+                    V3 normalizedPixelNormal = (new V3(x3D - this.CentreObjet.x, y3D - this.CentreObjet.y, z3D - this.CentreObjet.z));
+                    normalizedPixelNormal.Normalize();
 
                     // projection orthographique => repère écran
 
                     int x_ecran = (int)(x3D);
                     int y_ecran = (int)(z3D);
 
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleurDiffuse(x3D,y3D,z3D));
+                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleurDiffuse(normalizedPixelNormal) + getCouleurSpeculaire(x3D, y3D, z3D));//
                 }
             }
         }

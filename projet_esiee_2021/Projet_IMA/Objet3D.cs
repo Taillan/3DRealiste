@@ -24,11 +24,8 @@ namespace Projet_IMA
 
         public abstract void Draw(float pas);
 
-        public Couleur getCouleurDiffuse(float x3D, float y3D, float z3D)
+        public Couleur getCouleurDiffuse(V3 normalizedPixelNormal)
         {
-            V3 normalizedPixelNormal = (new V3(x3D - this.CentreObjet.x, y3D - this.CentreObjet.y, z3D - this.CentreObjet.z));
-            normalizedPixelNormal.Normalize();
-
             float NL = normalizedPixelNormal * Lumiere.NormalizedDirection;
             Couleur nvCouleurDiffuse = CouleurAmbiante * 0.0008f;
             if (NL > 0)
@@ -36,6 +33,23 @@ namespace Projet_IMA
                 nvCouleurDiffuse += CouleurAmbiante * (normalizedPixelNormal * Lumiere.NormalizedDirection) * CoefficientDiffus;//0.006f
             }
             return nvCouleurDiffuse;
+        }
+
+        public Couleur getCouleurSpeculaire(float x3D,float y3D,float z3D)
+        {
+            V3 normalizedPixelNormal = (new V3(x3D - this.CentreObjet.x, y3D - this.CentreObjet.y, z3D - this.CentreObjet.z));
+            normalizedPixelNormal.Normalize();
+            V3 N = new V3(x3D-this.CentreObjet.x, y3D-this.CentreObjet.y, z3D-this.CentreObjet.z);
+            V3 L = Lumiere.Direction;
+            /*L = Lumiere.NormalizedDirection;
+            N = normalizedPixelNormal;*/
+            V3 R = 2*N*(N*L)-L;
+            R.Normalize();
+            V3 CameraPosition = new V3((BitmapEcran.GetWidth() / 2), ((float)-1.5 * BitmapEcran.GetWidth()), (BitmapEcran.GetHeight() / 2));
+            V3 PixelPosition = new V3(x3D, y3D, z3D);
+            V3 D = (CameraPosition - PixelPosition);
+            D.Normalize();
+            return Lumiere.Couleur * (float)Math.Pow(R * D, 200);
         }
     }
 }
