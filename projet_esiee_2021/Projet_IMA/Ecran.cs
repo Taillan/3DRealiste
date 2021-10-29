@@ -83,10 +83,6 @@ namespace Projet_IMA
             }
         }
 
-        internal static void DrawPixel(int x_ecran, int y_ecran, Action<Couleur> setCouleur)
-        {
-            throw new NotImplementedException();
-        }
 
         public static void DrawPixel(int x, int y, Couleur c)
         {

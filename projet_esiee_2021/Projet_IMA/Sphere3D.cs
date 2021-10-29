@@ -7,11 +7,11 @@ namespace Projet_IMA
 {
     class Sphere3D : Objet3D
     {
-        public float Rayon { get; set; }
+        public float m_Rayon { get; set; }
 
         public Sphere3D(V3 centre, float rayon, Couleur couleur, Lumiere lumiere, float coefficient_diffus = 0.006f) : base(centre, couleur, lumiere, coefficient_diffus)
         {
-            this.Rayon = rayon;
+            this.m_Rayon = rayon;
         }
 
         public override void Draw(float pas=0.005f)
@@ -21,10 +21,10 @@ namespace Projet_IMA
                 for (float v = -IMA.PI / 2; v < IMA.PI / 2; v += pas)
                 {
                     // calcul des coordoonées dans la scène 3D
-                    float x3D = Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.CentreObjet.x;
-                    float y3D = Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.CentreObjet.y;
-                    float z3D = Rayon * IMA.Sinf(v) + this.CentreObjet.z;
-                    V3 normalizedPixelNormal = (new V3(x3D - this.CentreObjet.x, y3D - this.CentreObjet.y, z3D - this.CentreObjet.z));
+                    float x3D = m_Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.m_CentreObjet.x;
+                    float y3D = m_Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.m_CentreObjet.y;
+                    float z3D = m_Rayon * IMA.Sinf(v) + this.m_CentreObjet.z;
+                    V3 normalizedPixelNormal = (new V3(x3D - this.m_CentreObjet.x, y3D - this.m_CentreObjet.y, z3D - this.m_CentreObjet.z));
                     normalizedPixelNormal.Normalize();
 
                     // projection orthographique => repère écran
