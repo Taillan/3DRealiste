@@ -14,14 +14,13 @@ namespace Projet_IMA
         protected Texture m_texture { get; set; }
         protected float m_CoefficientDiffus { get; set; }
         
-        public Objet3D(V3 centre, Couleur couleur, Lumiere lumiere, float coefficient_diffus)
+        public Objet3D(V3 centre, Couleur couleur, Lumiere lumiere, Texture texture, float coefficient_diffus)
         {
             m_CentreObjet = centre;
             m_CouleurObjet = couleur;
             m_Lumiere = lumiere;
             m_CoefficientDiffus = coefficient_diffus;
-          //  CouleurAmbiante = new Couleur(this.CouleurObjet * Lumiere.Couleur);
-            m_texture = new Texture("brick01.jpg");
+            m_texture = texture;
         }
 
         public abstract void Draw(float pas);

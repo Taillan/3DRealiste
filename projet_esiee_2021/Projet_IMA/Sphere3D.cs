@@ -9,7 +9,7 @@ namespace Projet_IMA
     {
         public float m_Rayon { get; set; }
 
-        public Sphere3D(V3 centre, float rayon, Couleur couleur, Lumiere lumiere, float coefficient_diffus = 0.006f) : base(centre, couleur, lumiere, coefficient_diffus)
+        public Sphere3D(V3 centre, float rayon, Couleur couleur, Lumiere lumiere,Texture texture, float coefficient_diffus = 0.006f) : base(centre, couleur, lumiere, texture, coefficient_diffus)
         {
             this.m_Rayon = rayon;
         }
