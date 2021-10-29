@@ -7,53 +7,53 @@ namespace Projet_IMA
 {
     class Rectangle3D
     {
-        private V3 Origine;
-        private V3 Cote1;
-        private V3 Cote2;
-        private Couleur CRect;
+        private V3 m_Origine;
+        private V3 m_Cote1;
+        private V3 m_Cote2;
+        private Couleur m_CRect;
 
         public Rectangle3D(V3 Origine, V3 Cote1, V3 Cote2)
         {
-            this.Origine = Origine;
-            this.Cote1 = Cote1;
-            this.Cote2 = Cote2;
-            this.CRect = Couleur.Red;
+            this.m_Origine = Origine;
+            this.m_Cote1 = Cote1;
+            this.m_Cote2 = Cote2;
+            this.m_CRect = Couleur.m_Red;
         }
         public Rectangle3D(V3 Origine, V3 Cote1, V3 Cote2, Couleur C)
         {
-            this.Origine = Origine;
-            this.Cote1 = Cote1;
-            this.Cote2 = Cote2;
-            this.CRect = C;
+            this.m_Origine = Origine;
+            this.m_Cote1 = Cote1;
+            this.m_Cote2 = Cote2;
+            this.m_CRect = C;
         }
 
         public void setOrigine(V3 Coordone)
         {
-            this.Origine = Coordone;
+            this.m_Origine = Coordone;
         }
 
         public V3 getOrigine()
         {
-            return this.Origine;
+            return this.m_Origine;
         }
 
         public void setCote1(V3 Coordone)
         {
-            this.Cote1 = Coordone;
+            this.m_Cote1 = Coordone;
         }
 
         public V3 getCote1()
         {
-            return this.Cote1;
+            return this.m_Cote1;
         }
         public void setCote2(V3 Coordone)
         {
-            this.Cote2 = Coordone;
+            this.m_Cote2 = Coordone;
         }
 
         public V3 getCote2()
         {
-            return this.Cote2;
+            return this.m_Cote2;
         }
 
         public void DrawRectangle3D(float pas)
@@ -62,14 +62,14 @@ namespace Projet_IMA
                 for (float v = 0; v < 1; v += pas)
                 {
 
-                    V3 P3D = Origine + u * Cote1 + v * Cote2;
+                    V3 P3D = m_Origine + u * m_Cote1 + v * m_Cote2;
 
                     // projection orthographique => repère écran
 
                     int x_ecran = (int)(P3D.x);
                     int y_ecran = (int)(P3D.y);
                     for (int i = 0; i < 100; i++)  // pour ralentir et voir l'animation - devra être retiré
-                        BitmapEcran.DrawPixel(x_ecran, y_ecran, CRect);
+                        BitmapEcran.DrawPixel(x_ecran, y_ecran, m_CRect);
                 }
         }
     }

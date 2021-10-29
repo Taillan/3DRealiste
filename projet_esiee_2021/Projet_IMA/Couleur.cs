@@ -8,41 +8,41 @@ namespace Projet_IMA
 {
     public struct Couleur
     {
-        public float R, V, B;	// composantes R,V,B comprises entre 0 et 1
+        public float m_R, m_V, m_B;	// composantes R,V,B comprises entre 0 et 1
 
-        public static Couleur Red   = new Couleur(1, 0, 0);
-        public static Couleur Green = new Couleur(0, 1, 0);
-        public static Couleur Blue  = new Couleur(0, 0, 1);
+        public static Couleur m_Red   = new Couleur(1, 0, 0);
+        public static Couleur m_Green = new Couleur(0, 1, 0);
+        public static Couleur m_Blue  = new Couleur(0, 0, 1);
 
 
         // constructeurs
 
         public void From255(byte RR, byte VV, byte BB)
         {
-            R = (float)(RR / 255.0);
-            V = (float)(VV / 255.0);
-            B = (float)(BB / 255.0);
+            m_R = (float)(RR / 255.0);
+            m_V = (float)(VV / 255.0);
+            m_B = (float)(BB / 255.0);
         }
 
         static public  void Transpose(ref Couleur cc, System.Drawing.Color c)
         {
-            cc.R = (float) (c.R / 255.0);
-            cc.V = (float) (c.G / 255.0);
-            cc.B = (float) (c.B / 255.0);
+            cc.m_R = (float) (c.R / 255.0);
+            cc.m_V = (float) (c.G / 255.0);
+            cc.m_B = (float) (c.B / 255.0);
         }
 
         public void check()
         {
-            if (R > 1.0) R = 1.0f;
-            if (V > 1.0) V = 1.0f;
-            if (B > 1.0) B = 1.0f;
+            if (m_R > 1.0) m_R = 1.0f;
+            if (m_V > 1.0) m_V = 1.0f;
+            if (m_B > 1.0) m_B = 1.0f;
         }
 
         public void To255(out byte RR, out byte VV, out byte BB)
         {
-            RR = (byte)(R * 255);
-            VV = (byte)(V * 255);
-            BB = (byte)(B * 255);
+            RR = (byte)(m_R * 255);
+            VV = (byte)(m_V * 255);
+            BB = (byte)(m_B * 255);
         }
 
         public Color Convertion()
@@ -55,60 +55,60 @@ namespace Projet_IMA
 
         public Couleur(float R, float V, float B)
         {
-            this.R = R;
-            this.V = V;
-            this.B = B;
+            this.m_R = R;
+            this.m_V = V;
+            this.m_B = B;
         }
 
         public Couleur(Couleur c)
         {
-            this.R = c.R;
-            this.V = c.V;
-            this.B = c.B;
+            this.m_R = c.m_R;
+            this.m_V = c.m_V;
+            this.m_B = c.m_B;
         }
 
         // méthodes
 
         public float GreyLevel()						// utile pour le Bump Map
         {
-            return (R + B + V) / 3.0f;
+            return (m_R + m_B + m_V) / 3.0f;
         }
 
         // opérateurs surchargés
 
         public static Couleur operator +(Couleur a, Couleur b)
         {
-            return new Couleur(a.R + b.R, a.V + b.V, a.B + b.B);
+            return new Couleur(a.m_R + b.m_R, a.m_V + b.m_V, a.m_B + b.m_B);
         }
 
         public static Couleur operator -(Couleur a, Couleur b)
         {
-            return new Couleur(a.R - b.R, a.V - b.V, a.B - b.B);
+            return new Couleur(a.m_R - b.m_R, a.m_V - b.m_V, a.m_B - b.m_B);
         }
 
         public static Couleur operator -(Couleur a)
         {
-            return new Couleur(-a.R, -a.V, -a.B);
+            return new Couleur(-a.m_R, -a.m_V, -a.m_B);
         }
 
         public static Couleur operator *(Couleur a, Couleur b)
         {
-            return new Couleur(a.R * b.R, a.V * b.V, a.B * b.B);
+            return new Couleur(a.m_R * b.m_R, a.m_V * b.m_V, a.m_B * b.m_B);
         }
 
         public static Couleur operator *(float a, Couleur b)
         {
-            return new Couleur(a * b.R, a * b.V, a * b.B);
+            return new Couleur(a * b.m_R, a * b.m_V, a * b.m_B);
         }
 
         public static Couleur operator *(Couleur b, float a)
         {
-            return new Couleur(a * b.R, a * b.V, a * b.B);
+            return new Couleur(a * b.m_R, a * b.m_V, a * b.m_B);
         }
 
         public static Couleur operator /(Couleur b, float a)
         {
-            return new Couleur(b.R / a, b.V / a, b.B / a);
+            return new Couleur(b.m_R / a, b.m_V / a, b.m_B / a);
         }
     }
 }

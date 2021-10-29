@@ -7,44 +7,44 @@ namespace Projet_IMA
 {
     abstract class Objet3D
     {
-        protected V3 CentreObjet { get; set; }
-        protected Couleur CouleurObjet { get; set; }
-        protected Couleur CouleurAmbiante{ get; set; }
-        protected Lumiere Lumiere { get; set; }
-        protected Texture texture { get; set; }
-        protected float CoefficientDiffus { get; set; }
+        protected V3 m_CentreObjet { get; set; }
+        protected Couleur m_CouleurObjet { get; set; }
+        protected Couleur m_CouleurAmbiante { get; set; }
+        protected Lumiere m_Lumiere { get; set; }
+        protected Texture m_texture { get; set; }
+        protected float m_CoefficientDiffus { get; set; }
         
         public Objet3D(V3 centre, Couleur couleur, Lumiere lumiere, float coefficient_diffus)
         {
-            CentreObjet = centre;
-            CouleurObjet = couleur;
-            Lumiere = lumiere;
-            CoefficientDiffus = coefficient_diffus;
+            m_CentreObjet = centre;
+            m_CouleurObjet = couleur;
+            m_Lumiere = lumiere;
+            m_CoefficientDiffus = coefficient_diffus;
           //  CouleurAmbiante = new Couleur(this.CouleurObjet * Lumiere.Couleur);
-            texture = new Texture("brick01.jpg");
+            m_texture = new Texture("brick01.jpg");
         }
 
         public abstract void Draw(float pas);
 
         public Couleur getCouleurDiffuse(V3 normalizedPixelNormal, float x_ecran, float y_ecran)
         {
-            CouleurObjet = texture.LireCouleur(x_ecran, y_ecran);
-            CouleurAmbiante = new Couleur(this.CouleurObjet * Lumiere.Couleur);
-            float NL = normalizedPixelNormal * Lumiere.NormalizedDirection;
-            Couleur nvCouleurDiffuse = CouleurAmbiante * 0.0008f;
+            m_CouleurObjet = m_texture.LireCouleur(x_ecran, y_ecran);
+            m_CouleurAmbiante  = new Couleur(this.m_CouleurObjet * m_Lumiere.m_Couleur);
+            float NL = normalizedPixelNormal * m_Lumiere.m_NormalizedDirection;
+            Couleur nvCouleurDiffuse = m_CouleurAmbiante  * 0.0008f;
             if (NL > 0)
             {
-                nvCouleurDiffuse += CouleurAmbiante * (normalizedPixelNormal * Lumiere.NormalizedDirection) * CoefficientDiffus;//0.006f
+                nvCouleurDiffuse += m_CouleurAmbiante  * (normalizedPixelNormal * m_Lumiere.m_NormalizedDirection) * m_CoefficientDiffus;//0.006f
             }
             return nvCouleurDiffuse;
         }
 
         public Couleur getCouleurSpeculaire(float x3D,float y3D,float z3D)
         {
-            V3 normalizedPixelNormal = (new V3(x3D - this.CentreObjet.x, y3D - this.CentreObjet.y, z3D - this.CentreObjet.z));
+            V3 normalizedPixelNormal = (new V3(x3D - this.m_CentreObjet.x, y3D - this.m_CentreObjet.y, z3D - this.m_CentreObjet.z));
             normalizedPixelNormal.Normalize();
-            V3 N = new V3(x3D-this.CentreObjet.x, y3D-this.CentreObjet.y, z3D-this.CentreObjet.z);
-            V3 L = Lumiere.Direction;
+            V3 N = new V3(x3D-this.m_CentreObjet.x, y3D-this.m_CentreObjet.y, z3D-this.m_CentreObjet.z);
+            V3 L = m_Lumiere.m_Direction;
             /*L = Lumiere.NormalizedDirection;
             N = normalizedPixelNormal;*/
             V3 R = 2*N*(N*L)-L;
@@ -53,7 +53,7 @@ namespace Projet_IMA
             V3 PixelPosition = new V3(x3D, y3D, z3D);
             V3 D = (CameraPosition - PixelPosition);
             D.Normalize();
-            return Lumiere.Couleur * (float)Math.Pow(R * D, 200);
+            return m_Lumiere.m_Couleur * (float)Math.Pow(R * D, 200);
         }
     }
 }
