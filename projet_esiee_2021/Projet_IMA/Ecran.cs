@@ -22,12 +22,14 @@ namespace Projet_IMA
         static private int stride;
         static private BitmapData data;
         static private Couleur background;
+        static private V3 CameraPosition;
 
         static public Bitmap Init(int largeur, int hauteur)
         {
             Largeur = largeur;
             Hauteur = hauteur;
             B = new Bitmap(largeur, hauteur);
+            CameraPosition = new V3(GetWidth() / 2, -1.5f * GetWidth(), GetHeight() / 2);
             return B;
         }
  
@@ -104,6 +106,7 @@ namespace Projet_IMA
 
         static public int GetWidth() { return Largeur; }
         static public int GetHeight() { return Hauteur; }
+        static public V3 GetCameraPosition() { return CameraPosition; }
 
         static public void setBackground(Couleur c)
         {

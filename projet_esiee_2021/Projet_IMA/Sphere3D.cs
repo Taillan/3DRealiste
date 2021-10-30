@@ -9,7 +9,7 @@ namespace Projet_IMA
     {
         public float m_Rayon { get; set; }
 
-        public Sphere3D(V3 centre, float rayon, Couleur couleur, Lumiere lumiere,Texture texture, float coefficient_diffus = 0.006f) : base(centre, couleur, lumiere, texture, coefficient_diffus)
+        public Sphere3D(V3 centre, float rayon,  Lumiere lumiere,Texture texture, float coefficient_diffus = 0.006f) : base(centre, lumiere, texture, coefficient_diffus)
         {
             this.m_Rayon = rayon;
         }
@@ -24,8 +24,10 @@ namespace Projet_IMA
                     float x3D = m_Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.m_CentreObjet.x;
                     float y3D = m_Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.m_CentreObjet.y;
                     float z3D = m_Rayon * IMA.Sinf(v) + this.m_CentreObjet.z;
-                    V3 normalizedPixelNormal = (new V3(x3D - this.m_CentreObjet.x, y3D - this.m_CentreObjet.y, z3D - this.m_CentreObjet.z));
-                    normalizedPixelNormal.Normalize();
+
+                    V3 PixelPosition = new V3(x3D, y3D, z3D);
+                    V3 NormalizedPixelNormal = PixelPosition - m_CentreObjet;
+                    NormalizedPixelNormal.Normalize();
 
                     // projection orthographique => repère écran
 
@@ -34,9 +36,9 @@ namespace Projet_IMA
 
 
                     float u1 = (u) / (2 * IMA.PI);
-                    float v1 = (v) / (2 * IMA.PI);
+                    float v1 = (v) / (IMA.PI);
 
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleurDiffuse(normalizedPixelNormal, u1, -v1));// + getCouleurSpeculaire(x3D, y3D, z3D));//
+                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getLowCouleurAmbiante(u1,-v1) + getCouleurDiffuse(NormalizedPixelNormal, u1, -v1) + getCouleurSpeculaire(PixelPosition, NormalizedPixelNormal,u1,-v1));
                 }
             }
         }

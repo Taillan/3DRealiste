@@ -13,7 +13,7 @@ namespace Projet_IMA
         public static Couleur m_Red   = new Couleur(1, 0, 0);
         public static Couleur m_Green = new Couleur(0, 1, 0);
         public static Couleur m_Blue  = new Couleur(0, 0, 1);
-
+        public static Couleur m_Void = new Couleur(0, 0, 0);
 
         // constructeurs
 
