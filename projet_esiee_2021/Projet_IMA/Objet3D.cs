@@ -7,28 +7,32 @@ namespace Projet_IMA
 {
     abstract class Objet3D
     {
-        protected V3 m_CentreObjet { get; set; }
+        protected V3 m_CentreObjet { get; set; } 
         protected Lumiere m_Lumiere { get; set; }
-        protected Texture m_texture { get; set; }
+        protected Texture m_Texture { get; set; }
+        protected Texture m_BumpTexture { get; set; }
         protected float m_CoefficientDiffus { get; set; }
         protected float m_CoefficientSpeculaire { get; set; }
         protected float m_PuissanceSpeculaire { get; set; }
+        protected float m_CoefficientBumpMap { get; set; }
 
-        public Objet3D(V3 centre, Lumiere lumiere, Texture texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire)
+        public Objet3D(V3 centre, Lumiere lumiere, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap)
         {
             m_CentreObjet = centre;
             m_Lumiere = lumiere;
             m_CoefficientDiffus = coefficient_diffus;
             m_CoefficientSpeculaire = coefficient_speculaire;
             m_PuissanceSpeculaire = puissance_speculaire;
-            m_texture = texture;
+            m_Texture = texture;
+            m_BumpTexture = bump_texture;
+            m_CoefficientBumpMap = coefficient_bumpmap;
         }
-
         public abstract void Draw(float pas);
+
 
         public Couleur getCouleurAmbiante(float x_ecran, float y_ecran)
         {
-            return m_texture.LireCouleur(x_ecran, y_ecran) * m_Lumiere.m_Couleur;
+            return m_Texture.LireCouleur(x_ecran, y_ecran) * m_Lumiere.m_Couleur;
         }
 
         public Couleur getLowCouleurAmbiante(float x_ecran, float y_ecran)
@@ -67,22 +71,35 @@ namespace Projet_IMA
             }
         }
 
-        public Couleur getCouleur(V3 PixelPosition, float x_ecran, float y_ecran)
+        public Couleur getCouleur(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
         {
-            V3 N = (PixelPosition - m_CentreObjet);
+            V3 N = getBumpedNormal(PixelPosition,u,v,dMdu,dMdv);
             N.Normalize();
-            Couleur Ambiant = getLowCouleurAmbiante(x_ecran, y_ecran);
-            Couleur Diffus = getCouleurDiffuse(N, x_ecran, y_ecran);
+            Couleur Ambiant = getLowCouleurAmbiante(u, v);
+            Couleur Diffus = getCouleurDiffuse(N, u, v);
             if (Diffus != Couleur.m_Void)
             {
-                Couleur Speculaire = getCouleurSpeculaire(PixelPosition, N, x_ecran, y_ecran);
+                Couleur Speculaire = getCouleurSpeculaire(PixelPosition, N, u, v);
                 return Ambiant + Diffus + Speculaire;
             }
             else
             {
                 return Ambiant + Diffus;
             }
-            
+        }
+
+        public V3 getBumpedNormal(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
+        {
+            V3 N = (PixelPosition - m_CentreObjet);
+            N.Normalize();
+
+            float K = m_CoefficientBumpMap;
+
+            this.m_BumpTexture.Bump(u, v, out float dhdu, out float dhdv);
+            V3 T2 = dMdu ^ (N * dhdv);
+            V3 T3 = (N * dhdu) ^ dMdv;
+
+            return N + K * (T2 + T3);
         }
     }
 }
