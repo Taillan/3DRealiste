@@ -13,7 +13,7 @@ namespace Projet_IMA
         public static Couleur m_Red   = new Couleur(1, 0, 0);
         public static Couleur m_Green = new Couleur(0, 1, 0);
         public static Couleur m_Blue  = new Couleur(0, 0, 1);
-
+        public static Couleur m_Void = new Couleur(0, 0, 0);
 
         // constructeurs
 
@@ -109,6 +109,15 @@ namespace Projet_IMA
         public static Couleur operator /(Couleur b, float a)
         {
             return new Couleur(b.m_R / a, b.m_V / a, b.m_B / a);
+        }
+
+        public static bool operator ==(Couleur a, Couleur b)
+        {
+            return a.m_R == b.m_R  && a.m_V == b.m_V && a.m_B == b.m_B;
+        }
+        public static bool operator !=(Couleur a, Couleur b)
+        {
+            return a.m_R != b.m_R && a.m_V != b.m_V && a.m_B != b.m_B;
         }
     }
 }
