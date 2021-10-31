@@ -12,16 +12,15 @@ namespace Projet_IMA
         protected Texture m_texture { get; set; }
         protected float m_CoefficientDiffus { get; set; }
         protected float m_CoefficientSpeculaire { get; set; }
-
         protected float m_PuissanceSpeculaire { get; set; }
 
-        public Objet3D(V3 centre, Lumiere lumiere, Texture texture, float coefficient_diffus)
+        public Objet3D(V3 centre, Lumiere lumiere, Texture texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire)
         {
             m_CentreObjet = centre;
             m_Lumiere = lumiere;
             m_CoefficientDiffus = coefficient_diffus;
-            m_CoefficientSpeculaire = .0008f;
-            m_PuissanceSpeculaire = 200;
+            m_CoefficientSpeculaire = coefficient_speculaire;
+            m_PuissanceSpeculaire = puissance_speculaire;
             m_texture = texture;
         }
 
@@ -54,10 +53,36 @@ namespace Projet_IMA
         {
             V3 L = m_Lumiere.m_Direction;
             V3 R = 2*N*(N*L)-L;
-            R.Normalize();
             V3 D = (BitmapEcran.GetCameraPosition() - PixelPosition);
+            R.Normalize();
             D.Normalize();
-            return m_Lumiere.m_Couleur * getCouleurAmbiante(x_ecran,y_ecran) * m_CoefficientSpeculaire * (float)Math.Pow(R * D, m_PuissanceSpeculaire);
+            float RD = R * D;
+            if ((RD) > 0)
+            {
+                return m_Lumiere.m_Couleur * getCouleurAmbiante(x_ecran, y_ecran) * m_CoefficientSpeculaire * (float)Math.Pow(RD, m_PuissanceSpeculaire);
+            }
+            else
+            {
+                return Couleur.m_Void;
+            }
+        }
+
+        public Couleur getCouleur(V3 PixelPosition, float x_ecran, float y_ecran)
+        {
+            V3 N = (PixelPosition - m_CentreObjet);
+            N.Normalize();
+            Couleur Ambiant = getLowCouleurAmbiante(x_ecran, y_ecran);
+            Couleur Diffus = getCouleurDiffuse(N, x_ecran, y_ecran);
+            if (Diffus != Couleur.m_Void)
+            {
+                Couleur Speculaire = getCouleurSpeculaire(PixelPosition, N, x_ecran, y_ecran);
+                return Ambiant + Diffus + Speculaire;
+            }
+            else
+            {
+                return Ambiant + Diffus;
+            }
+            
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Projet_IMA
         public V3 m_Hauteur { get; set; }
         public V3 m_Origine { get; set; }
 
-        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Lumiere lumiere, Texture texture, float coefficient_diffus = 0.006f) : base(centre, lumiere, texture, coefficient_diffus)
+        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Lumiere lumiere, Texture texture, float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60) : base(centre, lumiere, texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire)
         {
             m_Longueur = longueur;
             m_Largeur = largeur;
@@ -38,8 +38,8 @@ namespace Projet_IMA
                         int x_ecran = (int)(P3D.x);
                         int y_ecran = (int)(P3D.z);
 
-                        float u1 = (P3D.x) / (2 * IMA.PI);
-                        float v1 = (P3D.y) / (2 * IMA.PI);
+                        float u1 = (P3D.x) / (i_longueur);
+                        float v1 = (P3D.y) / (i_largeur);
 
                         BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleurDiffuse(normalizedPixelNormal, u1, -v1));
                     }

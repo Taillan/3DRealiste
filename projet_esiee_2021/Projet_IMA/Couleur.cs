@@ -110,6 +110,15 @@ namespace Projet_IMA
         {
             return new Couleur(b.m_R / a, b.m_V / a, b.m_B / a);
         }
+
+        public static bool operator ==(Couleur a, Couleur b)
+        {
+            return a.m_R == b.m_R  && a.m_V == b.m_V && a.m_B == b.m_B;
+        }
+        public static bool operator !=(Couleur a, Couleur b)
+        {
+            return a.m_R != b.m_R && a.m_V != b.m_V && a.m_B != b.m_B;
+        }
     }
 }
 
