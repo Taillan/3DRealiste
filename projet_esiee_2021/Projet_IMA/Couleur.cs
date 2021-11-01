@@ -17,6 +17,41 @@ namespace Projet_IMA
 
         // constructeurs
 
+        #region "Constructeurs"
+        /// <summary>
+        /// Constructeur de la couleur à partir de 3 valeur RGB compris entre 0 et 1
+        /// </summary>
+        /// <param name="R">Intensité du Rouge</param>
+        /// <param name="V">Intensité du Vert</param>
+        /// <param name="B">Intensité du Bleu</param>
+        public Couleur(float R, float V, float B)
+        {
+            this.m_R = R;
+            this.m_V = V;
+            this.m_B = B;
+        }
+
+        /// <summary>
+        /// Constructeur de la couleur à partir d'une couleur
+        /// </summary>
+        /// <param name="c"></param>
+        public Couleur(Couleur c)
+        {
+            this.m_R = c.m_R;
+            this.m_V = c.m_V;
+            this.m_B = c.m_B;
+        }
+
+        #endregion
+
+        #region "methodes"
+
+        /// <summary>
+        /// Set la couleur depuis des valeurs en 255
+        /// </summary>
+        /// <param name="RR">Intensite du rouge</param>
+        /// <param name="VV">Intensite du vert</param>
+        /// <param name="BB">Intensite du bleu</param>
         public void From255(byte RR, byte VV, byte BB)
         {
             m_R = (float)(RR / 255.0);
@@ -24,6 +59,11 @@ namespace Projet_IMA
             m_B = (float)(BB / 255.0);
         }
 
+        /// <summary>
+        /// Transpose  ???????
+        /// </summary>
+        /// <param name="cc"></param>
+        /// <param name="c"></param>
         static public  void Transpose(ref Couleur cc, System.Drawing.Color c)
         {
             cc.m_R = (float) (c.R / 255.0);
@@ -31,6 +71,9 @@ namespace Projet_IMA
             cc.m_B = (float) (c.B / 255.0);
         }
 
+        /// <summary>
+        /// Verifie que les valeurs des couleurs soit bien entre 0 et 1
+        /// </summary>
         public void check()
         {
             if (m_R > 1.0) m_R = 1.0f;
@@ -38,6 +81,12 @@ namespace Projet_IMA
             if (m_B > 1.0) m_B = 1.0f;
         }
 
+        /// <summary>
+        /// Renvoi la valeur de la couleur au format (255,255,255)
+        /// </summary>
+        /// <param name="RR"></param>
+        /// <param name="VV"></param>
+        /// <param name="BB"></param>
         public void To255(out byte RR, out byte VV, out byte BB)
         {
             RR = (byte)(m_R * 255);
@@ -45,6 +94,10 @@ namespace Projet_IMA
             BB = (byte)(m_B * 255);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Color Convertion()
         {
             check();
@@ -53,28 +106,20 @@ namespace Projet_IMA
             return Color.FromArgb(RR, VV, BB);
         }
 
-        public Couleur(float R, float V, float B)
-        {
-            this.m_R = R;
-            this.m_V = V;
-            this.m_B = B;
-        }
-
-        public Couleur(Couleur c)
-        {
-            this.m_R = c.m_R;
-            this.m_V = c.m_V;
-            this.m_B = c.m_B;
-        }
-
-        // méthodes
-
+        /// <summary>
+        /// Renvoi le niveux de gris
+        /// </summary>
+        /// <returns>Valeur dun niveau de gris de la coueleur</returns>
         public float GreyLevel()						// utile pour le Bump Map
         {
             return (m_R + m_B + m_V) / 3.0f;
         }
 
+        #endregion
+
         // opérateurs surchargés
+
+        #region "Surcharge des opérateur"
 
         public static Couleur operator +(Couleur a, Couleur b)
         {
@@ -119,6 +164,8 @@ namespace Projet_IMA
         {
             return a.m_R != b.m_R && a.m_V != b.m_V && a.m_B != b.m_B;
         }
+
+        #endregion
     }
 }
 

@@ -12,6 +12,20 @@ namespace Projet_IMA
         public V3 m_Hauteur { get; set; }
         public V3 m_Origine { get; set; }
 
+        /// <summary>
+        /// Constructeur d'un Parallelepipede 3D
+        /// </summary>
+        /// <param name="centre">Centre de cet objet</param>
+        /// <param name="longueur">Longueur de l'objet</param>
+        /// <param name="largeur">Largeur de l'objet</param>
+        /// <param name="hauteur">Hauteur de l'objet</param>
+        /// <param name="lumiere">Lumiere applique à l'objet</param>
+        /// <param name="texture">Texture applique à l'objet</param>
+        /// <param name="bump_texture"></param>
+        /// <param name="coefficient_diffus"></param>
+        /// <param name="coefficient_speculaire"></param>
+        /// <param name="puissance_speculaire"></param>
+        /// <param name="coefficient_bumpmap"></param>
         public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Lumiere lumiere, Texture texture, Texture bump_texture ,float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap=.005f) : base(centre, lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
         {
             m_Longueur = longueur;
@@ -20,6 +34,10 @@ namespace Projet_IMA
             m_Origine = centre - (1 / 2) * longueur + (1 / 2) * largeur + (1 / 2) * hauteur;
         }
 
+        /// <summary>
+        /// Fonction décrivant comment dessiner un Parallelepipede3D
+        /// </summary>
+        /// <param name="pas">Ecart entre chaque point tracé à l'écran</param>
         public override void Draw(float pas=.005f)
         {
             for (float i_longueur = 0; i_longueur < 1; i_longueur += pas)

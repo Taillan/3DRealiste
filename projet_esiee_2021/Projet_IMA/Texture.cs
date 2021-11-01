@@ -13,14 +13,26 @@ namespace Projet_IMA
         int Largeur;
         Couleur [,] C;
 
-        // public functions
-        // u,v compris entre 0 et 1
+        #region "public functions"
 
+        /// <summary>
+        /// Permet de retourner la couleur de la texteur sur les coordonés donnés
+        /// </summary>
+        /// <param name="u">Compris ente 0 et 1 ??????</param>
+        /// <param name="v">Compris ente 0 et 1 ??????</param>
+        /// <returns></returns>
         public Couleur LireCouleur(float u, float v)
         {
             return Interpol(Largeur * u, Hauteur * v);
         }
 
+        /// <summary>
+        /// ????????????
+        /// </summary>
+        /// <param name="u"></param>
+        /// <param name="v"></param>
+        /// <param name="dhdu"></param>
+        /// <param name="dhdv"></param>
         public void Bump(float u, float v, out float dhdu, out float dhdv)
         {
             float x = u * Hauteur;
@@ -33,9 +45,14 @@ namespace Projet_IMA
             dhdu = vx - vv;
             dhdv = vy - vv;
         }
-    
-        // constructor
+        #endregion
 
+        #region "constructeur"
+
+        /// <summary>
+        /// Constructeur de la texture
+        /// </summary>
+        /// <param name="ff">nom du fichier texture</param>
         public Texture(string ff)
         {
             string s = System.IO.Path.GetFullPath("..\\..");
@@ -66,13 +83,18 @@ namespace Projet_IMA
             B.Dispose();
         }
 
-       
-                
-                
+        #endregion
 
 
-        // private functions
 
+        #region "private fonction"
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Lu"></param>
+        /// <param name="Hv"></param>
+        /// <returns></returns>
         private Couleur Interpol(float Lu, float Hv)
         {
             int x = (int)(Lu);  // plus grand entier <=
@@ -101,5 +123,6 @@ namespace Projet_IMA
             + C[x, ypu] * (1 - ccx) * ccy
             + C[xpu, ypu] * ccx * ccy;*/
         }
-    }    
+        #endregion
+    }
 }

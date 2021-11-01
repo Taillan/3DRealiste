@@ -7,13 +7,35 @@ namespace Projet_IMA
 {
     class Sphere3D : Objet3D
     {
+        #region "Constructeur"
         public float m_Rayon { get; set; }
 
+        /// <summary>
+        /// Constructeur d'une Sphere3D
+        /// </summary>
+        /// <param name="centre"></param>
+        /// <param name="rayon"></param>
+        /// <param name="lumiere"></param>
+        /// <param name="texture"></param>
+        /// <param name="bump_texture"></param>
+        /// <param name="coefficient_diffus"></param>
+        /// <param name="coefficient_speculaire"></param>
+        /// <param name="puissance_speculaire"></param>
+        /// <param name="coefficient_bumpmap"></param>
         public Sphere3D(V3 centre, float rayon,  Lumiere lumiere,Texture texture, Texture bump_texture, float coefficient_diffus = .006f, float coefficient_speculaire = .0001f, float puissance_speculaire=60, float coefficient_bumpmap=.005f) : base(centre, lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
         {
             this.m_Rayon = rayon;
         }
+        #endregion
 
+        #region "methodes"
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="u"></param>
+        /// <param name="v"></param>
+        /// <param name="dMdu"></param>
+        /// <param name="dMdv"></param>
         public void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
         {
             float dxdu = m_Rayon * IMA.Cosf(v) * (-IMA.Sinf(u));
@@ -29,6 +51,10 @@ namespace Projet_IMA
             dMdv = new V3(dxdv, dydv, dzdv);
         }
 
+        /// <summary>
+        /// Fonction décrivant comment dessiner d'une Sphere3D
+        /// </summary>
+        /// <param name="pas">Ecart entre chaque point tracé à l'écran</param>
         public override void Draw(float pas=.005f)
         {
             for (float u = 0; u < 2 * IMA.PI; u += pas)
@@ -52,5 +78,6 @@ namespace Projet_IMA
                 }
             }
         }
+        #endregion
     }
 }

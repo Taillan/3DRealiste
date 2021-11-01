@@ -16,6 +16,18 @@ namespace Projet_IMA
         protected float m_PuissanceSpeculaire { get; set; }
         protected float m_CoefficientBumpMap { get; set; }
 
+        #region "Constructeur"
+        /// <summary>
+        /// Constructeur d'un objet 3D
+        /// </summary>
+        /// <param name="centre">Centre de l'objet3D</param>
+        /// <param name="lumiere">Lumiere applique sur l'objet 3D</param>
+        /// <param name="texture">Texture applique a l'objet 3D</param>
+        /// <param name="bump_texture"></param>
+        /// <param name="coefficient_diffus"></param>
+        /// <param name="coefficient_speculaire"></param>
+        /// <param name="puissance_speculaire"></param>
+        /// <param name="coefficient_bumpmap"></param>
         public Objet3D(V3 centre, Lumiere lumiere, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap)
         {
             m_CentreObjet = centre;
@@ -27,19 +39,45 @@ namespace Projet_IMA
             m_BumpTexture = bump_texture;
             m_CoefficientBumpMap = coefficient_bumpmap;
         }
+        #endregion
+
+        #region "Methodes"
+
+        /// <summary>
+        /// Classe abstraite definissant comme dessiner l'objet heritant de cette classe
+        /// </summary>
+        /// <param name="pas">Ecart entre chaque point tracé à l'écran</param>
         public abstract void Draw(float pas);
 
-
+        /// <summary>
+        /// Renvoi la couleur de resultante de l'application de la lumière
+        /// </summary>
+        /// <param name="x_ecran">Positionnement en X du point interrogé</param>
+        /// <param name="y_ecran">Positionnement en Y du point interrogé</param>
+        /// <returns></returns>
         public Couleur getCouleurAmbiante(float x_ecran, float y_ecran)
         {
             return m_Texture.LireCouleur(x_ecran, y_ecran) * m_Lumiere.m_Couleur;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x_ecran">Positionnement en X du point interrogé</param>
+        /// <param name="y_ecran">Positionnement en Y du point interrogé</param>
+        /// <returns></returns>
         public Couleur getLowCouleurAmbiante(float x_ecran, float y_ecran)
         {
             return getCouleurAmbiante(x_ecran,y_ecran) * .0008f;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="normalizedPixelNormal">Vecteur décrivant la normale au point x,y</param>
+        /// <param name="x_ecran">Positionnement en X du point interrogé</param>
+        /// <param name="y_ecran">Positionnement en Y du point interrogé</param>
+        /// <returns></returns>
         public Couleur getCouleurDiffuse(V3 normalizedPixelNormal, float x_ecran, float y_ecran)
         {
             float cosAlpha = normalizedPixelNormal * m_Lumiere.m_NormalizedDirection;
@@ -53,6 +91,14 @@ namespace Projet_IMA
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PixelPosition"></param>
+        /// <param name="N"></param>
+        /// <param name="x_ecran"></param>
+        /// <param name="y_ecran"></param>
+        /// <returns></returns>
         public Couleur getCouleurSpeculaire(V3 PixelPosition, V3 N, float x_ecran, float y_ecran)
         {
             V3 L = m_Lumiere.m_Direction;
@@ -71,6 +117,15 @@ namespace Projet_IMA
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PixelPosition"></param>
+        /// <param name="u"></param>
+        /// <param name="v"></param>
+        /// <param name="dMdu"></param>
+        /// <param name="dMdv"></param>
+        /// <returns></returns>
         public Couleur getCouleur(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
         {
             V3 N = getBumpedNormal(PixelPosition,u,v,dMdu,dMdv);
@@ -88,6 +143,15 @@ namespace Projet_IMA
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PixelPosition"></param>
+        /// <param name="u"></param>
+        /// <param name="v"></param>
+        /// <param name="dMdu"></param>
+        /// <param name="dMdv"></param>
+        /// <returns></returns>
         public V3 getBumpedNormal(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
         {
             V3 N = (PixelPosition - m_CentreObjet);
@@ -101,5 +165,7 @@ namespace Projet_IMA
 
             return N + K * (T2 + T3);
         }
+
+        #endregion
     }
 }
