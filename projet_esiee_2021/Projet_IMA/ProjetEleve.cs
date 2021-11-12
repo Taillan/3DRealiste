@@ -14,8 +14,8 @@ namespace Projet_IMA
             Texture bump_texture = new Texture("bump38.jpg");
             Lumiere key_lumiere = new Lumiere(new V3(1, -.8f, 0), new Couleur(255, 255, 255)*.7f);
             Lumiere fill_lumiere = new Lumiere(new V3(-1, -.8f, 0), new Couleur(255, 255, 255) * .3f);
-            Parallelogramme3D RectangleB = new Parallelogramme3D(new V3(200, 200, 300), new V3(150, 0, 300), new V3(0, 150, 300), key_lumiere, fill_lumiere, texture, bump_texture);
-            RectangleB.Draw();
+            //Parallelogramme3D RectangleB = new Parallelogramme3D(new V3(0, 200, 100), new V3(150, 0, 300), new V3(0, 150, 300), key_lumiere, fill_lumiere, texture, bump_texture);
+            //RectangleB.Draw();
             Sphere3D SphereA = new Sphere3D(new V3(200, 200, 300), 150, key_lumiere, fill_lumiere, texture, bump_texture);
             SphereA.Draw();
         }

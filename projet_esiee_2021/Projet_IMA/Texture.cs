@@ -9,9 +9,9 @@ namespace Projet_IMA
 {
     class Texture
     {
-        int Hauteur;
-        int Largeur;
-        Couleur [,] C;
+        private int Hauteur;
+        private int Largeur;
+        private Couleur [,] C;
 
         // public functions
         // u,v compris entre 0 et 1
