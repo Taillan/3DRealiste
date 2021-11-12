@@ -30,6 +30,7 @@ namespace Projet_IMA
             m_CoefficientBumpMap = coefficient_bumpmap;
         }
 
+        public abstract V3 getCoords(float u, float v);
         public abstract void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv);
         public abstract void Draw(float pas);
 

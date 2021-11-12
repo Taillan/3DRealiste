@@ -19,6 +19,14 @@ namespace Projet_IMA
             m_Origine = centre - (1 / 2) * longueur + (1 / 2) * largeur;
         }
 
+        public override V3 getCoords(float u, float v)
+        {
+            float x3D = m_Origine.x + u * m_Longueur.x + v * m_Largeur.x;
+            float y3D = m_Origine.y + u * m_Longueur.y + v * m_Largeur.y;
+            float z3D = m_Origine.z + u * m_Longueur.z + v * m_Largeur.z;
+            return new V3(x3D, y3D, z3D);
+        }
+
         public override void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
         {
             float dxdu = m_Longueur.x;
@@ -40,10 +48,7 @@ namespace Projet_IMA
             {
                 for (float v = 0; v < 1; v += pas)
                 {
-                    float x3D = m_Origine.x + u * m_Longueur.x + v * m_Largeur.x;
-                    float y3D = m_Origine.y + u * m_Longueur.y + v * m_Largeur.y;
-                    float z3D = m_Origine.z + u * m_Longueur.z + v * m_Largeur.z;
-                    V3 PixelPosition = new V3(x3D, y3D, z3D);
+                    V3 PixelPosition = getCoords(u, v);
 
                     // projection orthographique => repère écran
 

@@ -14,6 +14,14 @@ namespace Projet_IMA
             this.m_Rayon = rayon;
         }
 
+        public override V3 getCoords(float u, float v)
+        {
+            float x3D = m_Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.m_CentreObjet.x;
+            float y3D = m_Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.m_CentreObjet.y;
+            float z3D = m_Rayon * IMA.Sinf(v) + this.m_CentreObjet.z;
+            return new V3(x3D, y3D, z3D);
+        }
+
         public override void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
         {
             float dxdu = m_Rayon * IMA.Cosf(v) * (-IMA.Sinf(u));
@@ -36,10 +44,7 @@ namespace Projet_IMA
                 for (float v = -IMA.PI / 2; v < IMA.PI / 2; v += pas)
                 {
                     // calcul des coordoonées dans la scène 3D
-                    float x3D = m_Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.m_CentreObjet.x;
-                    float y3D = m_Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.m_CentreObjet.y;
-                    float z3D = m_Rayon * IMA.Sinf(v) + this.m_CentreObjet.z;
-                    V3 PixelPosition = new V3(x3D, y3D, z3D);
+                    V3 PixelPosition = getCoords(u,v);
                     
                     // projection orthographique => repère écran
 
