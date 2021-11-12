@@ -44,7 +44,7 @@ namespace Projet_IMA
         #region Méthodes
 
         /// <summary>
-        /// Classe abstraite définissant comment dessiner l'objet heritant de cette classe
+        /// Classe abstraite définissant comment dessiner l'objet héritant de cette classe
         /// </summary>
         /// <param name="pas">Écart entre chaque point tracé à l'écran</param>
         public abstract void Draw(float pas);
@@ -52,8 +52,8 @@ namespace Projet_IMA
         /// <summary>
         /// Renvoi la couleur de resultante de l'application de la lumière
         /// </summary>
-        /// <param name="x_ecran">Positionnement en X du point interrogé</param>
-        /// <param name="y_ecran">Positionnement en Y du point interrogé</param>
+        /// <param name="x_ecran">Positionnement en X sur l'écran du point interrogé</param>
+        /// <param name="y_ecran">Positionnement en Y sur l'écran du point interrogé</param>
         /// <returns></returns>
         public Couleur getCouleurAmbiante(float x_ecran, float y_ecran)
         {
@@ -63,8 +63,8 @@ namespace Projet_IMA
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="x_ecran">Positionnement en X du point interrogé</param>
-        /// <param name="y_ecran">Positionnement en Y du point interrogé</param>
+        /// <param name="x_ecran">Positionnement en X sur l'écran du point interrogé</param>
+        /// <param name="y_ecran">Positionnement en Y sur l'écran du point interrogé</param>
         /// <returns></returns>
         public Couleur getLowCouleurAmbiante(float x_ecran, float y_ecran)
         {
@@ -72,12 +72,12 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// 
+        /// Calcule la couleur diffuse du pixel passé en paramère
         /// </summary>
         /// <param name="normalizedPixelNormal">Vecteur décrivant la normale au point x,y</param>
-        /// <param name="x_ecran">Positionnement en X du point interrogé</param>
-        /// <param name="y_ecran">Positionnement en Y du point interrogé</param>
-        /// <returns></returns>
+        /// <param name="x_ecran">Positionnement en X sur l'écran du point interrogé</param>
+        /// <param name="y_ecran">Positionnement en Y sur l'écran du point interrogé</param>
+        /// <returns>Couleur diffuse du pixel passé en paramètre</returns>
         public Couleur getCouleurDiffuse(V3 normalizedPixelNormal, float x_ecran, float y_ecran)
         {
             float cosAlpha = normalizedPixelNormal * m_Lumiere.m_NormalizedDirection;
@@ -92,13 +92,13 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// 
+        /// Calcule la couleur spéculaire du pixel passé en paramère
         /// </summary>
-        /// <param name="PixelPosition"></param>
-        /// <param name="N"></param>
-        /// <param name="x_ecran"></param>
-        /// <param name="y_ecran"></param>
-        /// <returns></returns>
+        /// <param name="PixelPosition">Position du pixel dont on veut trouver la couleur spéculaire</param>
+        /// <param name="N">Normale associée au pixel passé en paramètre</param>
+        /// <param name="x_ecran">Position x de l'écran du pixel passé en paramètre</param>
+        /// <param name="y_ecran">Position y de l'écran du pixel passé en paramètre</param>
+        /// <returns>Couleur spéculaire du pixel passé en paramètre</returns>
         public Couleur getCouleurSpeculaire(V3 PixelPosition, V3 N, float x_ecran, float y_ecran)
         {
             V3 L = m_Lumiere.m_Direction;
@@ -118,14 +118,14 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// 
+        /// Calcule la couleur totale du pixel passé en paramère
         /// </summary>
-        /// <param name="PixelPosition"></param>
-        /// <param name="u"></param>
-        /// <param name="v"></param>
-        /// <param name="dMdu"></param>
-        /// <param name="dMdv"></param>
-        /// <returns></returns>
+        /// <param name="PixelPosition">Position du pixel dont on veut trouver la couleur spéculaire</param>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <param name="dMdu">Dérivée du point M(position du pixel) en fonction du vecteur u</param>
+        /// <param name="dMdv">Dérivée du point M(position du pixel) en fonction du vecteur v</param>
+        /// <returns>Couleur totale du pixel passé en paramètre</returns>
         public Couleur getCouleur(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
         {
             V3 N = getBumpedNormal(PixelPosition,u,v,dMdu,dMdv);
@@ -144,14 +144,14 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// 
+        /// Calcule la normale bumpée du pixel actuel
         /// </summary>
         /// <param name="PixelPosition"></param>
-        /// <param name="u"></param>
-        /// <param name="v"></param>
-        /// <param name="dMdu"></param>
-        /// <param name="dMdv"></param>
-        /// <returns></returns>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <param name="dMdu">Dérivée du point M(position du pixel) en fonction du vecteur u</param>
+        /// <param name="dMdv">Dérivée du point M(position du pixel) en fonction du vecteur v</param>
+        /// <returns>Normale bumpée du pixel actuel</returns>
         public V3 getBumpedNormal(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
         {
             V3 N = (PixelPosition - m_CentreObjet);
