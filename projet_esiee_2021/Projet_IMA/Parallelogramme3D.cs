@@ -5,14 +5,14 @@ using System.Text;
 
 namespace Projet_IMA
 {
-    class Parallelogramme : Objet3D
+    class Parallelogramme3D : Objet3D
     {
         public V3 m_Longueur { get; set; }
         public V3 m_Largeur { get; set; }
         public V3 m_Hauteur { get; set; }
         public V3 m_Origine { get; set; }
 
-        public Parallelogramme(V3 centre, V3 longueur, V3 largeur, Lumiere key_lumiere, Lumiere fill_lumiere, Texture texture, Texture bump_texture, float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f) : base(centre, key_lumiere, fill_lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
+        public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Lumiere key_lumiere, Lumiere fill_lumiere, Texture texture, Texture bump_texture, float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f) : base(centre, key_lumiere, fill_lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
         {
             m_Longueur = longueur;
             m_Largeur = largeur;
@@ -42,7 +42,7 @@ namespace Projet_IMA
             dMdv = new V3(dxdv, dydv, dzdv);
         }
 
-        public override void Draw(float pas = .005f)
+        public override void Draw(float pas = .001f)
         {
             for (float u = 0; u < 1; u += pas)
             {
@@ -53,7 +53,7 @@ namespace Projet_IMA
                     // projection orthographique => repère écran
 
                     int x_ecran = (int)(PixelPosition.x);
-                    int y_ecran = (int)(PixelPosition.y);
+                    int y_ecran = (int)(PixelPosition.z);
 
                     BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(this.m_FillLumiere, PixelPosition, u, v) + getCouleur(this.m_KeyLumiere, PixelPosition, u, v));
                 }
