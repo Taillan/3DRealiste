@@ -13,58 +13,24 @@ namespace Projet_IMA
         int Largeur;
         Couleur [,] C;
 
-        #region "public functions"
-
-        /// <summary>
-        /// Permet de retourner la couleur de la texteur sur les coordonés donnés
-        /// </summary>
-        /// <param name="u">Compris ente 0 et 1 ??????</param>
-        /// <param name="v">Compris ente 0 et 1 ??????</param>
-        /// <returns></returns>
-        public Couleur LireCouleur(float u, float v)
-        {
-            return Interpol(Largeur * u, Hauteur * v);
-        }
-
-        /// <summary>
-        /// ????????????
-        /// </summary>
-        /// <param name="u"></param>
-        /// <param name="v"></param>
-        /// <param name="dhdu"></param>
-        /// <param name="dhdv"></param>
-        public void Bump(float u, float v, out float dhdu, out float dhdv)
-        {
-            float x = u * Hauteur;
-            float y = v * Largeur;
-
-            float vv = Interpol(x, y).GreyLevel();
-            float vx = Interpol(x + 1, y).GreyLevel();
-            float vy = Interpol(x, y + 1).GreyLevel();
-
-            dhdu = vx - vv;
-            dhdv = vy - vv;
-        }
-        #endregion
-
         #region "constructeur"
 
         /// <summary>
         /// Constructeur de la texture
         /// </summary>
-        /// <param name="ff">nom du fichier texture</param>
+        /// <param name="ff">Nom du fichier texture situé dans le sous-dossier textures</param>
         public Texture(string ff)
         {
             string s = System.IO.Path.GetFullPath("..\\..");
-            string path = System.IO.Path.Combine(s,"textures",ff);
-            Bitmap B = new Bitmap(path); 
-            
+            string path = System.IO.Path.Combine(s, "textures", ff);
+            Bitmap B = new Bitmap(path);
+
             Hauteur = B.Height;
             Largeur = B.Width;
             BitmapData data = B.LockBits(new Rectangle(0, 0, B.Width, B.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
             int stride = data.Stride;
-             
-            C = new Couleur[Largeur,Hauteur];
+
+            C = new Couleur[Largeur, Hauteur];
 
             unsafe
             {
@@ -85,9 +51,41 @@ namespace Projet_IMA
 
         #endregion
 
+        #region Fonctions publiques
 
+        /// <summary>
+        /// Permet de retourner la couleur de la texture sur les coordonées données
+        /// </summary>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <returns>Couleur du pixel pointé</returns>
+        public Couleur LireCouleur(float u, float v)
+        {
+            return Interpol(Largeur * u, Hauteur * v);
+        }
 
-        #region "private fonction"
+        /// <summary>
+        /// Permet de calculer les grandeurs dHdu et dHdv de la texture pour déterminer le bump du pixel.
+        /// </summary>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <param name="dhdu">Dérivée de h (la variation de la hauteur sur le bump) en fonction de u</param>
+        /// <param name="dhdv">Dérivée de h (la variation de la hauteur sur le bump) en fonction de v</param>
+        public void Bump(float u, float v, out float dhdu, out float dhdv)
+        {
+            float x = u * Hauteur;
+            float y = v * Largeur;
+
+            float vv = Interpol(x, y).GreyLevel();
+            float vx = Interpol(x + 1, y).GreyLevel();
+            float vy = Interpol(x, y + 1).GreyLevel();
+
+            dhdu = vx - vv;
+            dhdv = vy - vv;
+        }
+        #endregion
+
+        #region Fonctions privées
 
         /// <summary>
         /// 

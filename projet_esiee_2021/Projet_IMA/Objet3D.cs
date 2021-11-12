@@ -16,18 +16,18 @@ namespace Projet_IMA
         protected float m_PuissanceSpeculaire { get; set; }
         protected float m_CoefficientBumpMap { get; set; }
 
-        #region "Constructeur"
+        #region Constructeur
         /// <summary>
         /// Constructeur d'un objet 3D
         /// </summary>
-        /// <param name="centre">Centre de l'objet3D</param>
-        /// <param name="lumiere">Lumiere applique sur l'objet 3D</param>
-        /// <param name="texture">Texture applique a l'objet 3D</param>
-        /// <param name="bump_texture"></param>
-        /// <param name="coefficient_diffus"></param>
-        /// <param name="coefficient_speculaire"></param>
-        /// <param name="puissance_speculaire"></param>
-        /// <param name="coefficient_bumpmap"></param>
+        /// <param name="centre">Centre de l'Objet3D</param>
+        /// <param name="lumiere">Lumière appliquée sur l'Objet3D</param>
+        /// <param name="texture">Texture appliquée sur l'Objet3D</param>
+        /// <param name="bump_texture">Texture de bump appliquée sur l'Objet3D</param>
+        /// <param name="coefficient_diffus">Coefficient de diffus de la sphère, plus le coefficient est faible, plus le diffus sera "fondu"</param>
+        /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
+        /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
+        /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
         public Objet3D(V3 centre, Lumiere lumiere, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap)
         {
             m_CentreObjet = centre;
@@ -41,12 +41,12 @@ namespace Projet_IMA
         }
         #endregion
 
-        #region "Methodes"
+        #region Méthodes
 
         /// <summary>
-        /// Classe abstraite definissant comme dessiner l'objet heritant de cette classe
+        /// Classe abstraite définissant comment dessiner l'objet heritant de cette classe
         /// </summary>
-        /// <param name="pas">Ecart entre chaque point tracé à l'écran</param>
+        /// <param name="pas">Écart entre chaque point tracé à l'écran</param>
         public abstract void Draw(float pas);
 
         /// <summary>

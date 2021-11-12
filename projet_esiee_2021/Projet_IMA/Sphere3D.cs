@@ -7,35 +7,35 @@ namespace Projet_IMA
 {
     class Sphere3D : Objet3D
     {
-        #region "Constructeur"
+        #region Constructeurs
         public float m_Rayon { get; set; }
 
         /// <summary>
         /// Constructeur d'une Sphere3D
         /// </summary>
-        /// <param name="centre"></param>
-        /// <param name="rayon"></param>
-        /// <param name="lumiere"></param>
-        /// <param name="texture"></param>
-        /// <param name="bump_texture"></param>
-        /// <param name="coefficient_diffus"></param>
-        /// <param name="coefficient_speculaire"></param>
-        /// <param name="puissance_speculaire"></param>
-        /// <param name="coefficient_bumpmap"></param>
+        /// <param name="centre">Centre de la sphère</param>
+        /// <param name="rayon">Rayon de la sphère</param>
+        /// <param name="lumiere">Lumière appliquée sur la sphère</param>
+        /// <param name="texture">Texture appliquée sur la sphère</param>
+        /// <param name="bump_texture">Texture de bump appliquée sur la sphère</param>
+        /// <param name="coefficient_diffus">Coefficient de diffus de la sphère, plus le coefficient est faible, plus le diffus sera "fondu"</param>
+        /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
+        /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
+        /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
         public Sphere3D(V3 centre, float rayon,  Lumiere lumiere,Texture texture, Texture bump_texture, float coefficient_diffus = .006f, float coefficient_speculaire = .0001f, float puissance_speculaire=60, float coefficient_bumpmap=.005f) : base(centre, lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
         {
             this.m_Rayon = rayon;
         }
         #endregion
 
-        #region "methodes"
+        #region Méthodes
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="u"></param>
-        /// <param name="v"></param>
-        /// <param name="dMdu"></param>
-        /// <param name="dMdv"></param>
+        /// <param name="u">Position du vecteur u qui permet de tracer la sphère</param>
+        /// <param name="v">Position du vecteur v qui permet de tracer la sphère</param>
+        /// <param name="dMdu">Dérivée de M (position du point actuel) en fonction de u</param>
+        /// <param name="dMdv">Dérivée de M (position du point actuel) en fonction d v</param>
         public void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
         {
             float dxdu = m_Rayon * IMA.Cosf(v) * (-IMA.Sinf(u));
