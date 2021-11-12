@@ -12,8 +12,9 @@ namespace Projet_IMA
         {
             Texture texture = new Texture("gold.jpg");
             Texture bump_texture = new Texture("bump38.jpg");
-            Lumiere lumiere = new Lumiere(new V3(1, -1, 1), new Couleur(140, 140, 140));
-            Sphere3D SphereA = new Sphere3D(new V3(200, 200, 300), 150, lumiere, texture, bump_texture);
+            Lumiere key_lumiere = new Lumiere(new V3(1, -.8f, 0), new Couleur(255, 255, 255)*.7f);
+            Lumiere fill_lumiere = new Lumiere(new V3(-1, -.8f, 0), new Couleur(255, 255, 255) * .3f);
+            Sphere3D SphereA = new Sphere3D(new V3(200, 200, 300), 150, key_lumiere, fill_lumiere, texture, bump_texture);
             SphereA.Draw();
         }
     }

@@ -12,7 +12,7 @@ namespace Projet_IMA
         public V3 m_Hauteur { get; set; }
         public V3 m_Origine { get; set; }
 
-        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Lumiere lumiere, Texture texture, Texture bump_texture ,float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap=.005f) : base(centre, lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
+        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Lumiere key_lumiere, Lumiere fill_lumiere, Texture texture, Texture bump_texture ,float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap=.005f) : base(centre, key_lumiere, fill_lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
         {
             m_Longueur = longueur;
             m_Largeur = largeur;

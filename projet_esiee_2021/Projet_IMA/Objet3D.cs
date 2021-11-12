@@ -8,7 +8,8 @@ namespace Projet_IMA
     abstract class Objet3D
     {
         protected V3 m_CentreObjet { get; set; } 
-        protected Lumiere m_Lumiere { get; set; }
+        protected Lumiere m_KeyLumiere { get; set; }
+        protected Lumiere m_FillLumiere { get; set; }
         protected Texture m_Texture { get; set; }
         protected Texture m_BumpTexture { get; set; }
         protected float m_CoefficientDiffus { get; set; }
@@ -16,10 +17,11 @@ namespace Projet_IMA
         protected float m_PuissanceSpeculaire { get; set; }
         protected float m_CoefficientBumpMap { get; set; }
 
-        public Objet3D(V3 centre, Lumiere lumiere, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap)
+        public Objet3D(V3 centre, Lumiere key_lumiere, Lumiere fill_lumiere, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap)
         {
             m_CentreObjet = centre;
-            m_Lumiere = lumiere;
+            m_KeyLumiere = key_lumiere;
+            m_FillLumiere = fill_lumiere;
             m_CoefficientDiffus = coefficient_diffus;
             m_CoefficientSpeculaire = coefficient_speculaire;
             m_PuissanceSpeculaire = puissance_speculaire;
@@ -30,22 +32,22 @@ namespace Projet_IMA
         public abstract void Draw(float pas);
 
 
-        public Couleur getCouleurAmbiante(float x_ecran, float y_ecran)
+        public Couleur getCouleurAmbiante(Lumiere lumiere, float x_ecran, float y_ecran)
         {
-            return m_Texture.LireCouleur(x_ecran, y_ecran) * m_Lumiere.m_Couleur;
+            return m_Texture.LireCouleur(x_ecran, y_ecran) * lumiere.m_Couleur;
         }
 
-        public Couleur getLowCouleurAmbiante(float x_ecran, float y_ecran)
+        public Couleur getLowCouleurAmbiante(Lumiere lumiere, float x_ecran, float y_ecran)
         {
-            return getCouleurAmbiante(x_ecran,y_ecran) * .0008f;
+            return getCouleurAmbiante(lumiere, x_ecran,y_ecran) * .0008f;
         }
 
-        public Couleur getCouleurDiffuse(V3 normalizedPixelNormal, float x_ecran, float y_ecran)
+        public Couleur getCouleurDiffuse(Lumiere lumiere, V3 normalizedPixelNormal, float x_ecran, float y_ecran)
         {
-            float cosAlpha = normalizedPixelNormal * m_Lumiere.m_NormalizedDirection;
+            float cosAlpha = normalizedPixelNormal * lumiere.m_NormalizedDirection;
             if (cosAlpha > 0)
             {
-                return getCouleurAmbiante(x_ecran,y_ecran)  * (cosAlpha) * m_CoefficientDiffus;
+                return getCouleurAmbiante(lumiere, x_ecran,y_ecran)  * (cosAlpha) * m_CoefficientDiffus;
             }
             else
             {
@@ -53,9 +55,9 @@ namespace Projet_IMA
             }
         }
 
-        public Couleur getCouleurSpeculaire(V3 PixelPosition, V3 N, float x_ecran, float y_ecran)
+        public Couleur getCouleurSpeculaire(Lumiere lumiere, V3 PixelPosition, V3 N, float x_ecran, float y_ecran)
         {
-            V3 L = m_Lumiere.m_Direction;
+            V3 L = lumiere.m_Direction;
             V3 R = 2*N*(N*L)-L;
             V3 D = (BitmapEcran.GetCameraPosition() - PixelPosition);
             R.Normalize();
@@ -63,7 +65,7 @@ namespace Projet_IMA
             float RD = R * D;
             if ((RD) > 0)
             {
-                return m_Lumiere.m_Couleur * getCouleurAmbiante(x_ecran, y_ecran) * m_CoefficientSpeculaire * (float)Math.Pow(RD, m_PuissanceSpeculaire);
+                return lumiere.m_Couleur * getCouleurAmbiante(lumiere, x_ecran, y_ecran) * m_CoefficientSpeculaire * (float)Math.Pow(RD, m_PuissanceSpeculaire);
             }
             else
             {
@@ -71,15 +73,15 @@ namespace Projet_IMA
             }
         }
 
-        public Couleur getCouleur(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
+        public Couleur getCouleur(Lumiere lumiere, V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
         {
             V3 N = getBumpedNormal(PixelPosition,u,v,dMdu,dMdv);
-            N.Normalize();
-            Couleur Ambiant = getLowCouleurAmbiante(u, v);
-            Couleur Diffus = getCouleurDiffuse(N, u, v);
+            //N.Normalize();
+            Couleur Ambiant = getLowCouleurAmbiante(lumiere, u, v);
+            Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
             if (Diffus != Couleur.m_Void)
             {
-                Couleur Speculaire = getCouleurSpeculaire(PixelPosition, N, u, v);
+                Couleur Speculaire = getCouleurSpeculaire(lumiere, PixelPosition, N, u, v);
                 return Ambiant + Diffus + Speculaire;
             }
             else

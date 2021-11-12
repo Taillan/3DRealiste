@@ -9,7 +9,7 @@ namespace Projet_IMA
     {
         public float m_Rayon { get; set; }
 
-        public Sphere3D(V3 centre, float rayon,  Lumiere lumiere,Texture texture, Texture bump_texture, float coefficient_diffus = .006f, float coefficient_speculaire = .0001f, float puissance_speculaire=60, float coefficient_bumpmap=.005f) : base(centre, lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
+        public Sphere3D(V3 centre, float rayon,  Lumiere key_lumiere, Lumiere fill_lumiere,Texture texture, Texture bump_texture, float coefficient_diffus = .005f, float coefficient_speculaire = .00005f, float puissance_speculaire=60, float coefficient_bumpmap=.005f) : base(centre, key_lumiere, fill_lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap)
         {
             this.m_Rayon = rayon;
         }
@@ -48,7 +48,7 @@ namespace Projet_IMA
                     int x_ecran = (int)(PixelPosition.x);
                     int y_ecran = (int)(PixelPosition.z);
 
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(PixelPosition,u,v,dMdu,dMdv));
+                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(this.m_FillLumiere,PixelPosition,u,v,dMdu,dMdv)+ getCouleur(this.m_KeyLumiere, PixelPosition, u, v, dMdu, dMdv));
                 }
             }
         }
