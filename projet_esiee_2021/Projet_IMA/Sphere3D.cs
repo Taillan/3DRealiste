@@ -14,7 +14,7 @@ namespace Projet_IMA
             this.m_Rayon = rayon;
         }
 
-        public void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
+        public override void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
         {
             float dxdu = m_Rayon * IMA.Cosf(v) * (-IMA.Sinf(u));
             float dxdv = m_Rayon * (-IMA.Sinf(v)) * IMA.Cosf(v);
@@ -41,14 +41,12 @@ namespace Projet_IMA
                     float z3D = m_Rayon * IMA.Sinf(v) + this.m_CentreObjet.z;
                     V3 PixelPosition = new V3(x3D, y3D, z3D);
                     
-                    getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
-                    
                     // projection orthographique => repère écran
 
                     int x_ecran = (int)(PixelPosition.x);
                     int y_ecran = (int)(PixelPosition.z);
 
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(this.m_FillLumiere,PixelPosition,u,v,dMdu,dMdv)+ getCouleur(this.m_KeyLumiere, PixelPosition, u, v, dMdu, dMdv));
+                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(this.m_FillLumiere,PixelPosition,u,v)+ getCouleur(this.m_KeyLumiere, PixelPosition, u, v));
                 }
             }
         }

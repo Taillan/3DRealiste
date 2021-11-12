@@ -29,6 +29,8 @@ namespace Projet_IMA
             m_BumpTexture = bump_texture;
             m_CoefficientBumpMap = coefficient_bumpmap;
         }
+
+        public abstract void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv);
         public abstract void Draw(float pas);
 
 
@@ -73,9 +75,9 @@ namespace Projet_IMA
             }
         }
 
-        public Couleur getCouleur(Lumiere lumiere, V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
+        public Couleur getCouleur(Lumiere lumiere, V3 PixelPosition, float u, float v)
         {
-            V3 N = getBumpedNormal(PixelPosition,u,v,dMdu,dMdv);
+            V3 N = getBumpedNormal(PixelPosition,u,v);
             //N.Normalize();
             Couleur Ambiant = getLowCouleurAmbiante(lumiere, u, v);
             Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
@@ -90,12 +92,14 @@ namespace Projet_IMA
             }
         }
 
-        public V3 getBumpedNormal(V3 PixelPosition, float u, float v, V3 dMdu, V3 dMdv)
+        public V3 getBumpedNormal(V3 PixelPosition, float u, float v)
         {
             V3 N = (PixelPosition - m_CentreObjet);
             N.Normalize();
 
             float K = m_CoefficientBumpMap;
+
+            getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
 
             this.m_BumpTexture.Bump(u, v, out float dhdu, out float dhdv);
             V3 T2 = dMdu ^ (N * dhdv);
