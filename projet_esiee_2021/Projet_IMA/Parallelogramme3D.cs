@@ -43,11 +43,9 @@ namespace Projet_IMA
 
         protected override V3 getNormal(V3 PixelPosition)
         {
-            float x = PixelPosition.x;
-            float y = PixelPosition.y;
-            float z = PixelPosition.z;
-
-            return (float)(1 / Math.Sqrt(x * x + y * y + z * z)) * PixelPosition;
+            V3 normal = m_Longueur ^ m_Largeur;
+            normal.Normalize();
+            return normal;
         }
 
         public override void Draw()
