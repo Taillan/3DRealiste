@@ -24,7 +24,7 @@ namespace Projet_IMA
         /// <param name="fill_lumiere">Lumière secondaire appliquée sur le Parallelogramme3D</param>
         /// <param name="texture">Texture appliquée sur le Parallelogramme3D</param>
         /// <param name="bump_texture">Texture de bump appliquée sur le Parallelogramme3D</param>
-        /// <param name="coefficient_diffus">Coefficient de diffus de la sphère, plus le coefficient est faible, plus le diffus sera "fondu"</param>
+        /// <param name="coefficient_diffus">Coefficient de diffus du Parallelogramme3D, plus le coefficient est faible, plus le diffus sera "fondu"</param>
         /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
         /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
         /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
