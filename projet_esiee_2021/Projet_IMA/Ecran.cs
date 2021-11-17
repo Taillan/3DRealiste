@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections;
 
 
 namespace Projet_IMA
@@ -14,7 +15,7 @@ namespace Projet_IMA
     {
         const int refresh_every = 1000; // force l'affiche tous les xx pix
         static int nb_pix = 0;                 // comptage des pixels
-        
+
         static private Bitmap B;
         static private ModeAff Mode;
         static private int Largeur;
@@ -32,17 +33,17 @@ namespace Projet_IMA
             CameraPosition = new V3(GetWidth() / 2, -1.5f * GetWidth(), GetHeight() / 2);
             return B;
         }
- 
+
         static void DrawFastPixel(int x, int y, Couleur c)
         {
             unsafe
             {
-                byte RR, VV, BB; 
+                byte RR, VV, BB;
                 c.check();
-                c.To255(out RR, out  VV, out  BB);
-                
+                c.To255(out RR, out VV, out BB);
+
                 byte* ptr = (byte*)data.Scan0;
-                ptr[(x * 3) + y * stride    ] = BB;
+                ptr[(x * 3) + y * stride] = BB;
                 ptr[(x * 3) + y * stride + 1] = VV;
                 ptr[(x * 3) + y * stride + 2] = RR;
             }
@@ -52,15 +53,15 @@ namespace Projet_IMA
         {
             Color cc = c.Convertion();
             B.SetPixel(x, y, cc);
-            
+
             Program.MyForm.PictureBoxInvalidate();
             nb_pix++;
             if (nb_pix > refresh_every)  // force l'affichage à l'écran tous les 1000pix
             {
-               Program.MyForm.PictureBoxRefresh();
-               nb_pix = 0;
+                Program.MyForm.PictureBoxRefresh();
+                nb_pix = 0;
             }
-         }
+        }
 
         /// /////////////////   public methods ///////////////////////
 
@@ -95,7 +96,7 @@ namespace Projet_IMA
                 if (Mode == ModeAff.SLOW_MODE) DrawSlowPixel(x_ecran, y_ecran, c);
                 else DrawFastPixel(x_ecran, y_ecran, c);
         }
-        
+
         static public void Show()
         {
             if (Mode == ModeAff.FULL_SPEED)
@@ -112,5 +113,28 @@ namespace Projet_IMA
         {
             background = c;
         }
+
+        /* static Couleur RayCast(int PosCamera, int DirRayon, ArrayList objets)
+         {
+
+         }*/
+        static public void DrawAll(ArrayList objects)
+        {
+            V3 PosCamera = new V3(0, 0, 0);
+            for (int x_ecran = 0; x_ecran <= GetHeight(); x_ecran++)
+            {
+                for (int y_ecran = 0; y_ecran <= GetWidth(); y_ecran++)
+                {
+
+                    V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
+                    V3 DirRayon = PosPixScene - PosCamera;
+                    //   Couleur C = RayCast(PosCamera, DirRayon, objects);
+                    // Draw(x_ecran, y_ecran, C);
+
+                }
+            }
+        }
     }
+
+   
 }
