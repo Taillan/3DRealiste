@@ -8,12 +8,16 @@ namespace Projet_IMA
 {
     public struct Couleur
     {
-        public float m_R, m_V, m_B;	// composantes R,V,B comprises entre 0 et 1
-
-        public static Couleur m_Red   = new Couleur(1, 0, 0);
+        #region Variables de classe 
+        public static Couleur m_Red = new Couleur(1, 0, 0);
         public static Couleur m_Green = new Couleur(0, 1, 0);
-        public static Couleur m_Blue  = new Couleur(0, 0, 1);
+        public static Couleur m_Blue = new Couleur(0, 0, 1);
         public static Couleur m_Void = new Couleur(0, 0, 0);
+        #endregion
+
+        #region Attributs
+        public float m_R, m_V, m_B; // composantes R,V,B comprises entre 0 et 1
+        #endregion
 
         #region Constructeurs
         /// <summary>
