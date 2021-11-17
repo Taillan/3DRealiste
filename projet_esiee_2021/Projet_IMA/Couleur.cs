@@ -119,9 +119,13 @@ namespace Projet_IMA
         {
             return a.m_R != b.m_R && a.m_V != b.m_V && a.m_B != b.m_B;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Couleur && Equals((Couleur)obj);
+        }
+
+        public override int GetHashCode() => this.GetHashCode();
     }
 }
-
-    
-
-    				
