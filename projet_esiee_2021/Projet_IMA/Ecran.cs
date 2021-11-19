@@ -114,10 +114,16 @@ namespace Projet_IMA
             background = c;
         }
 
-        /* static Couleur RayCast(int PosCamera, int DirRayon, ArrayList objets)
+         static Couleur RayCast(V3 PosCamera, V3 DirRayon, ArrayList objets)
          {
-
-         }*/
+            foreach(Objet3D o in objets)
+            {
+                // recherche d'intersection la plus proche
+                    // si c'est une sphère regarder la fonction pt d'intersection sphere
+                    // si c'est un rectangle regarder la fonction pt d'intersection rectangle
+            }
+            return Couleur.m_Void;
+         }
         static public void DrawAll(ArrayList objects)
         {
             for (int x_ecran = 0; x_ecran <= GetHeight(); x_ecran++)
@@ -127,7 +133,7 @@ namespace Projet_IMA
 
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
                     V3 DirRayon = PosPixScene - CameraPosition;
-                    //   Couleur C = RayCast(PosCamera, DirRayon, objects);
+                    Couleur C = RayCast(CameraPosition, DirRayon, objects);
                     // Draw(x_ecran, y_ecran, C);
 
                 }
