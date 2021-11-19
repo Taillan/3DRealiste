@@ -38,10 +38,11 @@ namespace Projet_IMA
             Sphere3D SphereB = new Sphere3D(new V3(400, 200, 350), 50, key_lumiere, fill_lumiere, texture2, bump_texture);
             Sphere3D SphereC = new Sphere3D(new V3(700, 200, 100), 80, key_lumiere, fill_lumiere, texture3, bump_texture);
             Sphere3D SphereD = new Sphere3D(new V3(650, 200, 400), 70, key_lumiere, fill_lumiere, texture4, bump_texture);
+   
+            scene.Add(SphereD);
             scene.Add(SphereA);
             scene.Add(SphereB);
             scene.Add(SphereC);
-            scene.Add(SphereD);
 
             //Normal display
             foreach (Objet3D objet in scene)
@@ -50,7 +51,7 @@ namespace Projet_IMA
             }
 
             //RayCast
-            DrawAll();
+            BitmapEcran.DrawAll(scene);
         }
     }
 }
