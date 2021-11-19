@@ -120,14 +120,13 @@ namespace Projet_IMA
          }*/
         static public void DrawAll(ArrayList objects)
         {
-            V3 PosCamera = new V3(0, 0, 0);
             for (int x_ecran = 0; x_ecran <= GetHeight(); x_ecran++)
             {
                 for (int y_ecran = 0; y_ecran <= GetWidth(); y_ecran++)
                 {
 
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
-                    V3 DirRayon = PosPixScene - PosCamera;
+                    V3 DirRayon = PosPixScene - CameraPosition;
                     //   Couleur C = RayCast(PosCamera, DirRayon, objects);
                     // Draw(x_ecran, y_ecran, C);
 
