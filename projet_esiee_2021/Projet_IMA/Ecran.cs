@@ -21,12 +21,15 @@ namespace Projet_IMA
         static private int Hauteur;
         static private int stride;
         static private BitmapData data;
+        static private Couleur background;
+        static private V3 CameraPosition;
 
         static public Bitmap Init(int largeur, int hauteur)
         {
             Largeur = largeur;
             Hauteur = hauteur;
             B = new Bitmap(largeur, hauteur);
+            CameraPosition = new V3(GetWidth() / 2, -1.5f * GetWidth(), GetHeight() / 2);
             return B;
         }
  
@@ -61,8 +64,9 @@ namespace Projet_IMA
 
         /// /////////////////   public methods ///////////////////////
 
-        static public void RefreshScreen(Couleur c)
+        static public void RefreshScreen()
         {
+            Couleur c = background;
             if (Program.MyForm.Checked())
             {
                 Mode = ModeAff.SLOW_MODE;
@@ -80,7 +84,8 @@ namespace Projet_IMA
                         DrawFastPixel(x, y, c);
             }
         }
-        
+
+
         public static void DrawPixel(int x, int y, Couleur c)
         {
             int x_ecran = x;
@@ -101,5 +106,11 @@ namespace Projet_IMA
 
         static public int GetWidth() { return Largeur; }
         static public int GetHeight() { return Hauteur; }
+        static public V3 GetCameraPosition() { return CameraPosition; }
+
+        static public void setBackground(Couleur c)
+        {
+            background = c;
+        }
     }
 }
