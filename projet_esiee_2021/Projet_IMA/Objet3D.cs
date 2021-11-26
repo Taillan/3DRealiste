@@ -36,7 +36,7 @@ namespace Projet_IMA
         protected abstract void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv);
         protected abstract V3 getNormal(V3 PixelPosition);
         public abstract void Draw();
-        public abstract bool testIntersection(V3 origineRayon, V3 directionRayon);
+        public abstract bool testIntersection(V3 origineRayon, V3 directionRayon, out float t, out V3 PixelPosition, out float u, out float v);
 
         private Couleur getCouleurAmbiante(Lumiere lumiere, float x_ecran, float y_ecran)
         {
@@ -79,7 +79,7 @@ namespace Projet_IMA
             }
         }
 
-        protected Couleur getCouleur(V3 PixelPosition, float u, float v)
+        public Couleur getCouleur(V3 PixelPosition, float u, float v)
         {
             Lumiere[] lumieres = { m_FillLumiere, m_KeyLumiere };
             Couleur finalColor = Couleur.m_Void;

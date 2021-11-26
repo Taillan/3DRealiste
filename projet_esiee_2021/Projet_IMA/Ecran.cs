@@ -116,14 +116,20 @@ namespace Projet_IMA
 
          static Couleur RayCast(V3 PosCamera, V3 DirRayon, ArrayList objets)
          {
+            float maxT = float.MaxValue;
+            Couleur finalColor = Couleur.m_Void;
             foreach(Objet3D objet in objets)
             {
-                if(objet.testIntersection(PosCamera, DirRayon))
+                if (objet.testIntersection(PosCamera, DirRayon, out float t, out V3 PixelPosition, out float u, out float v))
                 {
-                    //Afficher pixel de l'objet
+                    if (t>0 && t < maxT)
+                    {
+                        maxT = t;
+                        finalColor = objet.getCouleur(PixelPosition, u, v);
+                    }
                 }
             }
-            return Couleur.m_Void;
+            return finalColor;
          }
         static public void DrawAll(ArrayList objects)
         {
@@ -131,12 +137,10 @@ namespace Projet_IMA
             {
                 for (int y_ecran = 0; y_ecran <= GetWidth(); y_ecran++)
                 {
-
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
                     V3 DirRayon = PosPixScene - CameraPosition;
                     Couleur C = RayCast(CameraPosition, DirRayon, objects);
-                    // Draw(x_ecran, y_ecran, C);
-
+                    DrawPixel(x_ecran, y_ecran, C);
                 }
             }
         }

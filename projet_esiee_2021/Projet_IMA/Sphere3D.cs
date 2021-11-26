@@ -37,23 +37,37 @@ namespace Projet_IMA
             dMdv = new V3(dxdv, dydv, dzdv);
         }
 
-        public override bool testIntersection(V3 origineRayon, V3 directionRayon)
+        public override bool testIntersection(V3 origineRayon, V3 directionRayon, out float t, out V3 PixelPosition, out float u, out float v)
         {
             V3 Ro = origineRayon;
             V3 Rd = directionRayon;
             V3 C = m_CentreObjet;
             float A = Rd * Rd;
-            float B = 2*(Ro * Rd) - 2 * Rd * C;
+            float B = 2*Ro * Rd - 2 * Rd * C;
             float r = m_Rayon;
-            float D = (Ro * Ro) - (2 * Ro * C) + (C * C) - (m_Rayon * m_Rayon);
+            float D = (Ro * Ro) - (2 * Ro * C) + (C * C) - (r * r);
             float DELTA = (B * B) - (4 * A * D);
-            double t1 = (-B - Math.Sqrt(DELTA)) / (2 * A);
-            double t2 = (-B + Math.Sqrt(DELTA)) / (2 * A);
-            if((t1 >0 && t2 > 0) || (t1 < 0 && t2 > 0))
+            float t1 = (-B - (float)Math.Sqrt(DELTA)) / (2 * A);
+            float t2 = (-B + (float)Math.Sqrt(DELTA)) / (2 * A);
+            if (t1 > 0 && t2 > 0)
             {
+                PixelPosition = Ro + t1 * Rd;
+                t = t1;
+                IMA.Invert_Coord_Spherique(PixelPosition, m_Rayon, out u, out v);
+                return true;
+            } 
+            else if (t1 < 0 && t2 > 0)
+            {
+                PixelPosition = Ro + t2 * Rd;
+                t = t2;
+                IMA.Invert_Coord_Spherique(PixelPosition, m_Rayon, out u, out v);
                 return true;
             }
+            else 
             {
+                PixelPosition = new V3(0, 0, 0);
+                IMA.Invert_Coord_Spherique(PixelPosition, m_Rayon, out u, out v);
+                t = 0;
                 return false;
             }
         }

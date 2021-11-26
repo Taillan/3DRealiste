@@ -15,7 +15,7 @@ namespace Projet_IMA
         {
             m_Longueur = longueur;
             m_Largeur = largeur;
-            m_Origine = centre - (1 / 2) * longueur + (1 / 2) * largeur;
+            m_Origine = centre - (1 / 2) * longueur - (1 / 2) * largeur;
         }
 
         protected override V3 getCoords(float u, float v)
@@ -48,10 +48,33 @@ namespace Projet_IMA
             return normal;
         }
 
-        public override bool testIntersection(V3 origineRayon, V3 directionRayon)
+        public override bool testIntersection(V3 origineRayon, V3 directionRayon, out float t, out V3 PixelPosition, out float u, out float v)
         {
-            // A FAIRE
-            return true;
+            V3 Ro = origineRayon;
+            V3 Rd = directionRayon;
+            V3 A = m_Origine;
+            V3 B = A+m_Largeur;
+            V3 C = A+m_Longueur;
+            V3 AB = A - B;
+            V3 AC = A - C;
+            V3 n = (AB ^ AC);
+            n.Normalize();
+            V3 n2 = (AC ^ AB);
+            n2.Normalize();
+            t = ((A - Ro)*n) / (Rd * n);
+            V3 I = Ro + t * Rd;
+            V3 AI = I - A;
+            PixelPosition = I;
+            u = ((AC ^ n) / ((AB ^ AC).Norm())) * AI;
+            v = ((AB^n2)/ ((AB ^ AC).Norm())) *AI;
+            if((u>0 && u<1 ) && (v>0 && v<1 ))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override void Draw()

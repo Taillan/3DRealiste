@@ -50,10 +50,12 @@ namespace Projet_IMA
             //scene.Add(SphereC);
 
             //Normal display
-            foreach (Objet3D objet in scene)
+            /*foreach (Objet3D objet in scene)
             {
                 objet.Draw();
-            }
+            }*/
+
+            BitmapEcran.DrawAll(scene);
 
             //RayCast
             //BitmapEcran.DrawAll(scene);
