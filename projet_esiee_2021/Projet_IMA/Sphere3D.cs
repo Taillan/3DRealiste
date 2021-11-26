@@ -37,6 +37,27 @@ namespace Projet_IMA
             dMdv = new V3(dxdv, dydv, dzdv);
         }
 
+        public override bool testIntersection(V3 origineRayon, V3 directionRayon)
+        {
+            V3 Ro = origineRayon;
+            V3 Rd = directionRayon;
+            V3 C = m_CentreObjet;
+            float A = Rd * Rd;
+            float B = 2*(Ro * Rd) - 2 * Rd * C;
+            float r = m_Rayon;
+            float D = (Ro * Ro) - (2 * Ro * C) + (C * C) - (m_Rayon * m_Rayon);
+            float DELTA = (B * B) - (4 * A * D);
+            double t1 = (-B - Math.Sqrt(DELTA)) / (2 * A);
+            double t2 = (-B + Math.Sqrt(DELTA)) / (2 * A);
+            if((t1 >0 && t2 > 0) || (t1 < 0 && t2 > 0))
+            {
+                return true;
+            }
+            {
+                return false;
+            }
+        }
+
         protected override V3 getNormal(V3 PixelPosition)
         {
             return (PixelPosition - m_CentreObjet);

@@ -116,11 +116,12 @@ namespace Projet_IMA
 
          static Couleur RayCast(V3 PosCamera, V3 DirRayon, ArrayList objets)
          {
-            foreach(Objet3D o in objets)
+            foreach(Objet3D objet in objets)
             {
-                // recherche d'intersection la plus proche
-                    // si c'est une sphère regarder la fonction pt d'intersection sphere
-                    // si c'est un rectangle regarder la fonction pt d'intersection rectangle
+                if(objet.testIntersection(PosCamera, DirRayon))
+                {
+                    //Afficher pixel de l'objet
+                }
             }
             return Couleur.m_Void;
          }
