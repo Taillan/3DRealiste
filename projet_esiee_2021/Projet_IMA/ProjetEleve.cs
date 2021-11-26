@@ -26,14 +26,17 @@ namespace Projet_IMA
 
             ArrayList scene = new ArrayList();
             Parallelogramme3D RectangleA = new Parallelogramme3D(new V3(0, 0, 0), new V3(200, 100, 250), new V3(0, 150, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
-            Parallelogramme3D RectangleB = new Parallelogramme3D(new V3(200, 200, 250), new V3(500, 0, 0), new V3(0, 0, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
-            Parallelogramme3D RectangleC = new Parallelogramme3D(new V3(700, 0, 250), new V3(200, 100, -250), new V3(0, 150, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
-            Parallelogramme3D RectangleD = new Parallelogramme3D(new V3(50, 0, 25), new V3(800, 100, 0), new V3(100, 0, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
+            Parallelogramme3D RectangleB = new Parallelogramme3D(new V3(200, 200, 250), new V3(650, 0, 0), new V3(0, 0, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
+          //  Parallelogramme3D RectangleC = new Parallelogramme3D(new V3(700, 0, 250), new V3(500, 100, -250), new V3(0, 150, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
+            Parallelogramme3D RectangleD = new Parallelogramme3D(new V3(0, 0, 5), new V3(650, 100, 0), new V3(100, 0, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
+            Parallelogramme3D RectangleE = new Parallelogramme3D(new V3(300, 0, 0), new V3(100, 550, 250), new V3(0, 150, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
 
             scene.Add(RectangleD);
             scene.Add(RectangleA);
             scene.Add(RectangleB);
-            scene.Add(RectangleC);
+          //  scene.Add(RectangleC);
+            scene.Add(RectangleE);
+
             Sphere3D SphereA = new Sphere3D(new V3(300, 200, 300), 150, key_lumiere, fill_lumiere, texture, bump_texture);
             Sphere3D SphereB = new Sphere3D(new V3(400, 200, 350), 50, key_lumiere, fill_lumiere, texture2, bump_texture);
             Sphere3D SphereC = new Sphere3D(new V3(700, 200, 100), 80, key_lumiere, fill_lumiere, texture3, bump_texture);
