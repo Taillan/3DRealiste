@@ -33,7 +33,7 @@ namespace Projet_IMA
             Parallelogramme3D RectangleD = new Parallelogramme3D(new V3(0, 0, 5), new V3(650, 100, 0), new V3(100, 0, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
             Parallelogramme3D RectangleE = new Parallelogramme3D(new V3(300, 0, 0), new V3(100, 550, 250), new V3(0, 150, 300), key_lumiere, fill_lumiere, texture_murs, bump_texture_murs);
 
-            /*scene.Add(RectangleD);
+            scene.Add(RectangleD);
             scene.Add(RectangleA);
             scene.Add(RectangleB);
           //  scene.Add(RectangleC);

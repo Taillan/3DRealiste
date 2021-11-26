@@ -48,6 +48,12 @@ namespace Projet_IMA
             return normal;
         }
 
+        public override bool testIntersection(V3 origineRayon, V3 directionRayon)
+        {
+            // A FAIRE
+            return true;
+        }
+
         public override void Draw()
         {
             for (float u = 0; u < 1; u += m_Pas)
