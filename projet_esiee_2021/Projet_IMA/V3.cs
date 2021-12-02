@@ -92,7 +92,12 @@ namespace Projet_IMA
             return a.x*b.x+a.y*b.y+a.z*b.z;
         }
 
-       
+        public static float operator /(V3 a, V3 b)         
+        {
+            return a.x / b.x + a.y / b.y + a.z / b.z;
+        }
+
+
 
         public static V3 operator *(float a, V3 b)
         {

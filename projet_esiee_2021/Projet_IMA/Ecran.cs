@@ -133,9 +133,9 @@ namespace Projet_IMA
          }
         static public void DrawAll(ArrayList objects)
         {
-            for (int x_ecran = 0; x_ecran <= GetHeight(); x_ecran++)
+            for (int x_ecran = 0; x_ecran <= GetWidth(); x_ecran++)
             {
-                for (int y_ecran = 0; y_ecran <= GetWidth(); y_ecran++)
+                for (int y_ecran = 0; y_ecran <= GetHeight(); y_ecran++)
                 {
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
                     V3 DirRayon = PosPixScene - CameraPosition;
