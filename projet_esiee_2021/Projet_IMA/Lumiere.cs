@@ -11,6 +11,12 @@ namespace Projet_IMA
         public V3 m_NormalizedDirection { get; set; }
         public Couleur m_Couleur { get; set; }
 
+
+        /// <summary>
+        /// Constructeur de la lumiere
+        /// </summary>
+        /// <param name="directionLumiere">Vecteur precisant la direction de la lumiere</param>
+        /// <param name="couleur">Couleur de la lumiere</param>
         public Lumiere(V3 directionLumiere, Couleur couleur)
         {
             this.m_Direction = directionLumiere;

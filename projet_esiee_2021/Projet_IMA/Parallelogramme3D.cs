@@ -11,6 +11,20 @@ namespace Projet_IMA
         private V3 m_Largeur { get; set; }
         private V3 m_Origine { get; set; }
 
+        /// <summary>
+        /// Constructeur d'un Parallelogramme3D
+        /// </summary>
+        /// <param name="centre">Centre de cet objet</param>
+        /// <param name="longueur">Longueur de l'objet</param>
+        /// <param name="largeur">Largeur de l'objet</param>
+        /// <param name="hauteur">Hauteur de l'objet</param>
+        /// <param name="lumiere">Lumiere applique à l'objet</param>
+        /// <param name="texture">Texture applique à l'objet</param>
+        /// <param name="bump_texture"></param>
+        /// <param name="coefficient_diffus"></param>
+        /// <param name="coefficient_speculaire"></param>
+        /// <param name="puissance_speculaire"></param>
+        /// <param name="coefficient_bumpmap"></param>
         public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Lumiere key_lumiere, Lumiere fill_lumiere, Texture texture, Texture bump_texture, float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre, key_lumiere, fill_lumiere, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
         {
             m_Longueur = longueur;
@@ -77,6 +91,10 @@ namespace Projet_IMA
             }
         }
 
+
+        /// <summary>
+        /// Fonction décrivant comment dessiner un Parallelogramme3D
+        /// </summary>
         public override void Draw()
         {
             for (float u = 0; u < 1; u += m_Pas)

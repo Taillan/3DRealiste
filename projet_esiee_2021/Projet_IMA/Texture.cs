@@ -13,29 +13,13 @@ namespace Projet_IMA
         private int Largeur;
         private Couleur [,] C;
 
-        // public functions
-        // u,v compris entre 0 et 1
 
-        public Couleur LireCouleur(float u, float v)
-        {
-            return Interpol(Largeur * u, Hauteur * v);
-        }
+        #region "constructeur"
 
-        public void Bump(float u, float v, out float dhdu, out float dhdv)
-        {
-            float x = u * Hauteur;
-            float y = v * Largeur;
-
-            float vv = Interpol(x, y).GreyLevel();
-            float vx = Interpol(x + 1, y).GreyLevel();
-            float vy = Interpol(x, y + 1).GreyLevel();
-
-            dhdu = vx - vv;
-            dhdv = vy - vv;
-        }
-    
-        // constructor
-
+        /// <summary>
+        /// Constructeur de la texture
+        /// </summary>
+        /// <param name="ff">Nom du fichier texture situé dans le sous-dossier textures</param>
         public Texture(string ff)
         {
             string s = System.IO.Path.GetFullPath("..\\..");
@@ -66,13 +50,52 @@ namespace Projet_IMA
             B.Dispose();
         }
 
-       
-                
-                
+        #endregion
+
+        #region Fonctions publiques
+
+        /// <summary>
+        /// Permet de retourner la couleur de la texture sur les coordonées données
+        /// </summary>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <returns>Couleur du pixel pointé</returns>
+        public Couleur LireCouleur(float u, float v)
+        {
+            return Interpol(Largeur * u, Hauteur * v);
+        }
+
+        /// <summary>
+        /// Permet de calculer les grandeurs dHdu et dHdv de la texture pour déterminer le bump du pixel.
+        /// </summary>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <param name="dhdu">Dérivée de h (la variation de la hauteur sur le bump) en fonction de u</param>
+        /// <param name="dhdv">Dérivée de h (la variation de la hauteur sur le bump) en fonction de v</param>
+        public void Bump(float u, float v, out float dhdu, out float dhdv)
+        {
+            float x = u * Hauteur;
+            float y = v * Largeur;
+
+            float vv = Interpol(x, y).GreyLevel();
+            float vx = Interpol(x + 1, y).GreyLevel();
+            float vy = Interpol(x, y + 1).GreyLevel();
+
+            dhdu = vx - vv;
+            dhdv = vy - vv;
+        }
 
 
-        // private functions
+        #endregion
 
+        #region Fonctions privées
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Lu"></param>
+        /// <param name="Hv"></param>
+        /// <returns></returns>
         private Couleur Interpol(float Lu, float Hv)
         {
             int x = (int)(Lu);  // plus grand entier <=
@@ -101,5 +124,7 @@ namespace Projet_IMA
             + C[x, ypu] * (1 - ccx) * ccy
             + C[xpu, ypu] * ccx * ccy;*/
         }
-    }    
+        #endregion
+    }
+
 }
