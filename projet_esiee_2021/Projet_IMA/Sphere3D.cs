@@ -47,26 +47,26 @@ namespace Projet_IMA
             float r = m_Rayon;
             float D = (Ro * Ro) - (2 * Ro * C) + (C * C) - (r * r);
             float DELTA = (B * B) - (4 * A * D);
-            float t1 = (-B - (float)Math.Sqrt(DELTA)) / (2 * A);
-            float t2 = (-B + (float)Math.Sqrt(DELTA)) / (2 * A);
+            float t1 = (float)(-B - Math.Sqrt(DELTA)) / (2 * A);
+            float t2 = (float)(-B + Math.Sqrt(DELTA)) / (2 * A);
             if (t1 > 0 && t2 > 0)
             {
                 PixelPosition = Ro + t1 * Rd;
                 t = t1;
-                IMA.Invert_Coord_Spherique(PixelPosition, m_Rayon, out u, out v);
+                IMA.Invert_Coord_Spherique(PixelPosition, r, out u, out v);
                 return true;
             } 
             else if (t1 < 0 && t2 > 0)
             {
                 PixelPosition = Ro + t2 * Rd;
                 t = t2;
-                IMA.Invert_Coord_Spherique(PixelPosition, m_Rayon, out u, out v);
+                IMA.Invert_Coord_Spherique(PixelPosition, r, out u, out v);
                 return true;
             }
             else 
             {
                 PixelPosition = new V3(0, 0, 0);
-                IMA.Invert_Coord_Spherique(PixelPosition, m_Rayon, out u, out v);
+                IMA.Invert_Coord_Spherique(PixelPosition, r, out u, out v);
                 t = 0;
                 return false;
             }

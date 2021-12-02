@@ -53,10 +53,10 @@ namespace Projet_IMA
             V3 Ro = origineRayon;
             V3 Rd = directionRayon;
             V3 A = m_Origine;
-            V3 B = A+m_Largeur;
-            V3 C = A+m_Longueur;
-            V3 AB = A - B;
-            V3 AC = A - C;
+            V3 B = m_Largeur;
+            V3 C = m_Longueur;
+            V3 AB = B - A;
+            V3 AC = C - A;
             V3 n = (AB ^ AC);
             n.Normalize();
             V3 n2 = (AC ^ AB);
@@ -66,8 +66,8 @@ namespace Projet_IMA
             V3 AI = I - A;
             PixelPosition = I;
             u = ((AC ^ n) / ((AB ^ AC).Norm())) * AI;
-            v = ((AB^n2)/ ((AB ^ AC).Norm())) *AI;
-            if((u>0 && u<1 ) && (v>0 && v<1 ))
+            v = ((AB ^ n2) / ((AB ^ AC).Norm())) * AI;
+            if((u>=0 && u<=1) && (v>=0 && v<=1))
             {
                 return true;
             }
