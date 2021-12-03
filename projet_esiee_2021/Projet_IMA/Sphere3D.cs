@@ -62,14 +62,12 @@ namespace Projet_IMA
             dMdv = new V3(dxdv, dydv, dzdv);
         }
 
-        public override bool testIntersection(V3 origineRayon, V3 directionRayon, out float t, out V3 PixelPosition, out float u, out float v)
+        public override bool testIntersection(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
         {
             u = 0;
             v = 0;
             t = 0;
             PixelPosition = new V3(0,0,0);
-            V3 Ro = origineRayon;
-            V3 Rd = directionRayon;
             V3 C = m_CentreObjet;
             float A = Rd * Rd;
             float B = 2*Ro * Rd - 2 * Rd * C;
@@ -102,7 +100,9 @@ namespace Projet_IMA
 
         protected override V3 getNormal(V3 PixelPosition)
         {
-            return (PixelPosition - m_CentreObjet);
+            V3 normal = (PixelPosition - m_CentreObjet);
+            normal.Normalize();
+            return normal;
         }
 
 

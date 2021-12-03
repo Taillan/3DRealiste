@@ -10,6 +10,9 @@ namespace Projet_IMA
         private V3 m_Longueur { get; set; }
         private V3 m_Largeur { get; set; }
         private V3 m_Origine { get; set; }
+        private V3 m_Normale { get; set; }
+        private V3 m_K { get; set; }
+        private V3 m_K2 { get; set; }
 
         /// <summary>
         /// Constructeur d'un Parallelogramme3D
@@ -30,6 +33,9 @@ namespace Projet_IMA
             m_Longueur = longueur;
             m_Largeur = largeur;
             m_Origine = centre - (1 / 2) * longueur - (1 / 2) * largeur;
+            m_Normale = getNormal(new V3(0,0,0));
+            m_K = (m_Largeur ^ m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
+            m_K2 = (m_Longueur ^ - m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
         }
 
         protected override V3 getCoords(float u, float v)
@@ -62,22 +68,15 @@ namespace Projet_IMA
             return normal;
         }
 
-        public override bool testIntersection(V3 origineRayon, V3 directionRayon, out float t, out V3 PixelPosition, out float u, out float v)
+        public override bool testIntersection(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
         {
-            V3 Ro = origineRayon;
-            V3 Rd = directionRayon;
             V3 A = m_Origine;
-            V3 AB = m_Longueur;
-            V3 AC = m_Largeur;
-            V3 n = getNormal(new V3(0,0,0));
-            V3 n2 = (AC ^ AB);
-            n2.Normalize();
+            V3 n = m_Normale;
             t = ((A - Ro)*n) / (Rd * n);
-            V3 I = Ro + t * Rd;
-            V3 AI = I - A;
-            PixelPosition = I;
-            u = ((AC ^ n) / ((AB ^ AC).Norm())) * AI;
-            v = ((AB ^ n2) / ((AB ^ AC).Norm())) * AI;
+            PixelPosition = Ro + t * Rd;
+            V3 AI = PixelPosition - A;
+            u = m_K * AI;
+            v = m_K2 * AI;
             if((u>=0 && u<=1) && (v>=0 && v<=1))
             {
                 return true;

@@ -87,9 +87,9 @@ namespace Projet_IMA
         /// <param name="x_ecran">Positionnement en X sur l'écran du point interrogé</param>
         /// <param name="y_ecran">Positionnement en Y sur l'écran du point interrogé</param>
         /// <returns>Couleur diffuse du pixel passé en paramètre</returns>
-        private Couleur getCouleurDiffuse(Lumiere lumiere, V3 normalizedPixelNormal, float x_ecran, float y_ecran)
+        private Couleur getCouleurDiffuse(Lumiere lumiere, V3 pixelNormal, float x_ecran, float y_ecran)
         {
-            float cosAlpha = normalizedPixelNormal * lumiere.m_NormalizedDirection;
+            float cosAlpha = pixelNormal * lumiere.m_NormalizedDirection;
             if (cosAlpha > 0)
             {
                 return getCouleurAmbiante(lumiere, x_ecran,y_ecran)  * (cosAlpha) * m_CoefficientDiffus;
@@ -141,7 +141,6 @@ namespace Projet_IMA
             Couleur finalColor = Couleur.m_Void;
             foreach (Lumiere lumiere in lumieres) {
                 V3 N = getBumpedNormal(PixelPosition, u, v);
-                //N.Normalize();
                 Couleur Ambiant = getLowCouleurAmbiante(lumiere, u, v);
                 Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
                 if (Diffus != Couleur.m_Void)
@@ -169,7 +168,6 @@ namespace Projet_IMA
         private V3 getBumpedNormal(V3 PixelPosition, float u, float v)
         {
             V3 N = getNormal(PixelPosition);
-            N.Normalize();
 
             float K = m_CoefficientBumpMap;
             getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
