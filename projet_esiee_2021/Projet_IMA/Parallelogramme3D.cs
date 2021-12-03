@@ -67,14 +67,8 @@ namespace Projet_IMA
             V3 Ro = origineRayon;
             V3 Rd = directionRayon;
             V3 A = m_Origine;
-            V3 B = m_Largeur;
-            V3 C = m_Longueur;
             V3 AB = m_Longueur;
             V3 AC = m_Largeur;
-            //V3 AB = B - A;
-            //V3 AC = C - A;
-            //V3 n = (AB ^ AC);
-            //n.Normalize();
             V3 n = getNormal(new V3(0,0,0));
             V3 n2 = (AC ^ AB);
             n2.Normalize();

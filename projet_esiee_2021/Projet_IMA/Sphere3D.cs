@@ -36,6 +36,7 @@ namespace Projet_IMA
             float x3D = m_Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.m_CentreObjet.x;
             float y3D = m_Rayon * IMA.Cosf(v) * IMA.Sinf(u) + this.m_CentreObjet.y;
             float z3D = m_Rayon * IMA.Sinf(v) + this.m_CentreObjet.z;
+            
             return new V3(x3D, y3D, z3D);
         }
 
@@ -63,6 +64,10 @@ namespace Projet_IMA
 
         public override bool testIntersection(V3 origineRayon, V3 directionRayon, out float t, out V3 PixelPosition, out float u, out float v)
         {
+            u = 0;
+            v = 0;
+            t = 0;
+            PixelPosition = new V3(0,0,0);
             V3 Ro = origineRayon;
             V3 Rd = directionRayon;
             V3 C = m_CentreObjet;
@@ -71,27 +76,26 @@ namespace Projet_IMA
             float r = m_Rayon;
             float D = (Ro * Ro) - (2 * Ro * C) + (C * C) - (r * r);
             float DELTA = (B * B) - (4 * A * D);
-            float t1 = (float)(-B - Math.Sqrt(DELTA)) / (2 * A);
-            float t2 = (float)(-B + Math.Sqrt(DELTA)) / (2 * A);
-            if (t1 > 0 && t2 > 0)
+            if (DELTA > 0)
             {
-                PixelPosition = Ro + t1 * Rd;
-                t = t1;
-                IMA.Invert_Coord_Spherique(PixelPosition, r, out u, out v);
-                return true;
-            } 
-            else if (t1 < 0 && t2 > 0)
-            {
-                PixelPosition = Ro + t2 * Rd;
-                t = t2;
-                IMA.Invert_Coord_Spherique(PixelPosition, r, out u, out v);
+                float t1 = (-B - IMA.Sqrtf(DELTA)) / (2 * A);
+                float t2 = (-B + IMA.Sqrtf(DELTA)) / (2 * A);
+                if (t1 > 0 && t2 > 0)
+                {
+                    PixelPosition = Ro + (t1 * Rd);
+                    t = t1;
+                }
+                else if (t1 < 0 && t2 > 0)
+                {
+                    PixelPosition = Ro + (t2 * Rd);
+                    t = t2;
+                }
+                v = -IMA.Asinf((PixelPosition.z - this.m_CentreObjet.z) / m_Rayon);
+                u = -IMA.Acosf((PixelPosition.x - this.m_CentreObjet.x) / (m_Rayon * IMA.Cosf(v)));
                 return true;
             }
-            else 
+            else
             {
-                PixelPosition = new V3(0, 0, 0);
-                IMA.Invert_Coord_Spherique(PixelPosition, r, out u, out v);
-                t = 0;
                 return false;
             }
         }

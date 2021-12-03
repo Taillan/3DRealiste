@@ -14,6 +14,8 @@ namespace Projet_IMA
 
         static public float Cosf(float theta) { return (float) Math.Cos(theta); }
         static public float Sinf(float theta) { return (float) Math.Sin(theta); }
+        static public float Acosf(float theta) { return (float)Math.Acos(theta); }
+        static public float Asinf(float theta) { return (float)Math.Asin(theta); }
         static public float Sqrtf(float v)    { return (float) Math.Sqrt(v); }
 
         static public Random Ran;

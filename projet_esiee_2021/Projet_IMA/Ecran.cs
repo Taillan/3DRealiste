@@ -145,6 +145,4 @@ namespace Projet_IMA
             }
         }
     }
-
-   
 }
