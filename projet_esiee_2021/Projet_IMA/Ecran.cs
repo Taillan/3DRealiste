@@ -119,6 +119,7 @@ namespace Projet_IMA
          static Couleur RayCast(V3 PosCamera, V3 DirRayon, ArrayList objets)
          {
             float maxT = float.MaxValue;
+            bool inShadow = false;
             Couleur finalColor = Couleur.m_Void;
             foreach(Objet3D objet in objets)
             {
@@ -129,6 +130,7 @@ namespace Projet_IMA
                         maxT = t;
                         V3 pp = PixelPosition;
                         finalColor = objet.getCouleur(PixelPosition, u, v);
+                        float maxT2=float.MaxValue;
                         foreach (Objet3D autres_objets in objets)
                         {
                             if (autres_objets != objet)
@@ -140,9 +142,16 @@ namespace Projet_IMA
                                         if (CameraPosition - PixelPosition2 < CameraPosition - PixelPosition)
                                         {
                                             finalColor *= 0.5f;
+                                            inShadow = true;
+                                            break;
                                         }
                                     }
                                 }
+                            }
+                            if (inShadow)
+                            {   
+                                inShadow = false;
+                                break;
                             }
                         }
                     }
