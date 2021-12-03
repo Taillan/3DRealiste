@@ -126,6 +126,16 @@ namespace Projet_IMA
             return t;
         }
 
+        public static bool operator <(V3 a, V3 b)
+        {
+            return a.Norm() < b.Norm();
+        }
+
+        public static bool operator >(V3 a, V3 b)
+        {
+            return a.Norm() > b.Norm();
+        }
+
         public static float prod_scal(ref V3 u, ref V3 v)
         {
             return u.x * v.x + u.y * v.y + u.z * v.z;

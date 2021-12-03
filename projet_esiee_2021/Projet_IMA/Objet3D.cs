@@ -8,8 +8,6 @@ namespace Projet_IMA
     abstract class Objet3D
     {
         protected V3 m_CentreObjet { get; set; } 
-        private Lumiere m_KeyLumiere { get; set; }
-        private Lumiere m_FillLumiere { get; set; }
         private Texture m_Texture { get; set; }
         private Texture m_BumpTexture { get; set; }
         private float m_CoefficientDiffus { get; set; }
@@ -30,11 +28,9 @@ namespace Projet_IMA
         /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
         /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
         /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
-        public Objet3D(V3 centre, Lumiere key_lumiere, Lumiere fill_lumiere, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap, float pas)
+        public Objet3D(V3 centre, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap, float pas)
         {
             m_CentreObjet = centre;
-            m_KeyLumiere = key_lumiere;
-            m_FillLumiere = fill_lumiere;
             m_CoefficientDiffus = coefficient_diffus;
             m_CoefficientSpeculaire = coefficient_speculaire;
             m_PuissanceSpeculaire = puissance_speculaire;
@@ -137,9 +133,8 @@ namespace Projet_IMA
         /// <returns>Couleur totale du pixel passé en paramètre</returns>
         public Couleur getCouleur(V3 PixelPosition, float u, float v)
         {
-            Lumiere[] lumieres = { m_FillLumiere, m_KeyLumiere };
             Couleur finalColor = Couleur.m_Void;
-            foreach (Lumiere lumiere in lumieres) {
+            foreach (Lumiere lumiere in BitmapEcran.Lumieres) {
                 V3 N = getBumpedNormal(PixelPosition, u, v);
                 Couleur Ambiant = getLowCouleurAmbiante(lumiere, u, v);
                 Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);

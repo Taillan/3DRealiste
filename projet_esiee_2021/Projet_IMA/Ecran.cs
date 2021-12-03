@@ -24,6 +24,7 @@ namespace Projet_IMA
         static private BitmapData data;
         static private Couleur background;
         static private V3 CameraPosition;
+        static public ArrayList Lumieres { get; set; }
 
         static public Bitmap Init(int largeur, int hauteur)
         {
@@ -31,6 +32,7 @@ namespace Projet_IMA
             Hauteur = hauteur;
             B = new Bitmap(largeur, hauteur);
             CameraPosition = new V3(GetWidth() / 2, -1.5f * GetWidth(), GetHeight() / 2);
+            Lumieres=new ArrayList();
             return B;
         }
 
@@ -125,7 +127,24 @@ namespace Projet_IMA
                     if (t>0 && t < maxT)
                     {
                         maxT = t;
+                        V3 pp = PixelPosition;
                         finalColor = objet.getCouleur(PixelPosition, u, v);
+                        foreach (Objet3D autres_objets in objets)
+                        {
+                            if (autres_objets != objet)
+                            {
+                                foreach (Lumiere lumiere in Lumieres)
+                                {
+                                    if (autres_objets.testIntersection(pp, lumiere.m_Direction, out float t2, out V3 PixelPosition2, out float u2, out float v2))
+                                    {
+                                        if (CameraPosition - PixelPosition2 < CameraPosition - PixelPosition)
+                                        {
+                                            finalColor *= 0.5f;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
