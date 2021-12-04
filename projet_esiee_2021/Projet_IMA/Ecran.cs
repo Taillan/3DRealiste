@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Collections;
 
 
 namespace Projet_IMA
@@ -18,25 +14,27 @@ namespace Projet_IMA
 
         static private Bitmap B;
         static private ModeAff Mode;
-        static private int Largeur;
-        static private int Hauteur;
         static private int stride;
         static private BitmapData data;
         static private Couleur background;
-        static private V3 CameraPosition;
-        static public ArrayList Lumieres { get; set; }
+        static public int s_LargeurEcran { get; set; }
+        static public int s_HauteurEcran { get; set; }
+        static public V3 s_CameraPosition { get; set; }
+        static public List<Lumiere> s_Lumieres { get; set; }
+        static public List<Objet3D> s_Objets { get; set; }    
 
-        static public Bitmap Init(int largeur, int hauteur)
+        static public Bitmap Init(int LargeurEcran, int HauteurEcran)
         {
-            Largeur = largeur;
-            Hauteur = hauteur;
-            B = new Bitmap(largeur, hauteur);
-            CameraPosition = new V3(GetWidth() / 2, -1.5f * GetWidth(), GetHeight() / 2);
-            Lumieres=new ArrayList();
+            s_LargeurEcran = LargeurEcran;
+            s_HauteurEcran = HauteurEcran;
+            B = new Bitmap(LargeurEcran, HauteurEcran);
+            s_CameraPosition = new V3(LargeurEcran / 2, -1.5f * LargeurEcran, HauteurEcran / 2);
             return B;
         }
 
-        static void DrawFastPixel(int x, int y, Couleur c)
+        #region Méthodes privées
+
+        static private void DrawFastPixel(int x, int y, Couleur c)
         {
             unsafe
             {
@@ -51,7 +49,7 @@ namespace Projet_IMA
             }
         }
 
-        static void DrawSlowPixel(int x, int y, Couleur c)
+        static private void DrawSlowPixel(int x, int y, Couleur c)
         {
             Color cc = c.Convertion();
             B.SetPixel(x, y, cc);
@@ -65,7 +63,27 @@ namespace Projet_IMA
             }
         }
 
-        /// /////////////////   public methods ///////////////////////
+        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets)
+        {
+            float DistanceIntersectionMax = float.MaxValue;
+            Couleur finalColor = background;
+            foreach (Objet3D objet in objets)
+            {
+                if (objet.IntersectionRayon(PositionCamera, DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
+                {
+                    if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
+                    {
+                        DistanceIntersectionMax = DistanceIntersection;
+                        finalColor = objet.getCouleur(PixelPosition, u, v);
+                    }
+                }
+            }
+            return finalColor;
+        }
+
+        #endregion
+
+        #region Méthodes publiques
 
         static public void RefreshScreen()
         {
@@ -82,8 +100,8 @@ namespace Projet_IMA
                 Mode = ModeAff.FULL_SPEED;
                 data = B.LockBits(new Rectangle(0, 0, B.Width, B.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
                 stride = data.Stride;
-                for (int x = 0; x < Largeur; x++)
-                    for (int y = 0; y < Hauteur; y++)
+                for (int x = 0; x < s_LargeurEcran; x++)
+                    for (int y = 0; y < s_HauteurEcran; y++)
                         DrawFastPixel(x, y, c);
             }
         }
@@ -92,9 +110,9 @@ namespace Projet_IMA
         public static void DrawPixel(int x, int y, Couleur c)
         {
             int x_ecran = x;
-            int y_ecran = Hauteur - y;
+            int y_ecran = s_HauteurEcran - y;
 
-            if ((x_ecran >= 0) && (x_ecran < Largeur) && (y_ecran >= 0) && (y_ecran < Hauteur))
+            if ((x_ecran >= 0) && (x_ecran < s_LargeurEcran) && (y_ecran >= 0) && (y_ecran < s_HauteurEcran))
                 if (Mode == ModeAff.SLOW_MODE) DrawSlowPixel(x_ecran, y_ecran, c);
                 else DrawFastPixel(x_ecran, y_ecran, c);
         }
@@ -107,70 +125,24 @@ namespace Projet_IMA
             Program.MyForm.PictureBoxInvalidate();
         }
 
-        static public int GetWidth() { return Largeur; }
-        static public int GetHeight() { return Hauteur; }
-        static public V3 GetCameraPosition() { return CameraPosition; }
-
         static public void setBackground(Couleur c)
         {
             background = c;
         }
 
-         static Couleur RayCast(V3 PosCamera, V3 DirRayon, ArrayList objets)
-         {
-            float maxT = float.MaxValue;
-            bool inShadow = false;
-            Couleur finalColor = Couleur.m_Void;
-            foreach(Objet3D objet in objets)
-            {
-                if (objet.testIntersection(PosCamera, DirRayon, out float t, out V3 PixelPosition, out float u, out float v))
-                {
-                    if (t>0 && t < maxT)
-                    {
-                        maxT = t;
-                        V3 pp = PixelPosition;
-                        finalColor = objet.getCouleur(PixelPosition, u, v);
-                        float maxT2=float.MaxValue;
-                        foreach (Objet3D autres_objets in objets)
-                        {
-                            if (autres_objets != objet)
-                            {
-                                foreach (Lumiere lumiere in Lumieres)
-                                {
-                                    if (autres_objets.testIntersection(pp, lumiere.m_Direction, out float t2, out V3 PixelPosition2, out float u2, out float v2))
-                                    {
-                                        if (CameraPosition - PixelPosition2 < CameraPosition - PixelPosition)
-                                        {
-                                            finalColor *= 0.5f;
-                                            inShadow = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            if (inShadow)
-                            {   
-                                inShadow = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            return finalColor;
-         }
-        static public void DrawAll(ArrayList objects)
+        static public void DrawAll()
         {
-            for (int x_ecran = 0; x_ecran <= GetWidth(); x_ecran++)
+            for (int x_ecran = 0; x_ecran <= s_LargeurEcran; x_ecran++)
             {
-                for (int y_ecran = 0; y_ecran <= GetHeight(); y_ecran++)
+                for (int y_ecran = 0; y_ecran <= s_HauteurEcran; y_ecran++)
                 {
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
-                    V3 DirRayon = PosPixScene - CameraPosition;
-                    Couleur C = RayCast(CameraPosition, DirRayon, objects);
+                    V3 DirRayon = PosPixScene - s_CameraPosition;
+                    Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets);
                     DrawPixel(x_ecran, y_ecran, C);
                 }
             }
         }
+        #endregion
     }
 }

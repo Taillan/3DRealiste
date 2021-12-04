@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Projet_IMA
+﻿namespace Projet_IMA
 {
     class Parallelogramme3D : Objet3D
     {
@@ -68,7 +63,7 @@ namespace Projet_IMA
             return normal;
         }
 
-        public override bool testIntersection(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
+        public override bool IntersectionRayon(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
         {
             V3 A = m_Origine;
             V3 n = m_Normale;

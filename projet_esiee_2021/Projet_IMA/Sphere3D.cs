@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Projet_IMA
+﻿namespace Projet_IMA
 {
     class Sphere3D : Objet3D
     {
@@ -62,7 +57,17 @@ namespace Projet_IMA
             dMdv = new V3(dxdv, dydv, dzdv);
         }
 
-        public override bool testIntersection(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
+        /// <summary>
+        /// Fonction permettant de tester 
+        /// </summary>
+        /// <param name="Ro"></param>
+        /// <param name="Rd"></param>
+        /// <param name="t"></param>
+        /// <param name="PixelPosition"></param>
+        /// <param name="u"></param>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public override bool IntersectionRayon(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
         {
             u = 0;
             v = 0;
@@ -107,19 +112,18 @@ namespace Projet_IMA
 
 
         /// <summary>
-        /// Fonction décrivant comment dessiner d'une Sphere3D
+        /// Fonction permettant de dessiner une Sphere3D dans son entièreté
         /// </summary>
-        /// <param name="pas">Ecart entre chaque point tracé à l'écran</param>
         public override void Draw()
         {
             for (float u = 0; u < 2 * IMA.PI; u += m_Pas)
             {
                 for (float v = -IMA.PI / 2; v < IMA.PI / 2; v += m_Pas)
                 {
-                    // calcul des coordoonées dans la scène 3D
+                    // Calcul des coordoonées dans la scène 3D
                     V3 PixelPosition = getCoords(u,v);
 
-                    // projection orthographique => repère écran
+                    // Projection orthographique => repère écran
                     int x_ecran = (int)(PixelPosition.x);
                     int y_ecran = (int)(PixelPosition.z);
 

@@ -1,24 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Drawing.Imaging;
 
 namespace Projet_IMA
 {
-    public partial class Form1 : Form
+    public partial class Fenetre : Form
     {
-        public Form1()
+        public Fenetre()
         {
             InitializeComponent();
             pictureBox1.Image = BitmapEcran.Init(pictureBox1.Width, pictureBox1.Height);
         }
 
-        public bool Checked()               { return checkBox1.Checked;   }
+        public bool Checked()               { return showCheckBox.Checked;   }
         public void PictureBoxInvalidate()  { pictureBox1.Invalidate(); }
         public void PictureBoxRefresh()     { pictureBox1.Refresh();    }
 
@@ -40,6 +33,11 @@ namespace Projet_IMA
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }

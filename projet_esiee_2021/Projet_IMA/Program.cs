@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Projet_IMA
 {
     static class Program
     {
-        static public Form1 MyForm;
+        static public Fenetre MyForm;
 
         /// <summary>
         /// Point d'entrée principal de l'application.
@@ -17,7 +15,7 @@ namespace Projet_IMA
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            MyForm = new Form1();
+            MyForm = new Fenetre();
             Application.Run(MyForm);
         }
     }
