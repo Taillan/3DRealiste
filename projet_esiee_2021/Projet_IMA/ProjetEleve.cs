@@ -2,6 +2,10 @@
 
 namespace Projet_IMA
 {
+    /// <summary>
+    /// Classe statique centrale permettant d'ajouter des objets à notre scène qui vont être tracés
+    /// par la classe Ecran.
+    /// </summary>
     static class ProjetEleve
     {
         public static void Go()

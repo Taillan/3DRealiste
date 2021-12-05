@@ -1,8 +1,16 @@
 ﻿namespace Projet_IMA
 {
+    /// <summary>
+    /// Définit une sphère qu'on peut placer dans l'espace, héritant directement de la classe Objet3D.
+    /// </summary>
     class Sphere3D : Objet3D
     {
+        #region Attributs
+        /// <summary>
+        /// Rayon de la Sphere3D
+        /// </summary>
         private float m_Rayon { get; set; }
+        #endregion
 
         #region Constructeurs
         /// <summary>
@@ -24,8 +32,14 @@
 
         #endregion
 
-        #region Méthodes
+        #region Méthodes héritées
 
+        /// <summary>
+        /// Calcule les coordonnées du Pixel 3D de l'objet grâce aux positions u et v sur la texture 2D.
+        /// </summary>
+        /// <param name="u">Coordonnées en abscisses de la texture l'objet</param>
+        /// <param name="v">Coordonnées en ordonnées de la texture l'objet</param>
+        /// <returns>Coordonnées du Pixel 3D associé aux positions u et v de la texture 2D</returns>
         protected override V3 getCoords(float u, float v)
         {
             float x3D = m_Rayon * IMA.Cosf(v) * IMA.Cosf(u) + this.m_CentreObjet.x;
@@ -36,10 +50,11 @@
         }
 
         /// <summary>
-        /// 
+        /// Calcule les dérivées partielles de la position du Pixel 3D (M) en fonction des positions u et v de la texture 2D.
+        /// Nécessaire pour pouvoir déterminer le bump mapping.
         /// </summary>
-        /// <param name="u">Position du vecteur u qui permet de tracer la sphère</param>
-        /// <param name="v">Position du vecteur v qui permet de tracer la sphère</param>
+        /// <param name="u">Coordonnées en abscisses de la texture l'objet</param>
+        /// <param name="v">Coordonnées en ordonnées de la texture l'objet</param>
         /// <param name="dMdu">Dérivée de M (position du point actuel) en fonction de u</param>
         /// <param name="dMdv">Dérivée de M (position du point actuel) en fonction d v</param>
         protected override void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
@@ -58,26 +73,26 @@
         }
 
         /// <summary>
-        /// Fonction permettant de tester 
+        /// Permet de savoir si le rayon passé en paramètre rentre en intersection avec l'Objet3D.
+        /// Si oui, il retourne le Pixel3D où se trouve l'intersection 
+        /// ainsi que les coordonnées u & v du pixel 2d de la texture associée à ce Pixel 3D.
         /// </summary>
-        /// <param name="Ro"></param>
-        /// <param name="Rd"></param>
-        /// <param name="t"></param>
-        /// <param name="PixelPosition"></param>
-        /// <param name="u"></param>
-        /// <param name="v"></param>
-        /// <returns></returns>
-        public override bool IntersectionRayon(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
+        /// <param name="OrigineRayon">Origine du rayon dont on veut tester l'intersection</param>
+        /// <param name="DirectionRayon">Direction du rayon dont on veut tester l'intersection</param>
+        /// <param name="DistanceIntersection">Longueur du rayon de l'origine jusqu'à l'intersection trouvée</param>
+        /// <param name="PixelPosition">Position du pixel où a eu lieu l'intersection</param>
+        /// <param name="u">Coordonnées en abscisses de la texture l'objet associées au point d'intersection</param>
+        /// <param name="v">Coordonnées en ordonnées de la texture l'objet associées au point d'intersection</param>
+        /// <returns>Vrai s'il y a une intersection, faux sinon.</returns>
+        public override bool IntersectionRayon(V3 OrigineRayon, V3 DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v)
         {
             u = 0;
             v = 0;
-            t = 0;
+            DistanceIntersection = 0;
             PixelPosition = new V3(0,0,0);
-            V3 C = m_CentreObjet;
-            float A = Rd * Rd;
-            float B = 2*Ro * Rd - 2 * Rd * C;
-            float r = m_Rayon;
-            float D = (Ro * Ro) - (2 * Ro * C) + (C * C) - (r * r);
+            float A = DirectionRayon * DirectionRayon;
+            float B = 2 * OrigineRayon * DirectionRayon - 2 * DirectionRayon * m_CentreObjet;
+            float D = (OrigineRayon * OrigineRayon) - (2 * OrigineRayon * m_CentreObjet) + (m_CentreObjet * m_CentreObjet) - (m_Rayon * m_Rayon);
             float DELTA = (B * B) - (4 * A * D);
             if (DELTA > 0)
             {
@@ -85,31 +100,32 @@
                 float t2 = (-B + IMA.Sqrtf(DELTA)) / (2 * A);
                 if (t1 > 0 && t2 > 0)
                 {
-                    PixelPosition = Ro + (t1 * Rd);
-                    t = t1;
+                    PixelPosition = OrigineRayon + (t1 * DirectionRayon);
+                    DistanceIntersection = t1;
                 }
                 else if (t1 < 0 && t2 > 0)
                 {
-                    PixelPosition = Ro + (t2 * Rd);
-                    t = t2;
+                    PixelPosition = OrigineRayon + (t2 * DirectionRayon);
+                    DistanceIntersection = t2;
                 }
                 v = -IMA.Asinf((PixelPosition.z - this.m_CentreObjet.z) / m_Rayon);
                 u = -IMA.Acosf((PixelPosition.x - this.m_CentreObjet.x) / (m_Rayon * IMA.Cosf(v)));
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
+        /// <summary>
+        /// Calcule la normale du pixel passé en paramètre
+        /// </summary>
+        /// <param name="PixelPosition">Position du pixel dont on veut obtenir la normale</param>
+        /// <returns>Normale du pixel passé en paramètre</returns>
         protected override V3 getNormal(V3 PixelPosition)
         {
             V3 normal = (PixelPosition - m_CentreObjet);
             normal.Normalize();
             return normal;
         }
-
 
         /// <summary>
         /// Fonction permettant de dessiner une Sphere3D dans son entièreté

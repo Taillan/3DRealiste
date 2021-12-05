@@ -1,37 +1,35 @@
 ﻿namespace Projet_IMA
 {
+    /// <summary>
+    /// Permet de définir un vecteur 3D avec une composante x pour la largeur, y pour la profondeur et z pour la hauteur
+    /// </summary>
     struct V3
     {
-        public float x;		// coordonnées du vecteur
+        #region Attributs
+
+        /// <summary>
+        /// Composante x du vecteur (abscisse/largeur)
+        /// </summary>
+        public float x;
+        /// <summary>
+        /// Composante y du vecteur (profondeur)
+        /// </summary>
         public float y;
+        /// <summary>
+        /// Composante z du vecteur (ordonnée/hauteur)
+        /// </summary>
         public float z;
 
-        public float Norm()		// retourne la norme du vecteur
-        {
-            return (float) IMA.Sqrtf(x * x + y * y + z * z);
-        }
+        #endregion
 
-        public float Norme2()
-        {
-            return x * x + y * y + z * z;
-        }
+        #region Constructeurs
 
-        public void Normalize()	// normalise le vecteur
-        {
-            float n = Norm();
-            if (n == 0) return;
-            x /= n;
-            y /= n;
-            z /= n;
-        }
-
-        public V3(V3 t)
-        {
-            x = t.x;
-            y = t.y;
-            z = t.z;
-        }
-
+        /// <summary>
+        /// Constructeur naturel en fonction de composantes float
+        /// </summary>
+        /// <param name="_x">Composante x du vecteur en float</param>
+        /// <param name="_y">Composante y du vecteur en float</param>
+        /// <param name="_z">Composante z du vecteur en float</param>
         public V3(float _x, float _y, float _z)
         {
             x = _x;
@@ -39,6 +37,12 @@
             z = _z;
         }
 
+        /// <summary>
+        /// Constructeur naturel en fonction de composantes int
+        /// </summary>
+        /// <param name="_x">Composante x du vecteur en int</param>
+        /// <param name="_y">Composante y du vecteur en int</param>
+        /// <param name="_z">Composante z du vecteur en int</param>
         V3(int _x, int _y, int _z)
         {
             x = (float)_x;
@@ -46,6 +50,52 @@
             z = (float)_z;
         }
 
+        /// <summary>
+        /// Constructeur par copie
+        /// </summary>
+        /// <param name="t">Vecteur dont on veut copier les attributs pour la construction du nôtre.</param>
+        public V3(V3 t)
+        {
+            x = t.x;
+            y = t.y;
+            z = t.z;
+        }
+
+        #endregion
+
+        #region Méthodes publiques
+        /// <summary>
+        /// Méthode retournant la norme du vecteur.
+        /// </summary>
+        /// <returns>Norme du vecteur</returns>
+        public float Norm()
+        {
+            return (float) IMA.Sqrtf(x * x + y * y + z * z);
+        }
+
+        /// <summary>
+        /// Méthode retournant la norme du vecteur au carré.
+        /// </summary>
+        /// <returns>Norme du vecteur au carré.</returns>
+        public float Norme2()
+        {
+            return x * x + y * y + z * z;
+        }
+
+        /// <summary>
+        /// Méthode permettant de normaliser le vecteur
+        /// </summary>
+        public void Normalize()
+        {
+            float n = Norm();
+            if (n == 0) return;
+            x /= n;
+            y /= n;
+            z /= n;
+        }
+        #endregion
+
+        #region Surcharge des opérateurs
         public static V3 operator +(V3 a, V3 b)
         {
             V3 t;
@@ -73,7 +123,7 @@
             return t;
         }
 
-        public static V3 operator ^ (V3 a, V3 b)  // produit vectoriel
+        public static V3 operator ^ (V3 a, V3 b)// produit vectoriel
         {
             V3 t;
             t.x = a.y * b.z - a.z * b.y;
@@ -82,7 +132,7 @@
             return t;
         }
 
-        public static float operator * (V3 a,V3 b)         // produit scalaire
+        public static float operator * (V3 a,V3 b)// produit scalaire
         {
             return a.x*b.x+a.y*b.y+a.z*b.z;
         }
@@ -135,5 +185,6 @@
         {
             return u.x * v.x + u.y * v.y + u.z * v.z;
         }
+        #endregion
     }
 }

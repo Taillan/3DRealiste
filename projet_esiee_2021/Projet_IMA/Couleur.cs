@@ -2,18 +2,37 @@
 
 namespace Projet_IMA
 {
+    /// <summary>
+    /// Permet de définir une couleur à trois composantes rouge, verte et bleue.
+    /// </summary>
     public struct Couleur
     {
-        public float m_R, m_V, m_B;	// composantes R,V,B comprises entre 0 et 1
+        #region Attributs
 
-        public static Couleur m_Red   = new Couleur(1, 0, 0);
-        public static Couleur m_Green = new Couleur(0, 1, 0);
-        public static Couleur m_Blue  = new Couleur(0, 0, 1);
-        public static Couleur m_Void = new Couleur(0, 0, 0);
+        /// <summary>
+        /// Composantes Rouge, Verte et Bleue (RVB) de la couleur comprises entre 0 et 1
+        /// </summary>
+        public float m_R, m_V, m_B;
+        /// <summary>
+        /// Attribut statique qui définit une couleur rouge
+        /// </summary>
+        public static Couleur s_Red   = new Couleur(1, 0, 0);
+        /// <summary>
+        /// Attribut statique qui définit une couleur verte
+        /// </summary>
+        public static Couleur s_Green = new Couleur(0, 1, 0);
+        /// <summary>
+        /// Attribut statique qui définit une couleur bleue
+        /// </summary>
+        public static Couleur s_Blue  = new Couleur(0, 0, 1);
+        /// <summary>
+        /// Attribut statique qui définit une couleur noire
+        /// </summary>
+        public static Couleur s_Void = new Couleur(0, 0, 0);
 
-        // constructeurs
+        #endregion
 
-        #region "Constructeurs"
+        #region Constructeurs
 
         /// <summary>
         /// Constructeur de la couleur à partir de 3 valeur RGB compris entre 0 et 1
@@ -28,11 +47,10 @@ namespace Projet_IMA
             this.m_B = B;
         }
 
-
         /// <summary>
-        /// Constructeur de la couleur à partir d'une couleur
+        /// Constructeur par copie de la couleur à partir d'une autre couleur
         /// </summary>
-        /// <param name="c"></param>
+        /// <param name="c">Couleur qu'on veut copier pour construire notre nouvelle couleur</param>
         public Couleur(Couleur c)
         {
             this.m_R = c.m_R;
@@ -42,21 +60,21 @@ namespace Projet_IMA
 
         #endregion
 
-        #region "methodes"
-
+        #region Méthodes publiques
 
         /// <summary>
-        /// Renvoi le niveux de gris
+        /// Renvoie les niveaux de gris associés à la couleur
+        /// Nécessaire pour le Bump Map.
         /// </summary>
-        /// <returns>Valeur dun niveau de gris de la coueleur</returns>
-        public float GreyLevel()						// utile pour le Bump Map
+        /// <returns>Valeur du niveau de gris de la coueleur</returns>
+        public float GreyLevel()
         {
             return (m_R + m_B + m_V) / 3.0f;
         }
 
 
         /// <summary>
-        /// Set la couleur depuis des valeurs en 255
+        /// Permet de set la couleur depuis les valeurs en octet (255)
         /// </summary>
         /// <param name="RR">Intensite du rouge</param>
         /// <param name="VV">Intensite du vert</param>
@@ -69,10 +87,11 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// Transpose  ???????
+        /// Permet de transposer une Color C# de la classe System.Drawing.Color 
+        /// en une "Couleur" (notre propre classe)
         /// </summary>
-        /// <param name="cc"></param>
-        /// <param name="c"></param>
+        /// <param name="cc">Référence de la couleur dont on veut modifier les composantes R,V,B</param>
+        /// <param name="c">Color qu'on veut transposer.</param>
         static public void Transpose(ref Couleur cc, System.Drawing.Color c)
         {
             cc.m_R = (float)(c.R / 255.0);
@@ -82,7 +101,8 @@ namespace Projet_IMA
 
 
         /// <summary>
-        /// Verifie que les valeurs des couleurs soit bien entre 0 et 1
+        /// Vérifie que les composantes R,V,B de la couleur en float sont bien inférieures à 1.0f,
+        /// Mise à 1.0f sinon.
         /// </summary>
         public void check()
         {
@@ -92,11 +112,11 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// Renvoi la valeur de la couleur au format (255,255,255)
+        /// Renvoie la valeur de la couleur au format octet(255,255,255)
         /// </summary>
-        /// <param name="RR"></param>
-        /// <param name="VV"></param>
-        /// <param name="BB"></param>
+        /// <param name="RR">Composante rouge de la couleur au format octet</param>
+        /// <param name="VV">Composante verte de la couleur au format octet</param>
+        /// <param name="BB">Composante bleue de la couleur au format octet</param>
         public void To255(out byte RR, out byte VV, out byte BB)
         {
             RR = (byte)(m_R * 255);
@@ -106,9 +126,9 @@ namespace Projet_IMA
 
 
         /// <summary>
-        /// 
+        /// Permet de convertir une Couleur en une Color C# de la classe System.Drawing.Color
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Color déterminée à partir d'une Couleur</returns>
         public Color Convertion()
         {
             check();
@@ -116,11 +136,10 @@ namespace Projet_IMA
             To255(out RR, out VV, out BB);
             return Color.FromArgb(RR, VV, BB);
         }
+
         #endregion
 
-
-        #region "Surcharge des opérateur"
-
+        #region Surcharge des opérateurs
         public static Couleur operator +(Couleur a, Couleur b)
         {
             return new Couleur(a.m_R + b.m_R, a.m_V + b.m_V, a.m_B + b.m_B);

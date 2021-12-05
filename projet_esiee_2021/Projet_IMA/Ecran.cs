@@ -9,20 +9,56 @@ namespace Projet_IMA
 
     class BitmapEcran
     {
+        /// <summary>
+        /// Force l'affiche tous les xx pix
+        /// </summary>
         const int refresh_every = 1000; // force l'affiche tous les xx pix
-        static int nb_pix = 0;                 // comptage des pixels
-
+        /// <summary>
+        /// Comptage des pixels
+        /// </summary>
+        static int nb_pix = 0;
+        /// <summary>
+        /// Image bitmap générée par l'affichage de tous les objets
+        /// </summary>
         static private Bitmap B;
+        /// <summary>
+        /// Mode d'affichage (SLOW_MODE pour voir la génération, FULL_SPEED pour que l'image s'affiche directement)
+        /// </summary>
         static private ModeAff Mode;
         static private int stride;
         static private BitmapData data;
+        /// <summary>
+        /// Couleur du fond de la scène
+        /// </summary>
         static private Couleur background;
+        /// <summary>
+        /// Largeur de la fenêtre
+        /// </summary>
         static public int s_LargeurEcran { get; set; }
+        /// <summary>
+        /// Hauteur de la fenêtre
+        /// </summary>
         static public int s_HauteurEcran { get; set; }
+        /// <summary>
+        /// Position de la caméra par rapport à la scène
+        /// </summary>
         static public V3 s_CameraPosition { get; set; }
+        /// <summary>
+        /// Liste de toutes les lumières présentes dans la scène
+        /// </summary>
         static public List<Lumiere> s_Lumieres { get; set; }
-        static public List<Objet3D> s_Objets { get; set; }    
+        /// <summary>
+        /// Liste de tous les objets présents dans la scène.
+        /// </summary>
+        static public List<Objet3D> s_Objets { get; set; }
 
+        #region Constructeurs
+        /// <summary>
+        /// Créée un Ecran avec une largeur et une hauteur passés en paramètres
+        /// </summary>
+        /// <param name="LargeurEcran">Largeur de l'Ecran</param>
+        /// <param name="HauteurEcran">Hauteur de l'Ecran</param>
+        /// <returns>Image bitmap générée</returns>
         static public Bitmap Init(int LargeurEcran, int HauteurEcran)
         {
             s_LargeurEcran = LargeurEcran;
@@ -31,9 +67,16 @@ namespace Projet_IMA
             s_CameraPosition = new V3(LargeurEcran / 2, -1.5f * LargeurEcran, HauteurEcran / 2);
             return B;
         }
+        #endregion
 
         #region Méthodes privées
 
+        /// <summary>
+        /// Dessine directement un pixel sans refresh_rate
+        /// </summary>
+        /// <param name="x">Coordonnées en abscisse de l'écran</param>
+        /// <param name="y">Coordonnées en ordonnées de l'écran</param>
+        /// <param name="c">Couleur du pixel</param>
         static private void DrawFastPixel(int x, int y, Couleur c)
         {
             unsafe
@@ -49,6 +92,12 @@ namespace Projet_IMA
             }
         }
 
+        /// <summary>
+        /// Dessine un pixel l'un après l'autre avec un refresh_rate pour voir la "génération" de la scène
+        /// </summary>
+        /// <param name="x">Coordonnées en abscisse de l'écran</param>
+        /// <param name="y">Coordonnées en ordonnées de l'écran</param>
+        /// <param name="c">Couleur du pixel</param>
         static private void DrawSlowPixel(int x, int y, Couleur c)
         {
             Color cc = c.Convertion();
@@ -63,6 +112,14 @@ namespace Projet_IMA
             }
         }
 
+        /// <summary>
+        /// Retourne la couleur associée au pixel pointé par le rayon passé en paramètre
+        /// Utilise la méthode du ray casting pour n'afficher que les pixels visibles par la caméra
+        /// </summary>
+        /// <param name="PositionCamera">Position de la caméra</param>
+        /// <param name="DirectionRayon">Direction du rayon utilisé pour le raycasting</param>
+        /// <param name="objets">Liste des objets de la scène</param>
+        /// <returns>Couleur associée au pixel pointé par le rayon</returns>
         static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets)
         {
             float DistanceIntersectionMax = float.MaxValue;
@@ -84,7 +141,9 @@ namespace Projet_IMA
         #endregion
 
         #region Méthodes publiques
-
+        /// <summary>
+        /// Permet de raffraichir l'écran en y dessinant tous les pixels qui y ont été tracés
+        /// </summary>
         static public void RefreshScreen()
         {
             Couleur c = background;
@@ -106,7 +165,31 @@ namespace Projet_IMA
             }
         }
 
+        /// <summary>
+        /// Affiche l'entièreté de la scène
+        /// </summary>
+        static public void Show()
+        {
+            if (Mode == ModeAff.FULL_SPEED)
+                B.UnlockBits(data);
 
+            Program.MyForm.PictureBoxInvalidate();
+        }
+        /// <summary>
+        /// Permet de set la couleur de l'arrière-plan de l'écran en fonction de la couleur passée en paramètre
+        /// </summary>
+        /// <param name="c">Couleur de l'arrière-plan</param>
+        static public void setBackground(Couleur c)
+        {
+            background = c;
+        }
+
+        /// <summary>
+        /// Permet de dessiner un pixel aux coordonnées x, y de l'écran avec la couleur passée en paramètre
+        /// </summary>
+        /// <param name="x">Coordonnées en abscisse de l'Ecran</param>
+        /// <param name="y">Coordonnées en ordonnées de l'Ecran</param>
+        /// <param name="c">Couleur du pixel qu'on veut dessiner</param>
         public static void DrawPixel(int x, int y, Couleur c)
         {
             int x_ecran = x;
@@ -117,19 +200,10 @@ namespace Projet_IMA
                 else DrawFastPixel(x_ecran, y_ecran, c);
         }
 
-        static public void Show()
-        {
-            if (Mode == ModeAff.FULL_SPEED)
-                B.UnlockBits(data);
-
-            Program.MyForm.PictureBoxInvalidate();
-        }
-
-        static public void setBackground(Couleur c)
-        {
-            background = c;
-        }
-
+        /// <summary>
+        /// Parcourt tous les pixels de l'Ecran et applique la méthode du RayCasting pour afficher tous les objets
+        /// présents dans la scène
+        /// </summary>
         static public void DrawAll()
         {
             for (int x_ecran = 0; x_ecran <= s_LargeurEcran; x_ecran++)

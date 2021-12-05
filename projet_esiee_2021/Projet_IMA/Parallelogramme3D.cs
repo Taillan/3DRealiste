@@ -1,14 +1,42 @@
 ﻿namespace Projet_IMA
 {
+    /// <summary>
+    /// Définit un parallélogramme qu'on peut placer dans l'espace, héritant directement de la classe Objet3D.
+    /// </summary>
     class Parallelogramme3D : Objet3D
     {
+        #region Attributs
+        /// <summary>
+        /// Longueur du parallelogramme
+        /// </summary>
         private V3 m_Longueur { get; set; }
+        /// <summary>
+        /// Largeur du parallelogramme
+        /// </summary>
         private V3 m_Largeur { get; set; }
+        /// <summary>
+        /// Origine du Parallelogramme3D (à situer "en bas à gauche" du parallelogramme)
+        /// D'où on applique les vecteurs m_Longueur et m_Largeur pour le tracer.
+        /// </summary>
         private V3 m_Origine { get; set; }
+        /// <summary>
+        /// Vecteur normal au Parallelogramme3D
+        /// </summary>
         private V3 m_Normale { get; set; }
+        /// <summary>
+        /// Vecteur constant correspondant à <c>(m_Largeur ^ m_Normale) / ((m_Longueur ^ m_Largeur).Norm());</c>
+        /// Nécessaire pour déterminer une intersection avec un autre objet
+        /// </summary>
         private V3 m_K { get; set; }
+        /// <summary>
+        /// Vecteur constant correspondant à <c>(m_Longueur ^ - m_Normale) / ((m_Longueur ^ m_Largeur).Norm());</c>
+        /// Nécessaire pour déterminer une intersection avec un autre objet
+        /// </summary>
         private V3 m_K2 { get; set; }
+        #endregion
 
+
+        #region Constructeurs
         /// <summary>
         /// Constructeur d'un Parallelogramme3D
         /// </summary>
@@ -32,7 +60,16 @@
             m_K = (m_Largeur ^ m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
             m_K2 = (m_Longueur ^ - m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
         }
+        #endregion
 
+        #region Méthodes héritées
+
+        /// <summary>
+        /// Calcule les coordonnées du Pixel 3D de l'objet grâce aux positions u et v sur la texture 2D.
+        /// </summary>
+        /// <param name="u">Coordonnées en abscisses de la texture l'objet</param>
+        /// <param name="v">Coordonnées en ordonnées de la texture l'objet</param>
+        /// <returns>Coordonnées du Pixel 3D associé aux positions u et v de la texture 2D</returns>
         protected override V3 getCoords(float u, float v)
         {
             float x3D = m_Origine.x + u * m_Longueur.x + v * m_Largeur.x;
@@ -41,6 +78,14 @@
             return new V3(x3D, y3D, z3D);
         }
 
+        /// <summary>
+        /// Calcule les dérivées partielles de la position du Pixel 3D (M) en fonction des positions u et v de la texture 2D.
+        /// Nécessaire pour pouvoir déterminer le bump mapping.
+        /// </summary>
+        /// <param name="u">Coordonnées en abscisses de la texture l'objet</param>
+        /// <param name="v">Coordonnées en ordonnées de la texture l'objet</param>
+        /// <param name="dMdu">Dérivée de M (position du point actuel) en fonction de u</param>
+        /// <param name="dMdv">Dérivée de M (position du point actuel) en fonction d v</param>
         protected override void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
         {
             float dxdu = m_Longueur.x;
@@ -56,6 +101,11 @@
             dMdv = new V3(dxdv, dydv, dzdv);
         }
 
+        /// <summary>
+        /// Calcule la normale du pixel passé en paramètre
+        /// </summary>
+        /// <param name="PixelPosition">Position du pixel dont on veut obtenir la normale</param>
+        /// <returns>Normale du pixel passé en paramètre</returns>
         protected override V3 getNormal(V3 PixelPosition)
         {
             V3 normal = m_Longueur ^ m_Largeur;
@@ -63,12 +113,24 @@
             return normal;
         }
 
-        public override bool IntersectionRayon(V3 Ro, V3 Rd, out float t, out V3 PixelPosition, out float u, out float v)
+        /// <summary>
+        /// Permet de savoir si le rayon passé en paramètre rentre en intersection avec l'Objet3D.
+        /// Si oui, il retourne le Pixel3D où se trouve l'intersection 
+        /// ainsi que les coordonnées u & v du pixel 2d de la texture associée à ce Pixel 3D.
+        /// </summary>
+        /// <param name="OrigineRayon">Origine du rayon dont on veut tester l'intersection</param>
+        /// <param name="DirectionRayon">Direction du rayon dont on veut tester l'intersection</param>
+        /// <param name="DistanceIntersection">Longueur du rayon de l'origine jusqu'à l'intersection trouvée</param>
+        /// <param name="PixelPosition">Position du pixel où a eu lieu l'intersection</param>
+        /// <param name="u">Coordonnées en abscisses de la texture l'objet associées au point d'intersection</param>
+        /// <param name="v">Coordonnées en ordonnées de la texture l'objet associées au point d'intersection</param>
+        /// <returns>Vrai s'il y a une intersection, faux sinon.</returns>
+        public override bool IntersectionRayon(V3 OrigineRayon, V3 DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v)
         {
             V3 A = m_Origine;
             V3 n = m_Normale;
-            t = ((A - Ro)*n) / (Rd * n);
-            PixelPosition = Ro + t * Rd;
+            DistanceIntersection = ((A - OrigineRayon)*n) / (DirectionRayon * n);
+            PixelPosition = OrigineRayon + DistanceIntersection * DirectionRayon;
             V3 AI = PixelPosition - A;
             u = m_K * AI;
             v = m_K2 * AI;
@@ -82,9 +144,8 @@
             }
         }
 
-
         /// <summary>
-        /// Fonction décrivant comment dessiner un Parallelogramme3D
+        /// Fonction permettant de dessiner un ParallelogrammeD dans son entièreté
         /// </summary>
         public override void Draw()
         {
@@ -103,5 +164,6 @@
                 }
             }
         }
+        #endregion
     }
 }
