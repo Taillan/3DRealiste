@@ -47,7 +47,7 @@ namespace Projet_IMA
         }
 
         #endregion
-
+          
         #region Méthodes privées
         /// <summary>
         /// Traduction des positions u et v comprises entre 0 & 1 en
@@ -103,7 +103,6 @@ namespace Projet_IMA
             dhdu = vx - vv;
             dhdv = vy - vv;
         }
-
         #endregion
     }
 }

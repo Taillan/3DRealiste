@@ -7,6 +7,7 @@ namespace Projet_IMA
     abstract class Objet3D
     {
         #region Attributs
+
         /// <summary>
         /// Centre de l'Objet3D
         /// </summary>
@@ -98,7 +99,8 @@ namespace Projet_IMA
         /// </summary>
         /// <param name="pas">Écart entre chaque point tracé à l'écran</param>
         public abstract void Draw();
-
+        #endregion
+          
         /// <summary>
         /// Permet de savoir si le rayon passé en paramètre rentre en intersection avec l'Objet3D.
         /// Si oui, il retourne le Pixel3D où se trouve l'intersection 

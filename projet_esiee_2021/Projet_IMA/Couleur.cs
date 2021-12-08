@@ -46,7 +46,7 @@ namespace Projet_IMA
             this.m_V = V;
             this.m_B = B;
         }
-
+      
         /// <summary>
         /// Constructeur par copie de la couleur à partir d'une autre couleur
         /// </summary>
@@ -79,6 +79,7 @@ namespace Projet_IMA
         /// <param name="RR">Intensite du rouge</param>
         /// <param name="VV">Intensite du vert</param>
         /// <param name="BB">Intensite du bleu</param>
+
         public void From255(byte RR, byte VV, byte BB)
         {
             m_R = (float)(RR / 255.0);
@@ -123,8 +124,6 @@ namespace Projet_IMA
             VV = (byte)(m_V * 255);
             BB = (byte)(m_B * 255);
         }
-
-
         /// <summary>
         /// Permet de convertir une Couleur en une Color C# de la classe System.Drawing.Color
         /// </summary>
@@ -136,7 +135,6 @@ namespace Projet_IMA
             To255(out RR, out VV, out BB);
             return Color.FromArgb(RR, VV, BB);
         }
-
         #endregion
 
         #region Surcharge des opérateurs
@@ -191,7 +189,6 @@ namespace Projet_IMA
         }
 
         public override int GetHashCode() => this.GetHashCode();
-
         #endregion
     }
 }

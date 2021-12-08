@@ -29,7 +29,6 @@
         {
             this.m_Rayon = rayon;
         }
-
         #endregion
 
         #region Méthodes héritées
@@ -147,7 +146,6 @@
                 }
             }
         }
-
         #endregion
     }
 }

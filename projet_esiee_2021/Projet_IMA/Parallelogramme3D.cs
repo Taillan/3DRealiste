@@ -35,7 +35,6 @@
         private V3 m_K2 { get; set; }
         #endregion
 
-
         #region Constructeurs
         /// <summary>
         /// Constructeur d'un Parallelogramme3D

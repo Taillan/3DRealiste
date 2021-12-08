@@ -6,6 +6,7 @@
     class Lumiere
     {
         #region Attributs
+
         /// <summary>
         /// Direction de la lumière
         /// </summary>
