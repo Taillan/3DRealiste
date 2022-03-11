@@ -241,29 +241,47 @@ namespace Projet_IMA
         public Couleur getCouleur(V3 PixelPosition, float u, float v)
         {
             Couleur finalColor = Couleur.s_Void;
+            Random rnd = new Random();
+            
+            //Paramètrage du SoftShadow
+            //n = nombre de rayon calculé
+            //Alpha = taille du tilt
+            int n = 100;
+            float Alpha = 0.2f;
+
             foreach (Lumiere lumiere in BitmapEcran.s_Lumieres)
             {
                 V3 N = getBumpedNormal(PixelPosition, u, v);
                 Couleur Ambiant = getLowCouleurAmbiante(lumiere, u, v);
                 Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
-                if (isInShadow(lumiere.m_Direction, PixelPosition))
+
+                for (int i = 0; i < n; i++)
                 {
-                    finalColor += Ambiant;
-                }
-                else
-                {
-                    if (Diffus != Couleur.s_Void)
+                    V3 r = new V3((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble());
+                    r.Normalize();
+                    V3 ShadowVector = lumiere.m_Direction + Alpha * r;
+                    ShadowVector.Normalize();
+
+                    if (isInShadow(ShadowVector, PixelPosition))
                     {
-                        Couleur Speculaire = getCouleurSpeculaire(lumiere, PixelPosition, N, u, v);
-                        finalColor += Ambiant + Diffus + Speculaire;
+                        finalColor += Ambiant;
                     }
                     else
                     {
-                        finalColor += Ambiant + Diffus;
+                        if (Diffus != Couleur.s_Void)
+                        {
+                            Couleur Speculaire = getCouleurSpeculaire(lumiere, PixelPosition, N, u, v);
+                            finalColor += Ambiant + Diffus + Speculaire;
+                        }
+                        else
+                        {
+                            finalColor += Ambiant + Diffus;
+                        }
                     }
                 }
+                
             }
-            return finalColor;
+            return finalColor/n;
         }
         #endregion
     }
