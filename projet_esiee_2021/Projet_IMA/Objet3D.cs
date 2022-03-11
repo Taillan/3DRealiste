@@ -114,7 +114,6 @@ namespace Projet_IMA
         /// <param name="v">Coordonnées en ordonnées de la texture l'objet associées au point d'intersection</param>
         /// <returns>Vrai s'il y a une intersection, faux sinon.</returns>
         public abstract bool IntersectionRayon(V3 OrigineRayon, V3 DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v);
-        #endregion
 
         #region Méthodes privées
         /// <summary>
