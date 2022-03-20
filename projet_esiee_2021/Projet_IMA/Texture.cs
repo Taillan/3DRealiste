@@ -6,9 +6,38 @@ namespace Projet_IMA
     class Texture
     {
         #region Attributs
-        private int Hauteur; // Hauteur de la texture
-        private int Largeur; // Largeur de la texture
-        private Couleur[,] C; // Tableau des couleurs des pixels de la texture
+        /// <summary>
+        /// Attribut statique qui définit une texture verte
+        /// </summary>
+        public static Texture s_Green = new Texture("green.jpg");
+        /// <summary>
+        /// Attribut statique qui définit une texture blanche
+        /// </summary>
+        public static Texture s_White = new Texture("white.jpg");
+        /// <summary>
+        /// Attribut statique qui définit une texture rouge
+        /// </summary>
+        public static Texture s_Red = new Texture("red.jpg");
+        /// <summary>
+        /// Attribut statique qui définit une texture bleue
+        /// </summary>
+        public static Texture s_Blue = new Texture("blue.jpg");
+        /// <summary>
+        /// Attribut statique qui définit une texture violette
+        /// </summary>
+        public static Texture s_Purple = new Texture("purple.jpg");
+        /// <summary>
+        /// Hauteur de la texture
+        /// </summary>
+        private int Hauteur;
+        /// <summary>
+        /// Largeur de la texture
+        /// </summary>
+        private int Largeur;
+        /// <summary>
+        /// Tableau des couleurs des pixels de la texture
+        /// </summary>
+        private Couleur[,] C;
         #endregion
 
         #region Constructeurs

@@ -86,7 +86,9 @@
     <Compile Include="Lumiere.cs" />
     <Compile Include="Objet3D.cs" />
     <Compile Include="Parallelogramme3D.cs" />
+    <Compile Include="Parallelogramme3D_Lumiere.cs" />
     <Compile Include="Sphere3D.cs" />
+    <Compile Include="Sphere3D_Lumiere.cs" />
     <Compile Include="Trigo_InvertCoordSpherique.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjetEleve.cs" />

@@ -64,6 +64,26 @@
         #region Méthodes héritées
 
         /// <summary>
+        /// Permet de retourner la couleur de la texture sur les coordonées données
+        /// </summary>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <returns>Couleur du pixel pointé</returns>
+        protected override Couleur getCouleurPixel(float u, float v)
+        {
+            return m_Texture.LireCouleur(u, v);
+        }
+
+        /// <summary>
+        /// Permet de savoir si l'objet est de type lumière
+        /// </summary>
+        /// <returns>Vrai si l'objet est une lumière, faux sinon</returns>
+        public override bool isLumiere()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Calcule les coordonnées du Pixel 3D de l'objet grâce aux positions u et v sur la texture 2D.
         /// </summary>
         /// <param name="u">Coordonnées en abscisses de la texture l'objet</param>

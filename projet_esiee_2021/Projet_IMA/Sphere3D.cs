@@ -25,13 +25,33 @@
         /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
         /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
         /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
-        public Sphere3D(V3 centre, float rayon,Texture texture, Texture bump_texture, float coefficient_diffus = .005f, float coefficient_speculaire = .00005f, float puissance_speculaire=60, float coefficient_bumpmap=.005f, float pas=.005f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
+        public Sphere3D(V3 centre, float rayon, Texture texture, Texture bump_texture, float coefficient_diffus = .005f, float coefficient_speculaire = .00005f, float puissance_speculaire=60, float coefficient_bumpmap=.005f, float pas=.005f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
         {
             this.m_Rayon = rayon;
         }
         #endregion
 
         #region Méthodes héritées
+
+        /// <summary>
+        /// Permet de retourner la couleur de la texture sur les coordonées données
+        /// </summary>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <returns>Couleur du pixel pointé</returns>
+        protected override Couleur getCouleurPixel(float u, float v)
+        {
+            return m_Texture.LireCouleur(u, v);
+        }
+
+        /// <summary>
+        /// Permet de savoir si l'objet est de type lumière
+        /// </summary>
+        /// <returns>Vrai si l'objet est une lumière, faux sinon</returns>
+        public override bool isLumiere()
+        {
+            return false;
+        }
 
         /// <summary>
         /// Calcule les coordonnées du Pixel 3D de l'objet grâce aux positions u et v sur la texture 2D.

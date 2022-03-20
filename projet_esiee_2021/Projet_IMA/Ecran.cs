@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 
-
 namespace Projet_IMA
 {
     enum ModeAff { SLOW_MODE, FULL_SPEED};
@@ -131,7 +130,7 @@ namespace Projet_IMA
                     if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
                     {
                         DistanceIntersectionMax = DistanceIntersection;
-                        finalColor = objet.getCouleur(PixelPosition, u, v);
+                        finalColor = objet.getCouleur(PixelPosition, u, v, true);
                     }
                 }
             }
