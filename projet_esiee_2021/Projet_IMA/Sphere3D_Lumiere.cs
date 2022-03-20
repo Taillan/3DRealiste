@@ -8,7 +8,7 @@
     {
         #region Attributs
         /// <summary>
-        /// Rayon de la Sphere3D
+        /// Couleur de la lumière
         /// </summary>
         private Couleur m_Couleur { get; set; }
         #endregion

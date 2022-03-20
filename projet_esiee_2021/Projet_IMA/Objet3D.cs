@@ -70,21 +70,6 @@ namespace Projet_IMA
         #region Méthodes abstraites
 
         /// <summary>
-        /// Permet de retourner la couleur de la texture sur les coordonées données.
-        /// Si c'est un objet texturé
-        /// </summary>
-        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
-        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
-        /// <returns>Couleur du pixel pointé</returns>
-        protected abstract Couleur getCouleurPixel(float u, float v);
-
-        /// <summary>
-        /// Permet de savoir si l'objet est de type lumière
-        /// </summary>
-        /// <returns>Vrai si l'objet est une lumière, faux sinon</returns>
-        public abstract bool isLumiere();
-
-        /// <summary>
         /// Calcule les coordonnées du Pixel 3D de l'objet grâce aux positions u et v sur la texture 2D.
         /// </summary>
         /// <param name="u">Coordonnées en abscisses de la texture l'objet</param>
@@ -114,7 +99,6 @@ namespace Projet_IMA
         /// </summary>
         /// <param name="pas">Écart entre chaque point tracé à l'écran</param>
         public abstract void Draw();
-        #endregion
           
         /// <summary>
         /// Permet de savoir si le rayon passé en paramètre rentre en intersection avec l'Objet3D.
@@ -130,7 +114,20 @@ namespace Projet_IMA
         /// <returns>Vrai s'il y a une intersection, faux sinon.</returns>
         public abstract bool IntersectionRayon(V3 OrigineRayon, V3 DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v);
 
+        #endregion
+
         #region Méthodes privées
+
+        /// <summary>
+        /// Permet de retourner la couleur de la texture sur les coordonées données
+        /// </summary>
+        /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
+        /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
+        /// <returns>Couleur du pixel pointé</returns>
+        protected virtual Couleur getCouleurPixel(float u, float v)
+        {
+            return m_Texture.LireCouleur(u, v);
+        }
 
         /// <summary>
         /// Permet d'obtenir un vecteur aléatoire normalisé. Utilisé dans plusieurs méthodes
@@ -398,6 +395,15 @@ namespace Projet_IMA
             Diffus /= PathTracerLevel/20f;
             Diffus *= this.getCouleurPixel(u, v);
             return Diffus;
+        }
+
+        /// <summary>
+        /// Permet de savoir si l'objet est de type lumière
+        /// </summary>
+        /// <returns>Vrai si l'objet est une lumière, faux sinon</returns>
+        public virtual bool isLumiere()
+        {
+            return false;
         }
 
         #endregion
