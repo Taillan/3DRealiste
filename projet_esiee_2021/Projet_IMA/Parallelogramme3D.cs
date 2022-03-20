@@ -54,7 +54,8 @@
         {
             m_Longueur = longueur;
             m_Largeur = largeur;
-            m_Origine = centre - (1 / 2) * longueur - (1 / 2) * largeur;
+            m_Origine = centre;
+            //m_Origine = centre - (1 / 2) * longueur - (1 / 2) * largeur;
             m_Normale = getNormal(new V3(0,0,0));
             m_K = (m_Largeur ^ m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
             m_K2 = (m_Longueur ^ - m_Normale) / ((m_Longueur ^ m_Largeur).Norm());

@@ -58,7 +58,7 @@ namespace Projet_IMA
             Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(0, 0, Hauteur), new V3(0, -Profondeur, 0), Texture.s_Green, bump_texture_murs);
             Parallelogramme3D MurFond2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), new V3(0, 0, Hauteur), Texture.s_Blue, bump_texture_murs);
             Parallelogramme3D MurDroit2 = new Parallelogramme3D(new V3(Largeur, Profondeur, 0), new V3(0, -Profondeur, 0), new V3(0, 0, Hauteur), Texture.s_Red, bump_texture_murs);
-            Parallelogramme3D Plafond2 = new Parallelogramme3D(new V3(0, 0, Hauteur), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), Texture.s_Blue, Texture.s_Blue);
+            Parallelogramme3D Plafond2 = new Parallelogramme3D(new V3(0, 0, Hauteur), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), Texture.s_Purple, Texture.s_Purple);
             Sphere3D SphereOr2 = new Sphere3D(new V3(300, Profondeur-100, 300), 100, gold, bump_texture);
             Sphere3D SphereStone2 = new Sphere3D(new V3(800, 200, 400), 70, stone2, bump_texture);
             Sphere3D_Lumiere SphereLumiere2 = new Sphere3D_Lumiere(new Couleur(1, 1, 1), new V3(100, Profondeur/4, Hauteur-100), 100, gold, bump_texture);
@@ -66,6 +66,7 @@ namespace Projet_IMA
             Sphere3D SphereVerte2 = new Sphere3D(new V3(780, 250, 50), 50, Texture.s_Green, bump_texture);
             Parallelogramme3D LumierePlafond2 = new Parallelogramme3D_Lumiere(new Couleur(1,1,1),new V3((Largeur/2)-200, (Profondeur/2)-200, Hauteur-1), new V3(0, 400, 0), new V3(400, 0, 0), Texture.s_Blue, Texture.s_Blue);
             Sphere3D SphereRouge2 = new Sphere3D(new V3(120, Profondeur-60, 60), 60, Texture.s_Red, bump_texture);
+            Parallelepipede3D CubeViolet2 = new Parallelepipede3D(new V3(50,Profondeur/2.1f, 0), new V3(0, 100, 0), new V3(100, 0, 0), new V3(0, 0, 100), Texture.s_Purple, Texture.s_Purple);
             //Scene2.Add(SolLumiere2);
             Scene2.Add(Sol2);
             Scene2.Add(MurGauche2);
@@ -79,6 +80,10 @@ namespace Projet_IMA
             Scene2.Add(SphereVerte2);
             Scene2.Add(SphereRouge2);
             Scene2.Add(LumierePlafond2);
+            foreach(Parallelogramme3D P in CubeViolet2.m_Faces)
+            {
+                Scene2.Add(P);
+            }
 
 
 

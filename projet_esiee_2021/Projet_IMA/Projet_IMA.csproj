@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="Lumiere.cs" />
     <Compile Include="Objet3D.cs" />
+    <Compile Include="Parallelepipede3D.cs" />
     <Compile Include="Parallelogramme3D.cs" />
     <Compile Include="Parallelogramme3D_Lumiere.cs" />
     <Compile Include="Sphere3D.cs" />

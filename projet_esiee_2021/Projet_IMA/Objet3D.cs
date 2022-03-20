@@ -141,11 +141,12 @@ namespace Projet_IMA
             V3 vec;
             double theta = 2 * IMA.PI * rnd.NextDouble();
             double phi = Math.Acos(2 * rnd.NextDouble() - 1.0);
-            float x = IMA.Cosf((float)theta) * IMA.Sinf((float)phi);
-            float y = IMA.Sinf((float)theta) * IMA.Sinf((float)phi);
-            float z = IMA.Cosf((float)phi);
-            vec = new V3(x, y, z);
+            double x = Math.Cos(theta) * Math.Sin(phi);
+            double y = Math.Sin(theta) * Math.Sin(phi);
+            double z = Math.Cos(phi);
+            vec = new V3((float)x, (float)y, (float)z);
             vec.Normalize();
+            //Console.WriteLine(" x " + vec.x + " y " + vec.y + " z " + vec.z);
             return vec;
         }
         /// <summary>
@@ -300,7 +301,7 @@ namespace Projet_IMA
         {
             if (ActivatePathTracer)
             {
-                return PathTracer(PixelPosition, u, v, 10);
+                return PathTracer(PixelPosition, u, v, 15);
             }
             else
             {
@@ -386,13 +387,21 @@ namespace Projet_IMA
                                 C = objet.getCouleur(IntersectedPixel, u, v);
                                 C += getCouleurSpeculaire(C, -R, PixelPosition, N, u, v);
                             }
+                            else
+                            {
+                                C = objet.PathTracer(IntersectedPixel, u, v,1) * .012f;
+                                if (C.m_V < .0001f && C.m_B < .0001f && C.m_R < .0001f)
+                                {
+                                    break;
+                                }
+                            }
                             
                         }
                     }
                 }
                 Diffus += ((R * N) * C);
             }
-            Diffus /= PathTracerLevel/20f;
+            Diffus /= PathTracerLevel/25f;
             Diffus *= this.getCouleurPixel(u, v);
             return Diffus;
         }

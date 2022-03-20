@@ -33,23 +33,23 @@ namespace Projet_IMA
         /// <summary>
         /// Largeur de la fenêtre
         /// </summary>
-        static public int s_LargeurEcran { get; set; }
+        static internal int s_LargeurEcran { get; set; }
         /// <summary>
         /// Hauteur de la fenêtre
         /// </summary>
-        static public int s_HauteurEcran { get; set; }
+        static internal int s_HauteurEcran { get; set; }
         /// <summary>
         /// Position de la caméra par rapport à la scène
         /// </summary>
-        static public V3 s_CameraPosition { get; set; }
+        static internal V3 s_CameraPosition { get; set; }
         /// <summary>
         /// Liste de toutes les lumières présentes dans la scène
         /// </summary>
-        static public List<Lumiere> s_Lumieres { get; set; }
+        static internal List<Lumiere> s_Lumieres { get; set; }
         /// <summary>
         /// Liste de tous les objets présents dans la scène.
         /// </summary>
-        static public List<Objet3D> s_Objets { get; set; }
+        static internal List<Objet3D> s_Objets { get; set; }
 
         #region Constructeurs
         /// <summary>
@@ -58,7 +58,7 @@ namespace Projet_IMA
         /// <param name="LargeurEcran">Largeur de l'Ecran</param>
         /// <param name="HauteurEcran">Hauteur de l'Ecran</param>
         /// <returns>Image bitmap générée</returns>
-        static public Bitmap Init(int LargeurEcran, int HauteurEcran)
+        static internal Bitmap Init(int LargeurEcran, int HauteurEcran)
         {
             s_LargeurEcran = LargeurEcran;
             s_HauteurEcran = HauteurEcran;
@@ -143,7 +143,7 @@ namespace Projet_IMA
         /// <summary>
         /// Permet de raffraichir l'écran en y dessinant tous les pixels qui y ont été tracés
         /// </summary>
-        static public void RefreshScreen()
+        static internal void RefreshScreen()
         {
             Couleur c = background;
             if (Program.MyForm.Checked())
@@ -167,7 +167,7 @@ namespace Projet_IMA
         /// <summary>
         /// Affiche l'entièreté de la scène
         /// </summary>
-        static public void Show()
+        static internal void Show()
         {
             if (Mode == ModeAff.FULL_SPEED)
                 B.UnlockBits(data);
@@ -178,7 +178,7 @@ namespace Projet_IMA
         /// Permet de set la couleur de l'arrière-plan de l'écran en fonction de la couleur passée en paramètre
         /// </summary>
         /// <param name="c">Couleur de l'arrière-plan</param>
-        static public void setBackground(Couleur c)
+        static internal void setBackground(Couleur c)
         {
             background = c;
         }
@@ -189,7 +189,7 @@ namespace Projet_IMA
         /// <param name="x">Coordonnées en abscisse de l'Ecran</param>
         /// <param name="y">Coordonnées en ordonnées de l'Ecran</param>
         /// <param name="c">Couleur du pixel qu'on veut dessiner</param>
-        public static void DrawPixel(int x, int y, Couleur c)
+        internal static void DrawPixel(int x, int y, Couleur c)
         {
             int x_ecran = x;
             int y_ecran = s_HauteurEcran - y;
@@ -203,7 +203,7 @@ namespace Projet_IMA
         /// Parcourt tous les pixels de l'Ecran et applique la méthode du RayCasting pour afficher tous les objets
         /// présents dans la scène
         /// </summary>
-        static public void DrawAll()
+        static internal void DrawAll()
         {
             for (int x_ecran = 0; x_ecran <= s_LargeurEcran; x_ecran++)
             {
