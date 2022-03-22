@@ -126,7 +126,15 @@ namespace Projet_IMA
         /// <returns>Couleur du pixel pointé</returns>
         protected virtual Couleur getCouleurPixel(float u, float v)
         {
-            return m_Texture.LireCouleur(u, v);
+            if (m_Texture != null)
+            {
+                return m_Texture.LireCouleur(u, v);
+            }
+            else
+            {
+                return new Couleur(0, 0, 0);
+            }
+            
         }
 
         /// <summary>
@@ -230,11 +238,19 @@ namespace Projet_IMA
         {
             V3 N = getNormal(PixelPosition);
 
-            float K = m_CoefficientBumpMap;
-            getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
-            this.m_BumpTexture.Bump(u, v, out float dhdu, out float dhdv);
+            if (this.m_BumpTexture != null)
+            {
 
-            return N + K * ((dMdu ^ (N * dhdv)) + ((N * dhdu) ^ dMdv));
+                float K = m_CoefficientBumpMap;
+                getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
+                this.m_BumpTexture.Bump(u, v, out float dhdu, out float dhdv);
+
+                return N + K * ((dMdu ^ (N * dhdv)) + ((N * dhdu) ^ dMdv));
+            }
+            else
+            {
+                return N;
+            }
         }
 
         /// <summary>
@@ -275,7 +291,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 1000, 1, 100);
+                finalColor = PathTracer(PixelPosition, u, v, 10, 1, 100);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -354,8 +370,9 @@ namespace Projet_IMA
             {
                 return finalColor;
             }
-            V3 N = this.getNormal(PixelPosition);
-            
+            //V3 N = this.getNormal(PixelPosition);
+
+            V3 N = getBumpedNormal(PixelPosition, u, v);
             Couleur total = new Couleur(0, 0, 0);
             for (int i = 0; i < nbVectors; i++)
             {

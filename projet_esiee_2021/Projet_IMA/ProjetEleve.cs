@@ -63,9 +63,9 @@ namespace Projet_IMA
             Sphere3D SphereStone2 = new Sphere3D(new V3(800, 200, 400), 70, stone2, bump_texture);
             Sphere3D_Lumiere SphereLumiere2 = new Sphere3D_Lumiere(new Couleur(1, 1, 1), new V3(100, Profondeur/4, Hauteur-100), 100, gold, bump_texture);
             Sphere3D_Lumiere SphereLumiere3 = new Sphere3D_Lumiere(new Couleur(1, 1, 1), new V3(870, 200, 60), 60, gold, bump_texture);
-            Sphere3D SphereVerte2 = new Sphere3D(new V3(780, 250, 50), 50, Texture.s_Green, bump_texture);
+            Sphere3D SphereVerte2 = new Sphere3D(new V3(780, 250, 50), 50, Texture.s_Green);
             Parallelogramme3D LumierePlafond2 = new Parallelogramme3D_Lumiere(new Couleur(1,1,1),new V3((Largeur/2)-200, (Profondeur/2)-200, Hauteur-1), new V3(0, 400, 0), new V3(400, 0, 0), Texture.s_Blue, Texture.s_Blue);
-            Sphere3D SphereRouge2 = new Sphere3D(new V3(120, Profondeur-60, 60), 60, Texture.s_Red, bump_texture);
+            Sphere3D SphereRouge2 = new Sphere3D(new V3(120, Profondeur-60, 60), 60, Texture.s_Red);
             Parallelepipede3D CubeViolet2 = new Parallelepipede3D(new V3(50,Profondeur/2.1f, 0), new V3(0, 100, 0), new V3(100, 0, 0), new V3(0, 0, 100), Texture.s_Purple, Texture.s_Purple);
             //Scene2.Add(SolLumiere2);
             Scene2.Add(Sol2);
