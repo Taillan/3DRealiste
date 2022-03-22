@@ -15,7 +15,7 @@
 
         #region Constructeurs
         /// <summary>
-        /// Constructeur d'une Sphere3D
+        /// Constructeur d'une Sphere3D lumiere
         /// </summary>
         /// <param name="centre">Centre de la sphère</param>
         /// <param name="rayon">Rayon de la sphère</param>
