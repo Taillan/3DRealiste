@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 namespace Projet_IMA
 {
     enum ModeAff { SLOW_MODE, FULL_SPEED};
+    enum RenderMode { SIMPLE, PATH_TRACING };
 
     class BitmapEcran
     {
@@ -119,7 +120,7 @@ namespace Projet_IMA
         /// <param name="DirectionRayon">Direction du rayon utilisé pour le raycasting</param>
         /// <param name="objets">Liste des objets de la scène</param>
         /// <returns>Couleur associée au pixel pointé par le rayon</returns>
-        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets)
+        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets, RenderMode RM)
         {
             float DistanceIntersectionMax = float.MaxValue;
             Couleur finalColor = background;
@@ -130,7 +131,7 @@ namespace Projet_IMA
                     if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
                     {
                         DistanceIntersectionMax = DistanceIntersection;
-                        finalColor = objet.getCouleur(PixelPosition, u, v, true);
+                        finalColor = objet.getCouleur(PixelPosition, u, v, RM);
                     }
                 }
             }
@@ -211,7 +212,7 @@ namespace Projet_IMA
                 {
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
                     V3 DirRayon = PosPixScene - s_CameraPosition;
-                    Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets);
+                    Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.PATH_TRACING);
                     DrawPixel(x_ecran, y_ecran, C);
                 }
             }

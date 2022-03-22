@@ -16,7 +16,7 @@ namespace Projet_IMA
             List<Objet3D> Scene1 = new List<Objet3D>();
             List<Objet3D> Scene2 = new List<Objet3D>();
 
-            Lumiere KeyLumiere= new Lumiere(new V3(1, -.8f, 0), new Couleur(255, 255, 255) * .7f);
+            Lumiere KeyLumiere= new Lumiere(new V3(1, -.8f, 0), new Couleur(1, 1, 1) * .7f);
             Lumiere FillLumiere= new Lumiere(new V3(-1, -.8f, 0), new Couleur(255, 255, 255) * .3f);
             
             //BitmapEcran.Lumieres.Add(FillLumiere);
@@ -55,7 +55,7 @@ namespace Projet_IMA
             int Profondeur = 1000;
             Parallelogramme3D Sol2 = new Parallelogramme3D(new V3(0, 0, 0), new V3(Largeur, 0, 0), new V3(0,Profondeur, 0), Texture.s_White, bump_texture_murs);
             Parallelogramme3D SolLumiere2 = new Parallelogramme3D_Lumiere(new Couleur(1, 1, 1), new V3(0, 0, 0), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), stone2, stone2);
-            Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(0, 0, Hauteur), new V3(0, -Profondeur, 0), Texture.s_Green, bump_texture_murs);
+            Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(0, 0, Hauteur), new V3(0, -Profondeur, 0), Texture.s_Green, Texture.s_Green);
             Parallelogramme3D MurFond2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), new V3(0, 0, Hauteur), Texture.s_Blue, bump_texture_murs);
             Parallelogramme3D MurDroit2 = new Parallelogramme3D(new V3(Largeur, Profondeur, 0), new V3(0, -Profondeur, 0), new V3(0, 0, Hauteur), Texture.s_Red, bump_texture_murs);
             Parallelogramme3D Plafond2 = new Parallelogramme3D(new V3(0, 0, Hauteur), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), Texture.s_Purple, Texture.s_Purple);
@@ -76,7 +76,7 @@ namespace Projet_IMA
             Scene2.Add(SphereStone2);
             Scene2.Add(SphereOr2);
             //Scene2.Add(SphereLumiere2);
-            //Scene2.Add(SphereLumiere3);
+            Scene2.Add(SphereLumiere3);
             Scene2.Add(SphereVerte2);
             Scene2.Add(SphereRouge2);
             Scene2.Add(LumierePlafond2);
