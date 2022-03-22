@@ -135,23 +135,9 @@ namespace Projet_IMA
         /// pour calculer des potentielles intersections avec une lampe.
         /// </summary>
         /// <returns>Retourne un vecteur aléatoire normalisé</returns>
-        private V3 getRandomV3(V3 N)
+        private V3 getRandomV3()
         {
             Random rnd = Program.s_Random;
-            /*V3 tangent = (N.x > N.z) ? new V3(-N.y, N.x, 0.0f) : new V3(0.0f, -N.z, N.y);
-            // and a bitangent vector orthogonal to both
-            V3 bitangent = N ^ tangent;
-
-            double phi = 2.0 * Math.PI * rnd.NextDouble();
-            double theta = rnd.NextDouble() * 180;
-            double sinTheta = Math.Sin(theta);
-            //return tangent * Math.Cos(phi) * sinTheta + bitangent * (float)Math.Sin(phi) * sinTheta + N * Math.Cos(theta);
-            double x = Math.Cos(theta) * Math.Sin(phi);
-            double y = Math.Sin(theta) * Math.Sin(phi);
-            double z = Math.Cos(phi);
-            V3 vec = new V3((float)z, (float)x, (float)y);
-            vec.Normalize();
-            return vec;*/
             V3 vec;
             double theta = 2 * IMA.PI * rnd.NextDouble();
             double phi = Math.Acos(2 * rnd.NextDouble() - 1.0);
@@ -160,7 +146,6 @@ namespace Projet_IMA
             double z = Math.Sin(phi) * Math.Sin(theta);
             vec = new V3((float)x, (float)y, (float)z);
             vec.Normalize();
-            //Console.WriteLine(" x " + vec.x + " y " + vec.y + " z " + vec.z);
             return vec;
         }
         /// <summary>
@@ -290,7 +275,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 1000, 1);
+                finalColor = PathTracer(PixelPosition, u, v, 10, 1);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -373,7 +358,7 @@ namespace Projet_IMA
                 V3 R;
                 do
                 {
-                    R = getRandomV3(N);
+                    R = getRandomV3();
                 } while (!(R * N > 0));
                 float DistanceIntersectionMax = float.MaxValue;
                 foreach (Objet3D objet in BitmapEcran.s_Objets)
