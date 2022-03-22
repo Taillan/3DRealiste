@@ -211,7 +211,7 @@ namespace Projet_IMA
             float RD = R * D;
             if ((RD) > 0)
             {
-                return lumiere.m_Couleur * getCouleurAmbiante(lumiere, u, v)  * (float)Math.Pow(RD, m_PuissanceSpeculaire); // *m_CoefficientSpeculaire
+                return lumiere.m_Couleur * getCouleurAmbiante(lumiere, u, v)  * (float)Math.Pow(RD, m_PuissanceSpeculaire) * m_CoefficientSpeculaire;
             }
             else
             {
@@ -275,7 +275,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 10, 1);
+                finalColor = PathTracer(PixelPosition, u, v, 1000, 1);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -348,6 +348,7 @@ namespace Projet_IMA
         public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors, int PathTracerLevel)
         {
             V3 N = this.getNormal(PixelPosition);
+            float divisor = nbVectors;
             Couleur finalColor = new Couleur(0,0,0);
             Couleur total = new Couleur(0, 0, 0);
             int compt = 0;
@@ -374,8 +375,9 @@ namespace Projet_IMA
                             }
                             else
                             {
-                                total = objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f; //* .1f;
-                                if (total < .001f)
+                                total += objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f;
+                                divisor *= 1f;
+                                if (total < .0005f)
                                 {
                                     break;
                                 }
@@ -386,7 +388,7 @@ namespace Projet_IMA
                 }
                 finalColor += total;
             }
-            return finalColor/PathTracerLevel;
+            return finalColor/divisor;
         }
 
         /// <summary>
