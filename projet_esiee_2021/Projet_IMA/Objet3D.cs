@@ -330,11 +330,9 @@ namespace Projet_IMA
                             finalColor += Ambiant + Diffus;
                         }
                     }
-                }
-
+                } 
             }
-            finalColor /= n;
-            return finalColor;
+            return finalColor/n;
         }
 
         /// <summary>
