@@ -275,7 +275,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 1000, 1);
+                finalColor = PathTracer(PixelPosition, u, v, 1000, 1, 100);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -343,12 +343,19 @@ namespace Projet_IMA
         /// <param name="PixelPosition">Pixel dont on veut obtenir la couleur</param>
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
-        /// <param name="PathTracerLevel"></param>
+        /// <param name="nbVectors">Nombre de vecteurs aléatoires utilisés pour trouver une intersection</param>
+        /// <param name="PathTracerLevel">Niveau actuel du rebond du path tracing</param>
+        /// <param name="MaxPathTracerLevel">Nombre de niveaux de rebonds maximum pour le PathTracing</param>
         /// <returns>Retourne la couleur du pixel passé en paramètre en utilisant le PathTracing</returns>
-        public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors, int PathTracerLevel)
+        public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors, int PathTracerLevel, int MaxPathTracerLevel)
         {
+            Couleur finalColor = new Couleur(0, 0, 0);
+            if (PathTracerLevel >= MaxPathTracerLevel)
+            {
+                return finalColor;
+            }
             V3 N = this.getNormal(PixelPosition);
-            Couleur finalColor = new Couleur(0,0,0);
+            
             Couleur total = new Couleur(0, 0, 0);
             for (int i = 0; i < nbVectors; i++)
             {
@@ -373,7 +380,7 @@ namespace Projet_IMA
                             }
                             else
                             {
-                                total += objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f;
+                                total += objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1, MaxPathTracerLevel)*.1f;
                                 if (total < .0005f)
                                 {
                                     break;
