@@ -348,10 +348,8 @@ namespace Projet_IMA
         public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors, int PathTracerLevel)
         {
             V3 N = this.getNormal(PixelPosition);
-            float divisor = nbVectors;
             Couleur finalColor = new Couleur(0,0,0);
             Couleur total = new Couleur(0, 0, 0);
-            int compt = 0;
             for (int i = 0; i < nbVectors; i++)
             {
                 V3 R;
@@ -376,7 +374,6 @@ namespace Projet_IMA
                             else
                             {
                                 total += objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f;
-                                divisor *= 1f;
                                 if (total < .0005f)
                                 {
                                     break;
@@ -388,7 +385,7 @@ namespace Projet_IMA
                 }
                 finalColor += total;
             }
-            return finalColor/divisor;
+            return finalColor/(float)nbVectors;
         }
 
         /// <summary>
