@@ -12,7 +12,7 @@ namespace Projet_IMA
         /// Liste de toutes les faces du parallelepipede
         /// </summary>
         public List<Parallelogramme3D> m_Faces { get; set; }
-        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Texture texture, Texture bump_texture, float coefficient_diffus = 1f, float coefficient_speculaire = .1f, float puissance_speculaire = 50, float coefficient_bumpmap = .005f, float pas = .001f)
+        public Parallelepipede3D(V3 centre, V3 longueur, V3 largeur, V3 hauteur, Texture texture=null, Texture bump_texture=null, float coefficient_diffus = 1f, float coefficient_speculaire = .1f, float puissance_speculaire = 50, float coefficient_bumpmap = .005f, float pas = .001f)
         {
             m_Faces = new List<Parallelogramme3D>();
 
