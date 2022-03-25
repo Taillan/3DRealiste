@@ -304,11 +304,11 @@ namespace Projet_IMA
 
                 Bitmap Bp = new Bitmap(LargeurZonePix, HauteurZonePix);
                 
-                for (int x_ecran =0; x_ecran < LargeurZonePix - 1; x_ecran++)
+                for (int x_ecran =0; x_ecran < LargeurZonePix; x_ecran++)
                 {
-                    for (int y_ecran =0; y_ecran < HauteurZonePix -1 ; y_ecran++)
+                    for (int y_ecran =0; y_ecran < HauteurZonePix; y_ecran++)
                     {
-                        V3 PosPixScene = new V3(CoordZone.X + x_ecran, 0, CoordZone.Y + y_ecran);
+                        V3 PosPixScene = new V3(CoordZone.X + x_ecran, 0, s_HauteurEcran  - (CoordZone.Y + y_ecran));
                         V3 DirRayon = PosPixScene - s_CameraPosition;
                         Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.SIMPLE);
                         DrawPixel(x_ecran, y_ecran, C,Bp,CoordZone);
