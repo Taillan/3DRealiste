@@ -40,7 +40,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(31, 28);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(239, 68);
             this.button1.TabIndex = 0;
@@ -63,7 +63,7 @@
             // 
             this.showCheckBox.AutoSize = true;
             this.showCheckBox.Location = new System.Drawing.Point(1043, 75);
-            this.showCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.showCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.showCheckBox.Name = "showCheckBox";
             this.showCheckBox.Size = new System.Drawing.Size(62, 20);
             this.showCheckBox.TabIndex = 4;
@@ -109,7 +109,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Fenetre";
             this.Text = "Projet 3D Réaliste - ESIEE Paris (Richard FOUQUOIRE, Sami OURABAH, Mathieu TAILLA" +
     "NDIER, Cathy TRUONG)";
