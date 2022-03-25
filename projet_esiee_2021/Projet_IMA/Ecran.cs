@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -85,9 +86,12 @@ namespace Projet_IMA
 
         static internal PictureBox pictureBox1;
 
+        static internal int LargeurZonePix { get; set; }
+        static internal int HauteurZonePix { get; set; }
+
         #endregion
 
-        
+
         #region Constructeurs
         /// <summary>
         /// Créée un Ecran avec une largeur et une hauteur passés en paramètres
@@ -98,6 +102,8 @@ namespace Projet_IMA
         static internal Bitmap Init(int LargeurEcran, int HauteurEcran,PictureBox pictureBox)
         {
             pictureBox1 = pictureBox;
+            LThreads = new List<Thread>();
+            JobList = new ConcurrentBag<Point>();
             canvas = pictureBox.CreateGraphics();
             s_LargeurEcran = LargeurEcran;
             s_HauteurEcran = HauteurEcran;
@@ -115,7 +121,7 @@ namespace Projet_IMA
         /// <param name="x">Coordonnées en abscisse de l'écran</param>
         /// <param name="y">Coordonnées en ordonnées de l'écran</param>
         /// <param name="c">Couleur du pixel</param>
-        static private void DrawFastPixel(int x, int y, Couleur c,Bitmap B)
+        static private void DrawFastPixel(int x, int y, Couleur c)
         {
             unsafe
             {
@@ -136,18 +142,19 @@ namespace Projet_IMA
         /// <param name="x">Coordonnées en abscisse de l'écran</param>
         /// <param name="y">Coordonnées en ordonnées de l'écran</param>
         /// <param name="c">Couleur du pixel</param>
-        static private void DrawSlowPixel(int x, int y, Couleur c,Bitmap B)
+        static private void DrawSlowPixel(int x, int y, Couleur c,Bitmap Bp, Point CoordZone)
         {
             Color cc = c.Convertion();
-            B.SetPixel(x, y, cc);
+            Bp.SetPixel(x , y , cc);
+            //Bp.SetPixel(x - CoordZone.X, y - CoordZone.Y, cc);
 
-            Program.MyForm.PictureBoxInvalidate();
-            nb_pix++;
+
+           // Program.MyForm.PictureBoxInvalidate();
+            /*nb_pix++;
             if (nb_pix > refresh_every)  // force l'affichage à l'écran tous les 1000pix
             {
-                Program.MyForm.PictureBoxRefresh();
                 nb_pix = 0;
-            }
+            }*/
         }
 
         /// <summary>
@@ -199,7 +206,7 @@ namespace Projet_IMA
                 stride = data.Stride;
                 for (int x = 0; x < s_LargeurEcran; x++)
                     for (int y = 0; y < s_HauteurEcran; y++)
-                        DrawFastPixel(x, y, c,B);
+                        DrawFastPixel(x, y, c);
             }
         }
 
@@ -228,15 +235,15 @@ namespace Projet_IMA
         /// <param name="x">Coordonnées en abscisse de l'Ecran</param>
         /// <param name="y">Coordonnées en ordonnées de l'Ecran</param>
         /// <param name="c">Couleur du pixel qu'on veut dessiner</param>
-        internal static void DrawPixel(int x, int y, Couleur c,Bitmap B)
+        internal static void DrawPixel(int x, int y, Couleur c,Bitmap B, Point CoordZone)
         {
-            int x_bitmap = x;
-            //int y_ecran = s_HauteurEcran - y;
-            int y_bitmap = B.Height - y;
+            int x_ecran = x;
+            int y_ecran = y;
+            
 
-            if ((x_bitmap >= 0) && (x_bitmap < s_LargeurEcran) && (y_bitmap >= 0) && (y_bitmap < s_HauteurEcran))
-                if (Mode == ModeAff.SLOW_MODE) DrawSlowPixel(x_bitmap, y_bitmap, c,B);
-                else DrawFastPixel(x_bitmap, y_bitmap, c,B);
+            if ((x_ecran >= 0) && (x_ecran < s_LargeurEcran) && (y_ecran >= 0) && (y_ecran < s_HauteurEcran))
+                if (Mode == ModeAff.SLOW_MODE) DrawSlowPixel(x_ecran, y_ecran, c,B,  CoordZone);
+                else DrawFastPixel(x_ecran, y_ecran, c);
         }
 
         /// <summary>
@@ -249,23 +256,24 @@ namespace Projet_IMA
             int HautAff = s_HauteurEcran;
 
             //Initialise les composant pour le multithread
-            LargZonePix = 50;
-            LThreads = new List<Thread>();
-            JobList = new ConcurrentBag<Point>();
+            LargeurZonePix = s_LargeurEcran / 10;
+            HauteurZonePix = s_HauteurEcran / 10;
 
             // crée la liste des zones à afficher
-            for (int x = 0; x < LargAff; x += LargZonePix)
-                for (int y = 0; y < HautAff; y += LargZonePix)
+            for (int x = 0; x < LargAff; x += LargeurZonePix)
+                for (int y = 0; y < HautAff; y += HauteurZonePix)
                     JobList.Add(new Point(x, y));
 
             // crée et lance le pool de threads
             for (int i = 0; i < 4; i++)  // 4: nb de threads
             {
+                Console.WriteLine("Debut thread " + i);
                 int idThread = i; // capture correctement la valeur de i pour le délégué ci-dessous
                 Thread T = new Thread(delegate () { FntThread(idThread); });
                 LThreads.Add(T);
                 T.Start();        // demarre le thread enfant
             }
+
         }
 
 
@@ -294,28 +302,29 @@ namespace Projet_IMA
             while (JobList.TryTake(out CoordZone))
             {
 
-                Bitmap B = new Bitmap(LargZonePix, LargZonePix);
-                Graphics G = Graphics.FromImage(B);
+                Bitmap Bp = new Bitmap(LargeurZonePix, HauteurZonePix);
                 
-                for (int x_bitmap = CoordZone.X; x_bitmap < CoordZone.X + LargZonePix; x_bitmap++)
+                for (int x_ecran =0; x_ecran < LargeurZonePix - 1; x_ecran++)
                 {
-                    for (int y_bitmap = CoordZone.Y; y_bitmap < CoordZone.Y + LargZonePix; y_bitmap++)
+                    for (int y_ecran =0; y_ecran < HauteurZonePix -1 ; y_ecran++)
                     {
-                        V3 PosPixScene = new V3(x_bitmap, 0, y_bitmap);
+                        V3 PosPixScene = new V3(CoordZone.X + x_ecran, 0, CoordZone.Y + y_ecran);
                         V3 DirRayon = PosPixScene - s_CameraPosition;
-                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.PATH_TRACING);
-                        DrawPixel(x_bitmap, y_bitmap, C,B);
+                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.SIMPLE);
+                        DrawPixel(x_ecran, y_ecran, C,Bp,CoordZone);
                     }
                 }
+                
                 /*
                 Brush[] LBrushes = { Brushes.Black, Brushes.DarkGray, Brushes.LightGray, Brushes.White };
                 Brush MaCouleur = LBrushes[idThread];
-                G.FillRectangle(MaCouleur, 0, 0, LargZonePix, LargZonePix);*/
+                G.FillRectangle(MaCouleur, 0, 0, LargeurZonePix, HauteurZonePix);*/
 
                 // renvoi les infos suffisantes dans un évènement pour que
                 // le thread principal puisse dessiner la région au bon endroit
                 var d = new MonDelegue(DrawInMainThread);
-                pictureBox1.Invoke(d, new object[] { CoordZone, B });
+                Console.WriteLine("Fin thread ");
+                pictureBox1.Invoke(d, new object[] { CoordZone, Bp });
             }
         }
 
