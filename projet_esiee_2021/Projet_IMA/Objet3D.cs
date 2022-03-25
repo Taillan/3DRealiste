@@ -132,7 +132,7 @@ namespace Projet_IMA
             }
             else
             {
-                return new Couleur(0, 0, 0);
+                return new Couleur(1, 1, 1);
             }
             
         }
@@ -237,14 +237,22 @@ namespace Projet_IMA
         private V3 getBumpedNormal(V3 PixelPosition, float u, float v)
         {
             V3 N = getNormal(PixelPosition);
-
+            //Console.WriteLine("N x " + N.x + " y " + N.y + " z " + N.z);
+            if (N.x == float.NaN || N.y == float.NaN || N.z == float.NaN)
+            {
+                return N;
+            }
             if (this.m_BumpTexture != null)
             {
 
                 float K = m_CoefficientBumpMap;
+                //Console.WriteLine("K : "+K);
                 getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
+                //Console.WriteLine("dMdu x : "+ dMdu.x + " y " + dMdu.y + " z " + dMdu.z );
+                //Console.WriteLine("dMdv x : " + dMdv.x + " y " + dMdv.y + " z " + dMdv.z);
                 this.m_BumpTexture.Bump(u, v, out float dhdu, out float dhdv);
-
+                //Console.WriteLine("dhdu " + dhdu + " dhdv " + dhdv);
+                
                 return N + K * ((dMdu ^ (N * dhdv)) + ((N * dhdu) ^ dMdv));
             }
             else
@@ -291,7 +299,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 10, 1, 100);
+                finalColor = PathTracer(PixelPosition, u, v, 50, 1, 100);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -373,6 +381,7 @@ namespace Projet_IMA
             //V3 N = this.getNormal(PixelPosition);
 
             V3 N = getBumpedNormal(PixelPosition, u, v);
+            
             Couleur total = new Couleur(0, 0, 0);
             for (int i = 0; i < nbVectors; i++)
             {
