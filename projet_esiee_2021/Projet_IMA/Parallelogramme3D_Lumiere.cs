@@ -28,7 +28,7 @@
         /// <param name="coefficient_speculaire"></param>
         /// <param name="puissance_speculaire"></param>
         /// <param name="coefficient_bumpmap"></param>
-        public Parallelogramme3D_Lumiere(Couleur couleur, V3 centre, V3 longueur, V3 largeur, Texture texture, Texture bump_texture, float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre,longueur,largeur,texture,bump_texture,coefficient_diffus,coefficient_speculaire,puissance_speculaire)
+        public Parallelogramme3D_Lumiere(V3 centre, V3 longueur, V3 largeur, Couleur couleur, float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre,longueur,largeur,null,null,coefficient_diffus,coefficient_speculaire,puissance_speculaire)
         {
             m_Couleur = couleur;
         }

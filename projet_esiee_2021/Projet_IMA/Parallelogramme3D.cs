@@ -50,7 +50,7 @@
         /// <param name="coefficient_speculaire"></param>
         /// <param name="puissance_speculaire"></param>
         /// <param name="coefficient_bumpmap"></param>
-        public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Texture texture, Texture bump_texture, float coefficient_diffus = 1f, float coefficient_speculaire = .001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
+        public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Texture texture=null, Texture bump_texture=null, float coefficient_diffus = 1f, float coefficient_speculaire = .001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
         {
             m_Longueur = longueur;
             m_Largeur = largeur;
@@ -140,6 +140,7 @@
             }
             else
             {
+
                 return false;
             }
         }
