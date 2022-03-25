@@ -55,7 +55,7 @@ namespace Projet_IMA
             int Profondeur = 1000;
             Parallelogramme3D Sol2 = new Parallelogramme3D(new V3(0, 0, 0), new V3(Largeur, 0, 0), new V3(0,Profondeur, 0), Texture.s_White, bump_texture_murs);
             Parallelogramme3D SolLumiere2 = new Parallelogramme3D_Lumiere( new V3(0, 0, 0), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), new Couleur(1, 1, 1));
-            Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(0, 0, Hauteur), new V3(0, -Profondeur, 0), Texture.s_Red);
+            Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0, 0, 0), new V3(0, Profondeur, 0), new V3(0, 0, Hauteur), Texture.s_Green);
             Parallelogramme3D MurFond2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), new V3(0, 0, Hauteur), Texture.s_Blue, bump_texture_murs);
             Parallelogramme3D MurDroit2 = new Parallelogramme3D(new V3(Largeur, Profondeur, 0), new V3(0, -Profondeur, 0), new V3(0, 0, Hauteur), Texture.s_Red, bump_texture_murs);
             Parallelogramme3D Plafond2 = new Parallelogramme3D(new V3(0, 0, Hauteur), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), Texture.s_Purple, Texture.s_Purple);

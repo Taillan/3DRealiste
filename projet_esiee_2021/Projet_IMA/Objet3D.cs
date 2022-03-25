@@ -150,8 +150,8 @@ namespace Projet_IMA
             double theta = 2 * IMA.PI * rnd.NextDouble();
             double phi = Math.Acos(2 * rnd.NextDouble() - 1.0);
             double x = Math.Sin(theta) * Math.Cos(phi);
-            double y = Math.Cos(theta);
-            double z = Math.Sin(phi) * Math.Sin(theta);
+            double y = Math.Sin(phi) * Math.Sin(theta);
+            double z = Math.Cos(theta);
             vec = new V3((float)x, (float)y, (float)z);
             vec.Normalize();
             return vec;
