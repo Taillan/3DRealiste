@@ -160,7 +160,7 @@
                     int x_ecran = (int)(PixelPosition.x);
                     int y_ecran = (int)(PixelPosition.z);
 
-                    BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(PixelPosition, u, v, RenderMode.SIMPLE));
+                    //BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(PixelPosition, u, v, RenderMode.SIMPLE));
                 }
             }
         }

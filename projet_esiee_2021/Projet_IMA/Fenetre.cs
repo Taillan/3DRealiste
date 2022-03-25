@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Projet_IMA
 {
     public partial class Fenetre : Form
     {
+
+
         public Fenetre()
         {
             InitializeComponent();
-            pictureBox1.Image = BitmapEcran.Init(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Image = BitmapEcran.Init(pictureBox1.Width, pictureBox1.Height,pictureBox1);
         }
 
         public bool Checked()               { return showCheckBox.Checked;   }
@@ -35,6 +39,16 @@ namespace Projet_IMA
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// arrête les threads si fermeture de la fenêtre
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            BitmapEcran.Form1_FormClosing( sender, e);
         }
 
         private void Form1_Load(object sender, EventArgs e)

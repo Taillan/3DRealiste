@@ -34,6 +34,7 @@
             this.showCheckBox = new System.Windows.Forms.CheckBox();
             this.dark_mode_button = new System.Windows.Forms.RadioButton();
             this.white_mode_button = new System.Windows.Forms.RadioButton();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
