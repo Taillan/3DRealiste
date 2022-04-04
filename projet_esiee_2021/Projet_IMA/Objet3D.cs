@@ -275,7 +275,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 1, 1);
+                finalColor = PathTracer(PixelPosition, u, v, 2, 1);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -367,14 +367,14 @@ namespace Projet_IMA
                         {
                             DistanceIntersectionMax = DistanceIntersection;
                             if (objet.isLumiere()) {
-                                Lumiere lumiere = new Lumiere(R, objet.getCouleur(IntersectedPixel, u, v, RenderMode.SIMPLE));
+                                Lumiere lumiere = new Lumiere(R, objet.getCouleur(IntersectedPixel, u, v, RenderMode.PATH_TRACING));
                                 Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
                                 Couleur Speculaire = getCouleurSpeculaire(lumiere, PixelPosition, N, u, v);
                                 total = Diffus + Speculaire;
                             }
                             else
                             {
-                                total = objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f; //* .1f;
+                                total = objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f;
                                 if (total < .001f)
                                 {
                                     break;
