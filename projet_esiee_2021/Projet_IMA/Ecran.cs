@@ -265,9 +265,8 @@ namespace Projet_IMA
                     JobList.Add(new Point(x, y));
 
             // crée et lance le pool de threads
-            for (int i = 0; i < 4; i++)  // 4: nb de threads
+            for (int i = 0; i < 3; i++)  // 4: nb de threads
             {
-                Console.WriteLine("Debut thread " + i);
                 int idThread = i; // capture correctement la valeur de i pour le délégué ci-dessous
                 Thread T = new Thread(delegate () { FntThread(idThread); });
                 LThreads.Add(T);
@@ -298,19 +297,23 @@ namespace Projet_IMA
 
             Point CoordZone;
 
+            int[] Temps = { 0, 1000, 1500 ,2000 };
+            int MonTemps = Temps[idThread];
+
             // capture une zone dans la liste des zones à traiter
             while (JobList.TryTake(out CoordZone))
             {
-
+                Thread.Sleep(idThread * 1000);
                 Bitmap Bp = new Bitmap(LargeurZonePix, HauteurZonePix);
-                
+
+                Console.WriteLine("Debut thread " + idThread);
                 for (int x_ecran =0; x_ecran < LargeurZonePix; x_ecran++)
                 {
                     for (int y_ecran =0; y_ecran < HauteurZonePix; y_ecran++)
                     {
                         V3 PosPixScene = new V3(CoordZone.X + x_ecran, 0, s_HauteurEcran  - (CoordZone.Y + y_ecran));
                         V3 DirRayon = PosPixScene - s_CameraPosition;
-                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.SIMPLE);
+                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.PATH_TRACING);
                         DrawPixel(x_ecran, y_ecran, C,Bp,CoordZone);
                     }
                 }
@@ -322,13 +325,13 @@ namespace Projet_IMA
 
                 // renvoi les infos suffisantes dans un évènement pour que
                 // le thread principal puisse dessiner la région au bon endroit
-                var d = new MonDelegue(DrawInMainThread);
-                Console.WriteLine("Fin thread ");
+                var d = new SafeCallDelegate(DrawInMainThread);
+                Console.WriteLine("Fin thread " + idThread);
                 pictureBox1.Invoke(d, new object[] { CoordZone, Bp });
             }
         }
 
-        delegate void MonDelegue(Point P, Bitmap B);
+        delegate void SafeCallDelegate(Point P, Bitmap B);
 
 
 

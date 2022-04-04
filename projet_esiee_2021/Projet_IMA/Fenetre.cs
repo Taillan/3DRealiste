@@ -21,7 +21,7 @@ namespace Projet_IMA
 
         private void button1_Click(object sender, EventArgs e)
         {
-            BitmapEcran.RefreshScreen();
+            //BitmapEcran.RefreshScreen();
             ProjetEleve.Go();
             BitmapEcran.Show();          
         }
