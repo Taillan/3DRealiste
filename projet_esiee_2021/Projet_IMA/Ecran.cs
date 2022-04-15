@@ -204,7 +204,7 @@ namespace Projet_IMA
         /// Parcourt tous les pixels de l'Ecran et applique la méthode du RayCasting pour afficher tous les objets
         /// présents dans la scène
         /// </summary>
-        static internal void DrawAll()
+        static internal void DrawAll(RenderMode RM)
         {
             for (int x_ecran = 0; x_ecran <= s_LargeurEcran; x_ecran++)
             {
@@ -212,7 +212,8 @@ namespace Projet_IMA
                 {
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
                     V3 DirRayon = PosPixScene - s_CameraPosition;
-                    Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.PATH_TRACING);
+                    //Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.PATH_TRACING);
+                    Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RM);
                     DrawPixel(x_ecran, y_ecran, C);
                 }
             }
