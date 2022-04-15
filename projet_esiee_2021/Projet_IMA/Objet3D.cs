@@ -299,7 +299,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 50, 1, 100);
+                finalColor = PathTracer(PixelPosition, u, v, 1000, 1, 10);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -406,7 +406,7 @@ namespace Projet_IMA
                             }
                             else
                             {
-                                total += objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1, MaxPathTracerLevel)*.1f;
+                                total += objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1, MaxPathTracerLevel)*.15f;
                                 if (total < .0005f)
                                 {
                                     break;

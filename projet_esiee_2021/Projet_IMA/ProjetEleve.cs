@@ -15,6 +15,7 @@ namespace Projet_IMA
 
             List<Objet3D> Scene1 = new List<Objet3D>();
             List<Objet3D> Scene2 = new List<Objet3D>();
+            List<Objet3D> Scene3 = new List<Objet3D>();
 
             Lumiere KeyLumiere= new Lumiere(new V3(1, -.8f, 0), new Couleur(1, 1, 1) * .7f);
             Lumiere FillLumiere= new Lumiere(new V3(-1, -.8f, 0), new Couleur(255, 255, 255) * .3f);
@@ -85,10 +86,15 @@ namespace Projet_IMA
                 Scene2.Add(P);
             }
 
-            BitmapEcran.s_Objets = Scene2;
+            Parallelogramme3D LumierePlafond3 = new Parallelogramme3D_Lumiere(new V3((Largeur / 2)-100, -250, Hauteur - 1), new V3(0, 50, 0), new V3(50, 0, 0), new Couleur(1, 1, 1));
+
+            Scene3.Add(SphereOr);
+            Scene3.Add(LumierePlafond3);
+
+            BitmapEcran.s_Objets = Scene3;
 
             //RayCast
-            BitmapEcran.DrawAll();
+            BitmapEcran.DrawAll(RenderMode.PATH_TRACING);
         }
     }
 }
