@@ -353,37 +353,41 @@ namespace Projet_IMA
             int compt = 0;
             for (int i = 0; i < nbVectors; i++)
             {
-                V3 R;
-                do
+                  V3 R = getRandomV3();
+                 /* do
+                  {
+                      R = getRandomV3();
+                  } while (!(R * N == 0));*/
+                if((R * N <= 0))
                 {
-                    R = getRandomV3();
-                } while (!(R * N > 0));
-                float DistanceIntersectionMax = float.MaxValue;
-                foreach (Objet3D objet in BitmapEcran.s_Objets)
-                {
-                    if (objet.IntersectionRayon(PixelPosition, R, out float DistanceIntersection, out V3 IntersectedPixel, out float pU, out float pV))
-                    {
-                        if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
-                        {
-                            DistanceIntersectionMax = DistanceIntersection;
-                            if (objet.isLumiere()) {
-                                Lumiere lumiere = new Lumiere(R, objet.getCouleur(IntersectedPixel, u, v, RenderMode.PATH_TRACING));
-                                Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
-                                Couleur Speculaire = getCouleurSpeculaire(lumiere, PixelPosition, N, u, v);
-                                total = Diffus + Speculaire;
-                            }
-                            else
-                            {
-                                total = objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f;
-                                if (total < .001f)
-                                {
-                                    break;
-                                }
-                            }
-                            
-                        }
-                    }
+                    R = R;
                 }
+                    float DistanceIntersectionMax = float.MaxValue;
+                 foreach (Objet3D objet in BitmapEcran.s_Objets)
+                 {
+                     if (objet.IntersectionRayon(PixelPosition, R, out float DistanceIntersection, out V3 IntersectedPixel, out float pU, out float pV))
+                     {
+                         if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
+                         {
+                             DistanceIntersectionMax = DistanceIntersection;
+                             if (objet.isLumiere()) {
+                                 Lumiere lumiere = new Lumiere(R, objet.getCouleur(IntersectedPixel, u, v, RenderMode.PATH_TRACING));
+                                 Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
+                                 Couleur Speculaire = getCouleurSpeculaire(lumiere, PixelPosition, N, u, v);
+                                 total = Diffus + Speculaire;
+                             }
+                             else
+                             {
+                                 total = objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1)*.1f;
+                                 if (total < .001f)
+                                 {
+                                     break;
+                                 }
+                             }
+
+                         }
+                     }
+                 }
                 finalColor += total;
             }
             return finalColor/PathTracerLevel;
