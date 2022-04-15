@@ -54,20 +54,20 @@ namespace Projet_IMA
             int Hauteur = BitmapEcran.s_HauteurEcran;
             int Largeur = BitmapEcran.s_LargeurEcran;
             int Profondeur = 1000;
-            Parallelogramme3D Sol2 = new Parallelogramme3D(new V3(0, 0, 0), new V3(Largeur, 0, 0), new V3(0,Profondeur, 0), Texture.s_White, bump_texture_murs);
-            Parallelogramme3D SolLumiere2 = new Parallelogramme3D_Lumiere( new V3(0, 0, 0), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), new Couleur(1, 1, 1));
-            Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0, 0, 0), new V3(0, Profondeur, 0), new V3(0, 0, Hauteur), Texture.s_Green);
-            Parallelogramme3D MurFond2 = new Parallelogramme3D(new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), new V3(0, 0, Hauteur), Texture.s_Blue, bump_texture_murs);
-            Parallelogramme3D MurDroit2 = new Parallelogramme3D(new V3(Largeur, Profondeur, 0), new V3(0, -Profondeur, 0), new V3(0, 0, Hauteur), Texture.s_Red, bump_texture_murs);
-            Parallelogramme3D Plafond2 = new Parallelogramme3D(new V3(0, 0, Hauteur), new V3(0, Profondeur, 0), new V3(Largeur, 0, 0), Texture.s_Purple, Texture.s_Purple);
+            Parallelogramme3D Sol2 = new Parallelogramme3D(new V3(0f, 0f, 0f), new V3(Largeur, 0f, 0f), new V3(0f, Profondeur, 0f), Texture.s_White, bump_texture_murs);
+            Parallelogramme3D SolLumiere2 = new Parallelogramme3D_Lumiere( new V3(0f, 0f, 0f), new V3(0f, Profondeur, 0f), new V3(Largeur, 0f, 0f), new Couleur(1, 1, 1));
+            Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0f, 0f, 0f), new V3(0f, Profondeur, 0f), new V3(0f, 0f, Hauteur), Texture.s_Green);
+            Parallelogramme3D MurFond2 = new Parallelogramme3D(new V3(0f, Profondeur, 0f), new V3(Largeur, 0f, 0f), new V3(0f, 0f, Hauteur), Texture.s_Blue, bump_texture_murs);
+            Parallelogramme3D MurDroit2 = new Parallelogramme3D(new V3(Largeur, Profondeur, 0f), new V3(0f, -Profondeur, 0f), new V3(0f, 0f, Hauteur), Texture.s_Red, bump_texture_murs);
+            Parallelogramme3D Plafond2 = new Parallelogramme3D(new V3(0f, 0f, Hauteur), new V3(0f, Profondeur, 0f), new V3(Largeur, 0f, 0f), Texture.s_Purple, Texture.s_Purple);
             Sphere3D SphereOr2 = new Sphere3D(new V3(300, Profondeur-100, 300), 100, gold, gold);
             Sphere3D SphereStone2 = new Sphere3D(new V3(800, 200, 400), 70, stone2, bump_texture);
             Sphere3D_Lumiere SphereLumiere2 = new Sphere3D_Lumiere(new V3(100, Profondeur/4, Hauteur-100), 100, new Couleur(1, 1, 1));
             Sphere3D_Lumiere SphereLumiere3 = new Sphere3D_Lumiere(new V3(870, 200, 60), 60, new Couleur(1, 1, 1));
             Sphere3D SphereVerte2 = new Sphere3D(new V3(780, 250, 50), 50, Texture.s_Green);
-            Parallelogramme3D LumierePlafond2 = new Parallelogramme3D_Lumiere(new V3((Largeur/2)-200, (Profondeur/2)-200, Hauteur-1), new V3(0, 400, 0), new V3(400, 0, 0), new Couleur(1, 1, 1));
+            Parallelogramme3D LumierePlafond2 = new Parallelogramme3D_Lumiere(new V3((Largeur/2)-200, (Profondeur/2)-200, Hauteur-1), new V3(0f, 400, 0f), new V3(400, 0f, 0f), new Couleur(1, 1, 1));
             Sphere3D SphereRouge2 = new Sphere3D(new V3(120, Profondeur-60, 60), 60, Texture.s_Red);
-            Parallelepipede3D CubeViolet2 = new Parallelepipede3D(new V3(50,Profondeur/2.1f, 0), new V3(0, 100, 0), new V3(100, 0, 0), new V3(0, 0, 100), Texture.s_Purple, Texture.s_Purple);
+            Parallelepipede3D CubeViolet2 = new Parallelepipede3D(new V3(50,Profondeur/2.1f, 0f), new V3(0f, 100, 0f), new V3(100, 0f, 0f), new V3(0f, 0f, 100), Texture.s_Purple, Texture.s_Purple);
             //Scene2.Add(SolLumiere2);
             Scene2.Add(Sol2);
             Scene2.Add(MurGauche2);
@@ -91,7 +91,7 @@ namespace Projet_IMA
             Scene3.Add(SphereOr);
             Scene3.Add(LumierePlafond3);
 
-            BitmapEcran.s_Objets = Scene3;
+            BitmapEcran.s_Objets = Scene2;
 
             //RayCast
             BitmapEcran.DrawAll(RenderMode.PATH_TRACING);
