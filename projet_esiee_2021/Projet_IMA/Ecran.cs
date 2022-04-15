@@ -294,7 +294,7 @@ namespace Projet_IMA
         /// <param name="idThread"></param>
         private static void FntThread(int idThread)
         {
-
+            Random aleatoire = new Random();
             Point CoordZone;
 
             //int[] Temps = { 0, 1000, 1500 ,2000 };
@@ -303,26 +303,27 @@ namespace Projet_IMA
             // capture une zone dans la liste des zones à traiter
             while (JobList.TryTake(out CoordZone))
             {
-                Thread.Sleep(idThread * 1000);
+                //Thread.Sleep((idThread+1) * 500*aleatoire.Next(4));
                 Bitmap Bp = new Bitmap(LargeurZonePix, HauteurZonePix);
 
-                Console.WriteLine("Debut thread " + idThread +" : "+ CoordZone.X+","+ CoordZone.Y);
+                //Console.WriteLine("Debut thread         " + idThread + " : " + CoordZone.X + "," + CoordZone.Y + " time:" + DateTime.Now);
+                Console.WriteLine("Debut thread         " + idThread + " time:" + DateTime.Now);
                 for (int x_ecran =0; x_ecran < LargeurZonePix; x_ecran++)
                 {
                     for (int y_ecran =0; y_ecran < HauteurZonePix; y_ecran++)
                     {
                         V3 PosPixScene = new V3(CoordZone.X + x_ecran, 0, s_HauteurEcran  - (CoordZone.Y + y_ecran));
                         V3 DirRayon = PosPixScene - s_CameraPosition;
-                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.PATH_TRACING);
+                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.SIMPLE);
                         DrawPixel(x_ecran, y_ecran, C,Bp,CoordZone);
                     }
                 }
 
-                Console.WriteLine("RayCast thread fin " + idThread);
+                Console.WriteLine("RayCast thread fin   " + idThread + " time: " + DateTime.Now);
                 var d = new SafeCallDelegate(DrawInMainThread);
-                Console.WriteLine("Fin thread " + idThread);
+                Console.WriteLine("Fin thread           " + idThread + " time: " + DateTime.Now);
                 pictureBox1.Invoke(d, new object[] { CoordZone, Bp });
-                Console.WriteLine("Invoke thread " + idThread);
+                Console.WriteLine("Invoke thread        " + idThread + " time: " + DateTime.Now);
             }
         }
 
