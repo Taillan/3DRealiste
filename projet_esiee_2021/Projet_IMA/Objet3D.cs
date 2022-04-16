@@ -143,18 +143,39 @@ namespace Projet_IMA
         /// pour calculer des potentielles intersections avec une lampe.
         /// </summary>
         /// <returns>Retourne un vecteur aléatoire normalisé</returns>
-        private V3 getRandomV3()
+        private V3 getRandomVector()
         {
-            Random rnd = Program.s_Random;
+            //Random rnd = Program.s_Random;
             V3 vec;
-            double theta = 2 * IMA.PI * rnd.NextDouble();
-            double phi = Math.Acos(2 * rnd.NextDouble() - 1.0);
+            double theta = 2 * Math.PI * Program.s_Random.NextDouble();
+            double phi = Math.Acos(2 * Program.s_Random.NextDouble() - 1.0);
             double x = Math.Sin(theta) * Math.Cos(phi);
             double y = Math.Sin(phi) * Math.Sin(theta);
             double z = Math.Cos(theta);
+            /*double y = Program.s_Random.Next(-1, 1);
+            double phi = 2 * Math.PI * Program.s_Random.Next(0, 1);
+            double x = Math.Sqrt(1 - y * y) * Math.Cos(phi);
+            double z = Math.Sqrt(1 - y * y) * Math.Sin(phi);*/
             vec = new V3((float)x, (float)y, (float)z);
             vec.Normalize();
             return vec;
+        }
+
+        /// <summary>
+        /// Permet d'obtenir un vecteur aléatoire normalisé. Utilisé dans plusieurs méthodes
+        /// notamment le PathTracer, pour permettre de générer un vecteur aléatoire depuis un point
+        /// pour calculer des potentielles intersections avec une lampe.
+        /// </summary>
+        /// <returns>Retourne un vecteur aléatoire normalisé</returns>
+        private V3 getRandomVectorInHemisphere(V3 N)
+        {
+            V3 vec = getRandomVector();
+            if (vec * N < 0)
+            {
+                vec = -vec;
+            }
+            return vec;
+
         }
         /// <summary>
         /// Renvoie la couleur ambiante du pixel correspondant aux coordonnées de la texture de l'objet.
@@ -288,7 +309,7 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 100, 1, 10);
+                finalColor = PathTracer(PixelPosition, u, v, 500);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -360,24 +381,16 @@ namespace Projet_IMA
         /// <param name="PathTracerLevel">Niveau actuel du rebond du path tracing</param>
         /// <param name="MaxPathTracerLevel">Nombre de niveaux de rebonds maximum pour le PathTracing</param>
         /// <returns>Retourne la couleur du pixel passé en paramètre en utilisant le PathTracing</returns>
-        public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors, int PathTracerLevel, int MaxPathTracerLevel)
+        public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors)
         {
             Couleur finalColor = new Couleur(0, 0, 0);
-            if (PathTracerLevel >= MaxPathTracerLevel)
-            {
-                return finalColor;
-            }
 
             V3 N = getBumpedNormal(PixelPosition, u, v);
             
             Couleur total = new Couleur(0, 0, 0);
             for (int i = 0; i < nbVectors; i++)
             {
-                V3 R;
-                do
-                {
-                    R = getRandomV3();
-                } while (!(R * N > 0));
+                V3 R = getRandomVectorInHemisphere(N);
                 float DistanceIntersectionMax = float.MaxValue;
                 foreach (Objet3D objet in BitmapEcran.s_Objets)
                 {
@@ -387,24 +400,21 @@ namespace Projet_IMA
                         {
                             DistanceIntersectionMax = DistanceIntersection;
                             if (objet.isLumiere()) {
-                                Lumiere lumiere = new Lumiere(R, objet.getCouleur(IntersectedPixel, u, v, RenderMode.PATH_TRACING));
-                                Couleur Diffus = getCouleurDiffuse(lumiere, N, u, v);
-                                Couleur Speculaire = getCouleurSpeculaire(lumiere, PixelPosition, N, u, v);
-                                total = Diffus + Speculaire;
+                                total = objet.getCouleurPixel(pU, pV)*2f;
                             }
                             else
                             {
-                                total += objet.PathTracer(IntersectedPixel, u, v, 1, PathTracerLevel + 1, MaxPathTracerLevel)*.125f;
-                                if (total < .0005f)
-                                {
-                                    break;
-                                }
+                                Lumiere lumiere_locale = new Lumiere(R, objet.getCouleurPixel(pU, pV));
+                                Couleur Diffus = getCouleurDiffuse(lumiere_locale, N, u, v);
+                                Couleur Speculaire = getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v);
+                                total = (Diffus + Speculaire);
                             }
                             
                         }
                     }
                 }
-                finalColor += total;
+                Lumiere lumiere_totale = new Lumiere(R, total);
+                finalColor += getCouleurDiffuse(lumiere_totale, N, u, v) + getCouleurSpeculaire(lumiere_totale, PixelPosition, N, u, v);
             }
             return finalColor/(float)nbVectors;
         }
