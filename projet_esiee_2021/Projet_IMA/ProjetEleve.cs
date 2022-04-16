@@ -75,8 +75,8 @@ namespace Projet_IMA
             Scene2.Add(Plafond2);
             Scene2.Add(SphereStone2);
             Scene2.Add(SphereOr2);
-            Scene2.Add(SphereLumiere2);
-            Scene2.Add(SphereLumiere3);
+            //Scene2.Add(SphereLumiere2);
+            //Scene2.Add(SphereLumiere3);
             Scene2.Add(SphereVerte2);
             Scene2.Add(SphereRouge2);
             Scene2.Add(LumierePlafond2);
