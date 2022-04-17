@@ -112,10 +112,10 @@ namespace Projet_IMA
             Scene3.Add(SphereOr3);
             Scene3.Add(LumierePlafond3);
 
-            BitmapEcran.s_Objets = Scene3;
+            BitmapEcran.s_Objets = Scene2;
 
             //RayCast
-            BitmapEcran.DrawAll(RenderMode.PATH_TRACING);
+            BitmapEcran.DrawAll(RenderMode.PATH_TRACING,1);
         }
     }
 }
