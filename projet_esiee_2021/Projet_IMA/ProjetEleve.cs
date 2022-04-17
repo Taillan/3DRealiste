@@ -17,23 +17,29 @@ namespace Projet_IMA
             List<Objet3D> Scene2 = new List<Objet3D>();
             List<Objet3D> Scene3 = new List<Objet3D>();
 
-            Lumiere KeyLumiere= new Lumiere(new V3(1, -.8f, 0), new Couleur(1, 1, 1) * .7f);
-            Lumiere FillLumiere= new Lumiere(new V3(-1, -.8f, 0), new Couleur(255, 255, 255) * .3f);
-            
-            //BitmapEcran.Lumieres.Add(FillLumiere);
+            /* Coordonnées fixes utiles pour la scène */
+            int Hauteur = BitmapEcran.s_HauteurEcran;
+            int Largeur = BitmapEcran.s_LargeurEcran;
+            int Profondeur = 1000;
+            V3 Milieu = new V3(BitmapEcran.s_LargeurEcran / 2, 0f, 0f);
+            V3 MilieuStart = Milieu - new V3(Largeur / 2, 0f, 0f);
+            V3 MilieuEnd = Milieu + new V3(Largeur / 2, 0f, 0f);
+
+            /* Lumières utilisées par le SIMPLE RENDER et le VPL */
+            Lumiere KeyLumiere= new Lumiere(new V3(0, 0, 1f), new Couleur(1, 1, 1),new V3(Largeur/2,Profondeur/2,Hauteur-.2f));
             BitmapEcran.s_Lumieres.Add(KeyLumiere);
 
+            /* Textures */
             Texture gold = new Texture("gold.jpg");
             Texture texture_murs = new Texture("brick01.jpg");
-
             Texture texture2 = new Texture("caillou.jpg");
             Texture texture3 = new Texture("rock.jpg");
             Texture stone2 = new Texture("stone2.jpg");
             Texture wood = new Texture("wood.jpg");
-
             Texture bump_texture = new Texture("bump38.jpg");
             Texture bump_texture_murs = new Texture("brick01.jpg");
 
+            /* SCENE1 */
             Parallelogramme3D MurGauche = new Parallelogramme3D(new V3(0, 0, 0), new V3(200, 300, 300), new V3(0, 0, 300), texture_murs, bump_texture_murs);
             Parallelogramme3D MurFond = new Parallelogramme3D(new V3(200, 300, 300), new V3(800, 0, 0), new V3(0, 0, 300), texture_murs, bump_texture_murs);
             Parallelogramme3D Sol = new Parallelogramme3D(new V3(0, 0, 0), new V3(1000, 0, 0), new V3(0, 300, 300), stone2, stone2);
@@ -43,7 +49,6 @@ namespace Projet_IMA
             Sphere3D_Lumiere SphereLumiere = new Sphere3D_Lumiere(new V3(300, 0, 300), 100, new Couleur(1, 1, 1));
             Parallelogramme3D_Lumiere MurMilieuLumiere = new Parallelogramme3D_Lumiere(new V3(600, 0, 0), new V3(200, 300, 250), new V3(0, 0, 250), new Couleur(1, 1, 1));
             Sphere3D SphereStone = new Sphere3D(new V3(900, 200, 400), 70, stone2, bump_texture);
-
             Scene1.Add(SolLumiere);
             Scene1.Add(MurGauche);
             Scene1.Add(MurFond);
@@ -51,9 +56,7 @@ namespace Projet_IMA
             Scene1.Add(SphereStone);
             Scene1.Add(SphereOr);
 
-            int Hauteur = BitmapEcran.s_HauteurEcran;
-            int Largeur = BitmapEcran.s_LargeurEcran;
-            int Profondeur = 1000;
+            /* SCENE2 */
             Parallelogramme3D Sol2 = new Parallelogramme3D(new V3(0f, 0f, 0f), new V3(Largeur, 0f, 0f), new V3(0f, Profondeur, 0f), Texture.s_White);
             Parallelogramme3D SolLumiere2 = new Parallelogramme3D_Lumiere( new V3(0f, 0f, 0f), new V3(0f, Profondeur, 0f), new V3(Largeur, 0f, 0f), new Couleur(1, 1, 1));
             Parallelogramme3D MurGauche2 = new Parallelogramme3D(new V3(0f, 0f, 0f), new V3(0f, Profondeur, 0f), new V3(0f, 0f, Hauteur), Texture.s_Red);
@@ -66,7 +69,7 @@ namespace Projet_IMA
             Sphere3D_Lumiere SphereLumiere2 = new Sphere3D_Lumiere(new V3(100, Profondeur/4, Hauteur-100), 100, new Couleur(1, 1, 1));
             Sphere3D_Lumiere SphereLumiere3 = new Sphere3D_Lumiere(new V3(870, 200, 60), 60, new Couleur(1, 1, 1));
             Sphere3D SphereVerte2 = new Sphere3D(new V3(780, 250, 50), 50, Texture.s_Green);
-            Parallelogramme3D LumierePlafond2 = new Parallelogramme3D_Lumiere(new V3((Largeur/2)-200, (Profondeur/2)-200, Hauteur-1), new V3(0f, 400, 0f), new V3(400, 0f, 0f), new Couleur(1, 1, 1));
+            Parallelogramme3D LumierePlafond2 = new Parallelogramme3D_Lumiere(new V3((Largeur/2)-200, (Profondeur/2)-200, Hauteur-0.1f), new V3(0f, 400, 0f), new V3(400, 0f, 0f), new Couleur(1, 1, 1));
             Sphere3D SphereRouge2 = new Sphere3D(new V3(120, Profondeur-60, 60), 60, Texture.s_Red);
             Parallelepipede3D CubeViolet2 = new Parallelepipede3D(new V3(50,Profondeur/2.1f, 0f), new V3(0f, 100, 0f), new V3(100, 0f, 0f), new V3(0f, 0f, 100), Texture.s_Purple, Texture.s_Purple);
             Parallelepipede3D Parrallelepipede2 = new Parallelepipede3D(new V3(10, Profondeur / 2.5f, 0f), new V3(0f, 100, 0f), new V3(100, 0f, 0f), new V3(0f, 0f, 400), Texture.s_Purple);
@@ -84,11 +87,16 @@ namespace Projet_IMA
             Scene2.Add(SphereVerte2);
             Scene2.Add(SphereRouge2);
             Scene2.Add(LumierePlafond2);
+            foreach (Parallelogramme3D P in Parrallelepipede2.m_Faces)
+            {
+                Scene2.Add(P);
+            }
 
+            /* SCENE3 */
             Largeur = BitmapEcran.s_LargeurEcran-200;
-            V3 Milieu = new V3(BitmapEcran.s_LargeurEcran / 2, 0f, 0f);
-            V3 MilieuStart = Milieu - new V3(Largeur/2, 0f, 0f);
-            V3 MilieuEnd = Milieu + new V3(Largeur / 2, 0f, 0f);
+            Milieu = new V3(BitmapEcran.s_LargeurEcran / 2, 0f, 0f);
+            MilieuStart = Milieu - new V3(Largeur/2, 0f, 0f);
+            MilieuEnd = Milieu + new V3(Largeur / 2, 0f, 0f);
             Parallelogramme3D Sol3 = new Parallelogramme3D(MilieuStart, new V3(Largeur, 0f, 0f), new V3(0f, Profondeur, 0f), Texture.s_White);
             Parallelogramme3D MurGauche3 = new Parallelogramme3D(MilieuStart, new V3(0f, Profondeur, 0f), new V3(0f, 0f, Hauteur), Texture.s_Red);
             Parallelogramme3D MurDroit3 = new Parallelogramme3D(MilieuEnd, new V3(0f, 0f, Hauteur), new V3(0f, Profondeur, 0f), Texture.s_Green);
@@ -102,20 +110,19 @@ namespace Projet_IMA
             {
                 Scene3.Add(P);
             }
-
             Scene3.Add(Sol3);
             Scene3.Add(MurGauche3);
             Scene3.Add(MurFond3);
             Scene3.Add(MurDroit3);
             Scene3.Add(Plafond3);
-
             Scene3.Add(SphereOr3);
             Scene3.Add(LumierePlafond3);
 
+            /* Ajout de la scène voulue */
             BitmapEcran.s_Objets = Scene2;
 
-            //RayCast
-            BitmapEcran.DrawAll(RenderMode.PATH_TRACING,1);
+            /* Fonction d'affichage */
+            BitmapEcran.DrawAll(RenderMode.VPL,PathTracerLevel:1,VPL_LEVEL:1000);
         }
     }
 }

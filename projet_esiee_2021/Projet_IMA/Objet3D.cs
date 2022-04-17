@@ -124,7 +124,7 @@ namespace Projet_IMA
         /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
         /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
         /// <returns>Couleur du pixel pointé</returns>
-        protected virtual Couleur getCouleurPixel(float u, float v)
+        public virtual Couleur getCouleurPixel(float u, float v)
         {
             if (m_Texture != null)
             {
@@ -135,42 +135,6 @@ namespace Projet_IMA
                 return new Couleur(1, 1, 1);
             }
             
-        }
-
-        /// <summary>
-        /// Permet d'obtenir un vecteur aléatoire normalisé. Utilisé dans plusieurs méthodes
-        /// notamment le PathTracer, pour permettre de générer un vecteur aléatoire depuis un point
-        /// pour calculer des potentielles intersections avec une lampe.
-        /// </summary>
-        /// <returns>Retourne un vecteur aléatoire normalisé</returns>
-        private V3 getRandomVector()
-        {
-            V3 vec;
-            double theta = 2 * Math.PI * Program.s_Random.NextDouble();
-            double phi = Math.Acos(2 * Program.s_Random.NextDouble() - 1.0);
-            double x = Math.Sin(theta) * Math.Cos(phi);
-            double y = Math.Sin(phi) * Math.Sin(theta);
-            double z = Math.Cos(theta);
-            vec = new V3((float)x, (float)y, (float)z);
-            vec.Normalize();
-            return vec;
-        }
-
-        /// <summary>
-        /// Permet d'obtenir un vecteur aléatoire normalisé. Utilisé dans plusieurs méthodes
-        /// notamment le PathTracer, pour permettre de générer un vecteur aléatoire depuis un point
-        /// pour calculer des potentielles intersections avec une lampe.
-        /// </summary>
-        /// <returns>Retourne un vecteur aléatoire normalisé</returns>
-        private V3 getRandomVectorInHemisphere(V3 N)
-        {
-            V3 vec = getRandomVector();
-            if (vec * N < 0)
-            {
-                vec = -vec;
-            }
-            return vec;
-
         }
         /// <summary>
         /// Renvoie la couleur ambiante du pixel correspondant aux coordonnées de la texture de l'objet.
@@ -250,7 +214,7 @@ namespace Projet_IMA
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
         /// <returns>Normale bumpée du pixel actuel</returns>
-        private V3 getBumpedNormal(V3 PixelPosition, float u, float v)
+        public V3 getBumpedNormal(V3 PixelPosition, float u, float v)
         {
             V3 N = getNormal(PixelPosition);
             if (this.m_BumpTexture != null)
@@ -385,7 +349,7 @@ namespace Projet_IMA
             Couleur total = new Couleur(0, 0, 0);
             for (int i = 0; i < nbVectors; i++)
             {
-                V3 R = getRandomVectorInHemisphere(N);
+                V3 R = V3.getRandomVectorInHemisphere(N);
                 float DistanceIntersectionMax = float.MaxValue;
                 foreach (Objet3D objet in BitmapEcran.s_Objets)
                 {

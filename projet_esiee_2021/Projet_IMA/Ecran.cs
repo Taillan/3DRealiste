@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 namespace Projet_IMA
 {
     enum ModeAff { SLOW_MODE, FULL_SPEED};
-    enum RenderMode { SIMPLE, PATH_TRACING };
+    enum RenderMode { SIMPLE, PATH_TRACING, VPL };
 
     class BitmapEcran
     {
@@ -112,6 +112,37 @@ namespace Projet_IMA
             }
         }
 
+        static private void SetVirtualPointLights(int VPL_LEVEL, List<Objet3D> objets)
+        {
+            List <Lumiere> MainLumieres = new List<Lumiere>();
+            foreach(Lumiere lumiere in s_Lumieres)
+            {
+                MainLumieres.Add(lumiere);
+            }
+            foreach(Lumiere lumiere in MainLumieres)
+            {
+                V3 PositionLumiere = lumiere.m_Position;
+                for (int i = 0; i < VPL_LEVEL; i++)
+                {
+                    V3 DirectionLumiere = V3.getRandomVectorInHemisphere(lumiere.m_NormalizedDirection);
+                    Lumiere newLumiere = new Lumiere(DirectionLumiere,lumiere.m_Couleur,PositionLumiere);
+                    float DistanceIntersectionMax = float.MaxValue;
+                    foreach (Objet3D objet in objets)
+                    {
+                        if (objet.IntersectionRayon(PositionLumiere, DirectionLumiere, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
+                        {
+                            if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
+                            {
+                                DistanceIntersectionMax = DistanceIntersection;
+                                newLumiere = new Lumiere(V3.getRandomVectorInHemisphere(objet.getBumpedNormal(PixelPosition,u,v)), objet.getCouleurPixel(u, v)*.2f, PixelPosition);
+                            }
+                        }
+                    }
+                    s_Lumieres.Add(newLumiere);
+                }
+            }
+        }
+
         /// <summary>
         /// Retourne la couleur associée au pixel pointé par le rayon passé en paramètre
         /// Utilise la méthode du ray casting pour n'afficher que les pixels visibles par la caméra
@@ -120,7 +151,7 @@ namespace Projet_IMA
         /// <param name="DirectionRayon">Direction du rayon utilisé pour le raycasting</param>
         /// <param name="objets">Liste des objets de la scène</param>
         /// <returns>Couleur associée au pixel pointé par le rayon</returns>
-        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets, RenderMode RM, int PathTracerLevel)
+        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets, RenderMode RM, int PathTracerLevel, int VPL_LEVEL)
         {
             float DistanceIntersectionMax = float.MaxValue;
             Couleur finalColor = background;
@@ -204,15 +235,23 @@ namespace Projet_IMA
         /// Parcourt tous les pixels de l'Ecran et applique la méthode du RayCasting pour afficher tous les objets
         /// présents dans la scène
         /// </summary>
-        static internal void DrawAll(RenderMode RM, int PathTracerLevel = 1)
+        /// <param name="RM">Mode d'affichage voulu (Simple, VPL, PathTracer, RayTracer?)</param>
+        /// <param name="PathTracerLevel">Échantillonage du PathTracer</param>
+        /// <param name="VPL_LEVEL">Nombre de lumières de niveau 2 à créer en mode d'affichage VPL</param>
+        static internal void DrawAll(RenderMode RM, int PathTracerLevel = 1, int VPL_LEVEL = 1)
         {
+            if (RM == RenderMode.VPL)
+            {
+                RM = RenderMode.SIMPLE;
+                SetVirtualPointLights(VPL_LEVEL, s_Objets);
+            }
             for (int x_ecran = 0; x_ecran <= s_LargeurEcran; x_ecran++)
             {
                 for (int y_ecran = 0; y_ecran <= s_HauteurEcran; y_ecran++)
                 {
                     V3 PosPixScene = new V3(x_ecran, 0, y_ecran);
                     V3 DirRayon = PosPixScene - s_CameraPosition;
-                    Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RM, PathTracerLevel);
+                    Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RM, PathTracerLevel, VPL_LEVEL);
                     DrawPixel(x_ecran, y_ecran, C);
                 }
             }
