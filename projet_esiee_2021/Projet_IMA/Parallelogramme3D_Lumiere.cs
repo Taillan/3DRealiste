@@ -52,7 +52,7 @@
         /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
         /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
         /// <returns>Couleur du pixel pointé</returns>
-        protected override Couleur getCouleurPixel(float u, float v)
+        public override Couleur getCouleurPixel(float u, float v)
         {
             return m_Couleur;
         }
