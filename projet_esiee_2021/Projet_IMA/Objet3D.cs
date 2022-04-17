@@ -145,17 +145,12 @@ namespace Projet_IMA
         /// <returns>Retourne un vecteur aléatoire normalisé</returns>
         private V3 getRandomVector()
         {
-            //Random rnd = Program.s_Random;
             V3 vec;
             double theta = 2 * Math.PI * Program.s_Random.NextDouble();
             double phi = Math.Acos(2 * Program.s_Random.NextDouble() - 1.0);
             double x = Math.Sin(theta) * Math.Cos(phi);
             double y = Math.Sin(phi) * Math.Sin(theta);
             double z = Math.Cos(theta);
-            /*double y = Program.s_Random.Next(-1, 1);
-            double phi = 2 * Math.PI * Program.s_Random.Next(0, 1);
-            double x = Math.Sqrt(1 - y * y) * Math.Cos(phi);
-            double z = Math.Sqrt(1 - y * y) * Math.Sin(phi);*/
             vec = new V3((float)x, (float)y, (float)z);
             vec.Normalize();
             return vec;
@@ -304,12 +299,12 @@ namespace Projet_IMA
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
         /// <returns>Couleur totale du pixel passé en paramètre</returns>
-        public virtual Couleur getCouleur(V3 PixelPosition, float u, float v, RenderMode RM)
+        public virtual Couleur getCouleur(V3 PixelPosition, float u, float v, RenderMode RM, int PathTracerLevel)
         {
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 500);
+                finalColor = PathTracer(PixelPosition, u, v, PathTracerLevel);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -405,9 +400,7 @@ namespace Projet_IMA
                             else
                             {
                                 Lumiere lumiere_locale = new Lumiere(R, objet.getCouleurPixel(pU, pV));
-                                Couleur Diffus = getCouleurDiffuse(lumiere_locale, N, u, v);
-                                Couleur Speculaire = getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v);
-                                total = (Diffus + Speculaire);
+                                total = (getCouleurDiffuse(lumiere_locale, N, u, v) + getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v));
                             }
                             
                         }
