@@ -4,8 +4,8 @@ using System.Drawing.Imaging;
 
 namespace Projet_IMA
 {
-    enum ModeAff { SLOW_MODE, FULL_SPEED};
-    enum RenderMode { SIMPLE, PATH_TRACING, VPL };
+    enum ModeAff { SLOW_MODE, FULL_SPEED };
+    enum RenderMode { SIMPLE, PATH_TRACING, VPL, RAY_TRACING };
 
     class BitmapEcran
     {

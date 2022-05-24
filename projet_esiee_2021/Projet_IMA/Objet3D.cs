@@ -40,6 +40,15 @@ namespace Projet_IMA
         /// Ecart entre le placement des pixels de l'objet. Plus l'écart est grand, moins de pixels seront dessinés
         /// </summary>
         protected float m_Pas { get; set; }
+        /// <summary>
+        /// Coefficient de réflexion entre 0 et 1 utilisé uniquement dans le Ray Tracing
+        /// </summary>
+        private float m_CoefReflexionRt { get; set; }
+        /// <summary>
+        /// Coefficient de réflexion entre 0 et 1 utilisé uniquement dans le Ray Tracing
+        /// </summary>
+        private float m_CoefRefractionRt { get; set; }
+
         #endregion
 
         #region Constructeur
@@ -54,7 +63,9 @@ namespace Projet_IMA
         /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
         /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé</param>
         /// <param name="pas">Ecart entre le placement des pixels de l'objet. Plus l'écart est grand, moins de pixels seront dessinés</param>
-        public Objet3D(V3 centre, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap, float pas)
+        /// <param name="coef_reflexion_rt">Coefficient de réflexion entre 0 et 1 utilisé uniquement dans le Ray Tracing</param>
+        /// <param name="coef_refraction_rt">Coefficient de réfraction entre 0 et 1 utilisé uniquement dans le Ray Tracing</param>
+        public Objet3D(V3 centre, Texture texture, Texture bump_texture, float coefficient_diffus, float coefficient_speculaire, float puissance_speculaire, float coefficient_bumpmap, float pas, float coef_reflexion_rt=0, float coef_refraction_rt=0)
         {
             m_CentreObjet = centre;
             m_CoefficientDiffus = coefficient_diffus;
@@ -64,6 +75,8 @@ namespace Projet_IMA
             m_BumpTexture = bump_texture;
             m_CoefficientBumpMap = coefficient_bumpmap;
             m_Pas = pas;
+            m_CoefReflexionRt = coef_reflexion_rt;
+            m_CoefRefractionRt = coef_refraction_rt;
         }
         #endregion
 
@@ -270,6 +283,10 @@ namespace Projet_IMA
             {
                 finalColor = PathTracer(PixelPosition, u, v, PathTracerLevel);
             }
+            else if (RM == RenderMode.RAY_TRACING)
+            {
+                finalColor = RayTracer(PixelPosition, u, v);
+            }
             else if (RM == RenderMode.SIMPLE)
             {
                 finalColor = SimpleRender(PixelPosition, u, v);
@@ -337,8 +354,6 @@ namespace Projet_IMA
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
         /// <param name="nbVectors">Nombre de vecteurs aléatoires utilisés pour trouver une intersection</param>
-        /// <param name="PathTracerLevel">Niveau actuel du rebond du path tracing</param>
-        /// <param name="MaxPathTracerLevel">Nombre de niveaux de rebonds maximum pour le PathTracing</param>
         /// <returns>Retourne la couleur du pixel passé en paramètre en utilisant le PathTracing</returns>
         public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors)
         {
@@ -374,6 +389,31 @@ namespace Projet_IMA
                 finalColor += getCouleurDiffuse(lumiere_totale, N, u, v) + getCouleurSpeculaire(lumiere_totale, PixelPosition, N, u, v);
             }
             return finalColor/(float)nbVectors;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PixelPosition">Pixel dont on veut obtenir la couleur</param>
+        /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
+        /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
+        /// <param name="RecursiveLevel">Niveau récursif maximum</param>
+        /// <returns>Retourne la couleur du pixel passé en paramètre en utilisant le RayTracing</returns>
+        public Couleur RayTracer(V3 PixelPosition, float u, float v, int RecursiveLevel = 0)
+        {
+            
+            if (RecursiveLevel < 5)
+            {
+                Couleur finalColor = new Couleur(0, 0, 0);
+                V3 N = getBumpedNormal(PixelPosition, u, v);
+
+                return finalColor;
+            }
+            else
+            {
+                return Couleur.s_Void;
+            }
+            
         }
 
         /// <summary>

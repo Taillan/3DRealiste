@@ -45,12 +45,14 @@
         /// <param name="hauteur">Hauteur de l'objet</param>
         /// <param name="lumiere">Lumiere applique à l'objet</param>
         /// <param name="texture">Texture applique à l'objet</param>
-        /// <param name="bump_texture"></param>
-        /// <param name="coefficient_diffus"></param>
-        /// <param name="coefficient_speculaire"></param>
-        /// <param name="puissance_speculaire"></param>
-        /// <param name="coefficient_bumpmap"></param>
-        public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Texture texture=null, Texture bump_texture=null, float coefficient_diffus = 1f, float coefficient_speculaire = .001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
+        /// <param name="bump_texture">Texture de bump appliquée sur la sphère</param>
+        /// <param name="coefficient_diffus">Coefficient de diffus de la sphère, plus le coefficient est faible, plus le diffus sera "fondu"</param>
+        /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
+        /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
+        /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
+        /// <param name="coef_reflexion_rt">Coefficient de réflexion entre 0 et 1 utilisé uniquement dans le Ray Tracing</param>
+        /// <param name="coef_refraction_rt">Coefficient de réfraction entre 0 et 1 utilisé uniquement dans le Ray Tracing</param>
+        public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Texture texture=null, Texture bump_texture=null, float coefficient_diffus = 1f, float coefficient_speculaire = .001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f, float coef_reflexion_rt = 0, float coef_refraction_rt = 0) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas, coef_reflexion_rt, coef_refraction_rt)
         {
             m_Longueur = longueur;
             m_Largeur = largeur;

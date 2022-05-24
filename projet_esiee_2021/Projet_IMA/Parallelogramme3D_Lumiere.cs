@@ -21,14 +21,8 @@
         /// <param name="longueur">Longueur de l'objet</param>
         /// <param name="largeur">Largeur de l'objet</param>
         /// <param name="hauteur">Hauteur de l'objet</param>
-        /// <param name="lumiere">Lumiere applique à l'objet</param>
-        /// <param name="texture">Texture applique à l'objet</param>
-        /// <param name="bump_texture"></param>
-        /// <param name="coefficient_diffus"></param>
-        /// <param name="coefficient_speculaire"></param>
-        /// <param name="puissance_speculaire"></param>
-        /// <param name="coefficient_bumpmap"></param>
-        public Parallelogramme3D_Lumiere(V3 centre, V3 longueur, V3 largeur, Couleur couleur, float coefficient_diffus = 0.006f, float coefficient_speculaire = .0001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre,longueur,largeur,null,null,coefficient_diffus,coefficient_speculaire,puissance_speculaire)
+        /// <param name="Couleur">Couleur de la lumière</param>
+        public Parallelogramme3D_Lumiere(V3 centre, V3 longueur, V3 largeur, Couleur couleur) : base(centre,longueur,largeur,null,null,0,0,0)
         {
             m_Couleur = couleur;
         }

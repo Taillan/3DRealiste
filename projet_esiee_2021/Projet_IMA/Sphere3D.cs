@@ -26,7 +26,9 @@ namespace Projet_IMA
         /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
         /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
         /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
-        public Sphere3D(V3 centre, float rayon, Texture texture = null, Texture bump_texture = null, float coefficient_diffus = 1f, float coefficient_speculaire = .5f, float puissance_speculaire=50, float coefficient_bumpmap=.005f, float pas=.005f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
+        /// <param name="coef_reflexion_rt">Coefficient de réflexion entre 0 et 1 utilisé uniquement dans le Ray Tracing</param>
+        /// <param name="coef_refraction_rt">Coefficient de réfraction entre 0 et 1 utilisé uniquement dans le Ray Tracing</param>
+        public Sphere3D(V3 centre, float rayon, Texture texture = null, Texture bump_texture = null, float coefficient_diffus = 1f, float coefficient_speculaire = .5f, float puissance_speculaire=50, float coefficient_bumpmap=.005f, float pas=.005f, float coef_reflexion_rt = 0, float coef_refraction_rt = 0) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas, coef_reflexion_rt, coef_refraction_rt)
         {
             this.m_Rayon = rayon;
         }

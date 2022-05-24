@@ -122,7 +122,7 @@ namespace Projet_IMA
             BitmapEcran.s_Objets = Scene2;
 
             /* Fonction d'affichage */
-            BitmapEcran.DrawAll(RenderMode.VPL,PathTracerLevel:1,VPL_LEVEL:1000);
+            BitmapEcran.DrawAll(RenderMode.PATH_TRACING,PathTracerLevel:15,VPL_LEVEL:1);
         }
     }
 }
