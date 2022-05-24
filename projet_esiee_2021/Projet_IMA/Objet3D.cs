@@ -392,7 +392,7 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// 
+        /// Fonction permettant de camcimer 
         /// </summary>
         /// <param name="PixelPosition">Pixel dont on veut obtenir la couleur</param>
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
