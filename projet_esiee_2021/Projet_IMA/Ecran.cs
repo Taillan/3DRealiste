@@ -67,6 +67,7 @@ namespace Projet_IMA
 
         #region MultiThrad
 
+
         /// <summary>
         /// liste de tous les threads
         /// </summary>
@@ -165,11 +166,14 @@ namespace Projet_IMA
         /// <param name="DirectionRayon">Direction du rayon utilisé pour le raycasting</param>
         /// <param name="objets">Liste des objets de la scène</param>
         /// <returns>Couleur associée au pixel pointé par le rayon</returns>
-        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets, RenderMode RM)
+        static private Couleur RayCast( V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets, RenderMode RM)
         {
+            
+            List<Objet3D> copy = new List<Objet3D>(objets);
+
             float DistanceIntersectionMax = float.MaxValue;
             Couleur finalColor = background;
-            foreach (Objet3D objet in objets)
+            foreach (Objet3D objet in copy)
             {
                 if (objet.IntersectionRayon(PositionCamera, DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
                 {
@@ -265,7 +269,7 @@ namespace Projet_IMA
                     JobList.Add(new Point(x, y));
 
             // crée et lance le pool de threads
-            for (int i = 0; i < 2 ; i++)  // 4: nb de threads
+            for (int i = 0; i < 6 ; i++)  // 4: nb de threads
             {
                 int idThread = i; // capture correctement la valeur de i pour le délégué ci-dessous
                 Thread T = new Thread(delegate () { FntThread(idThread); });
@@ -297,15 +301,11 @@ namespace Projet_IMA
             Random aleatoire = new Random();
             Point CoordZone;
 
-            //int[] Temps = { 0, 1000, 1500 ,2000 };
-            //int MonTemps = Temps[idThread];
-
             // capture une zone dans la liste des zones à traiter
             while (JobList.TryTake(out CoordZone))
             {
                 Bitmap Bp = new Bitmap(LargeurZonePix, HauteurZonePix);
 
-                //Console.WriteLine("Debut thread         " + idThread + " : " + CoordZone.X + "," + CoordZone.Y + " time:" + DateTime.Now);
                 Console.WriteLine("Debut thread         " + idThread + " time:" + DateTime.Now);
                 for (int x_ecran =0; x_ecran < LargeurZonePix; x_ecran++)
                 {
@@ -315,9 +315,7 @@ namespace Projet_IMA
                         V3 DirRayon = PosPixScene - s_CameraPosition;
                         Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, RenderMode.PATH_TRACING);
                         DrawPixel(x_ecran, y_ecran, C,Bp,CoordZone);
-                        //Console.WriteLine("thread " + idThread + "  y_ecran :    "+ y_ecran+ "  time:   " + DateTime.Now);
                     }
-                    //Console.WriteLine("thread " + idThread + "  x_ecran :    " + x_ecran + "    time:   " + DateTime.Now);
                 }
 
                 Console.WriteLine("RayCast thread fin   " + idThread + "    time:   " + DateTime.Now);

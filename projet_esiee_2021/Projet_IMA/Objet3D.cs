@@ -137,10 +137,10 @@ namespace Projet_IMA
         /// <returns>Retourne un vecteur aléatoire normalisé</returns>
         private V3 getRandomVector()
         {
-            Random rnd = Program.s_Random;
+
             V3 vec;
-            double theta = 2 * IMA.PI * rnd.NextDouble();
-            double phi = Math.Acos(2 * rnd.NextDouble() - 1.0);
+            double theta = 2 * IMA.PI * Program.random.Value.NextDouble();
+            double phi = Math.Acos(2 * Program.random.Value.NextDouble() - 1.0);
             double x = Math.Sin(theta) * Math.Cos(phi);
             double y = Math.Cos(theta);
             double z = Math.Sin(phi) * Math.Sin(theta);
@@ -282,10 +282,11 @@ namespace Projet_IMA
         /// <returns>Couleur totale du pixel passé en paramètre</returns>
         public virtual Couleur getCouleur(V3 PixelPosition, float u, float v, RenderMode RM)
         {
+            
             Couleur finalColor = new Couleur(0,0,0);
             if (RM==RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 1);
+                finalColor = PathTracer(PixelPosition, u, v, 50);
             }
             else if (RM == RenderMode.SIMPLE)
             {
@@ -304,7 +305,6 @@ namespace Projet_IMA
         private Couleur SimpleRender(V3 PixelPosition, float u, float v)
         {
             Couleur finalColor = Couleur.s_Void;
-            Random rnd = Program.s_Random;
             //Paramètrage du SoftShadow
             //n = nombre de rayon calculé
             //Alpha = taille du tilt
@@ -319,7 +319,7 @@ namespace Projet_IMA
 
                 for (int i = 0; i < n; i++)
                 {
-                    V3 r = new V3((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble());
+                    V3 r = new V3((float)Program.random.Value.NextDouble(), (float)Program.random.Value.NextDouble(), (float)Program.random.Value.NextDouble());
                     r.Normalize();
                     V3 ShadowVector = lumiere.m_Direction + Alpha * r;
                     ShadowVector.Normalize();
@@ -384,7 +384,7 @@ namespace Projet_IMA
                                 Couleur Speculaire = getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v);
                                 total = (Diffus + Speculaire);
                             }
-
+                            
                         }
                     }
                 }

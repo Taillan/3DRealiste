@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Projet_IMA
@@ -12,7 +13,9 @@ namespace Projet_IMA
         /// <summary>
         /// Générateur de nombres pseudo-aléatoires
         /// </summary>
-        public static Random s_Random = new Random();
+        public static int seed = Environment.TickCount;
+        public static readonly ThreadLocal<Random> random = new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref seed)));
+
 
         /// <summary>
         /// Point d'entrée principal de l'application.
