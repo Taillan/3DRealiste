@@ -83,6 +83,7 @@
     <Compile Include="Fenetre.Designer.cs">
       <DependentUpon>Fenetre.cs</DependentUpon>
     </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="Lumiere.cs" />
     <Compile Include="Objet3D.cs" />
     <Compile Include="Parallelepipede3D.cs" />

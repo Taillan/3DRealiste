@@ -280,15 +280,15 @@ namespace Projet_IMA
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
         /// <returns>Couleur totale du pixel passé en paramètre</returns>
-        public virtual Couleur getCouleur(V3 PixelPosition, float u, float v, RenderMode RM)
+        public virtual Couleur getCouleur(V3 PixelPosition, float u, float v, Global.RenderMode RM, int PathTracerLevel=0)
         {
             
             Couleur finalColor = new Couleur(0,0,0);
-            if (RM==RenderMode.PATH_TRACING)
+            if (RM==Global.RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, 50);
+                finalColor = PathTracer(PixelPosition, u, v, PathTracerLevel);
             }
-            else if (RM == RenderMode.SIMPLE)
+            else if (RM == Global.RenderMode.SIMPLE)
             {
                 finalColor = SimpleRender(PixelPosition, u, v);
             }

@@ -66,7 +66,7 @@
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
         /// <returns></returns>
-        public override Couleur getCouleur(V3 PixelPosition, float u, float v, RenderMode RM)
+        public override Couleur getCouleur(V3 PixelPosition, float u, float v, Global.RenderMode RM, int PathTracerLevel = 0)
         {
             return m_Couleur;
         }
