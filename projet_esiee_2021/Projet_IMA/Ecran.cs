@@ -12,21 +12,7 @@ namespace Projet_IMA
 
     class BitmapEcran
     {
-        /// <summary>
-        /// Nombre de rayons
-        /// </summary>
-        readonly int rayon = Global.NbRayonsPT;
-
-        /// <summary>
-        /// Nombre de threads
-        /// </summary>
-        readonly int thread = Global.NbThreads;
-
-        /// <summary>
-        /// Force l'affiche tous les xx pix
-        /// </summary>
-        const int refresh_every = 1000; // force l'affiche tous les xx pix
-
+        #region Attributs
         /// <summary>
         /// Image bitmap générée par l'affichage de tous les objets
         /// </summary>
@@ -62,7 +48,9 @@ namespace Projet_IMA
         /// </summary>
         static internal List<Objet3D> s_Objets { get; set; }
 
-        #region MultiThrad
+        #endregion
+
+        #region Attributs MultiThrad
 
 
         /// <summary>
