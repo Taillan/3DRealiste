@@ -8,8 +8,6 @@ using System.Windows.Forms;
 
 namespace Projet_IMA
 {
-    enum ModeAff { SLOW_MODE, FULL_SPEED};
-
     class BitmapEcran
     {
         #region Attributs
