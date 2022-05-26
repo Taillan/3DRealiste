@@ -5,7 +5,7 @@
         /// <summary>
         /// Nombre de rayons utilisés pour le Path Tracing
         /// </summary>
-        public static int NbRayonsPT;
+        public static int OptionsValue;
         /// <summary>
         /// Nombre de threads utilisés pour le multithreading
         /// </summary>

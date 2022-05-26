@@ -24,16 +24,6 @@ namespace Projet_IMA
             BitmapEcran.Show();          
         }
 
-        private void dark_mode_button_CheckedChanged(object sender, EventArgs e)
-        {
-            BitmapEcran.setBackground(new Couleur(0, 0, 0));
-        }
-
-        private void white_mode_button_CheckedChanged(object sender, EventArgs e)
-        {
-            BitmapEcran.setBackground(new Couleur(255, 255, 255));
-        }
-
         /// <summary>
         /// arrête les threads si fermeture de la fenêtre
         /// </summary>
@@ -116,12 +106,12 @@ namespace Projet_IMA
             Console.WriteLine(rayon);
             if (optionsTextBox.Text.Length != 0)
             {
-                Global.NbRayonsPT = int.Parse(optionsTextBox.Text);
+                Global.OptionsValue = int.Parse(optionsTextBox.Text);
                 renderButton.Enabled = true;
             }
             else
             {
-                Global.NbRayonsPT = 0;
+                Global.OptionsValue = 0;
                 renderButton.Enabled = false;
             }
         }

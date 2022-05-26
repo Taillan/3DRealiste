@@ -31,8 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fenetre));
             this.renderButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.dark_mode_button = new System.Windows.Forms.RadioButton();
-            this.white_mode_button = new System.Windows.Forms.RadioButton();
             this.labelRayon = new System.Windows.Forms.Label();
             this.threadComboBox = new System.Windows.Forms.ComboBox();
             this.labelThread = new System.Windows.Forms.Label();
@@ -63,32 +61,6 @@
             this.pictureBox1.Size = new System.Drawing.Size(1275, 700);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            // 
-            // dark_mode_button
-            // 
-            this.dark_mode_button.AutoSize = true;
-            this.dark_mode_button.Checked = true;
-            this.dark_mode_button.Location = new System.Drawing.Point(783, 75);
-            this.dark_mode_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dark_mode_button.Name = "dark_mode_button";
-            this.dark_mode_button.Size = new System.Drawing.Size(95, 20);
-            this.dark_mode_button.TabIndex = 5;
-            this.dark_mode_button.TabStop = true;
-            this.dark_mode_button.Text = "Dark Mode";
-            this.dark_mode_button.UseVisualStyleBackColor = true;
-            this.dark_mode_button.CheckedChanged += new System.EventHandler(this.dark_mode_button_CheckedChanged);
-            // 
-            // white_mode_button
-            // 
-            this.white_mode_button.AutoSize = true;
-            this.white_mode_button.Location = new System.Drawing.Point(897, 75);
-            this.white_mode_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.white_mode_button.Name = "white_mode_button";
-            this.white_mode_button.Size = new System.Drawing.Size(100, 20);
-            this.white_mode_button.TabIndex = 6;
-            this.white_mode_button.Text = "White Mode";
-            this.white_mode_button.UseVisualStyleBackColor = true;
-            this.white_mode_button.CheckedChanged += new System.EventHandler(this.white_mode_button_CheckedChanged);
             // 
             // labelRayon
             // 
@@ -179,8 +151,6 @@
             this.Controls.Add(this.labelThread);
             this.Controls.Add(this.threadComboBox);
             this.Controls.Add(this.labelRayon);
-            this.Controls.Add(this.white_mode_button);
-            this.Controls.Add(this.dark_mode_button);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.renderButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -200,8 +170,6 @@
 
         private System.Windows.Forms.Button renderButton;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.RadioButton dark_mode_button;
-        private System.Windows.Forms.RadioButton white_mode_button;
         private System.Windows.Forms.Label labelRayon;
         private System.Windows.Forms.ComboBox threadComboBox;
         private System.Windows.Forms.Label labelThread;

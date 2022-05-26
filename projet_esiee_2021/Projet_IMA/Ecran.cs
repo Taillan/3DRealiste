@@ -17,11 +17,6 @@ namespace Projet_IMA
         static private Bitmap B;
 
         /// <summary>
-        /// Couleur du fond de la scène
-        /// </summary>
-        static private Couleur background;
-
-        /// <summary>
         /// Largeur de la fenêtre
         /// </summary>
         static internal int s_LargeurEcran { get; set; }
@@ -149,7 +144,7 @@ namespace Projet_IMA
         static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets)
         {
             float DistanceIntersectionMax = float.MaxValue;
-            Couleur finalColor = background;
+            Couleur finalColor = Couleur.s_Void;
             foreach (Objet3D objet in objets)
             {
                 if (objet.IntersectionRayon(PositionCamera, DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
@@ -189,8 +184,7 @@ namespace Projet_IMA
             int HautAff = s_HauteurEcran;
             if (Global.render_mode == Global.RenderMode.VPL)
             {
-                Global.render_mode = Global.RenderMode.SIMPLE;
-                SetVirtualPointLights(VPL_LEVEL, s_Objets);
+                SetVirtualPointLights(Global.OptionsValue, s_Objets);
             }
           
             //Initialise les composant pour le multithread
@@ -270,14 +264,6 @@ namespace Projet_IMA
         static internal void Show()
         {
             Program.MyForm.PictureBoxInvalidate();
-        }
-        /// <summary>
-        /// Permet de set la couleur de l'arrière-plan de l'écran en fonction de la couleur passée en paramètre
-        /// </summary>
-        /// <param name="c">Couleur de l'arrière-plan</param>
-        static internal void setBackground(Couleur c)
-        {
-            background = c;
         }
 
         /// <summary>

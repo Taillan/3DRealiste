@@ -104,8 +104,8 @@ namespace Projet_IMA
         public static V3 getRandomVector()
         {
             V3 vec;
-            double theta = 2 * Math.PI * Program.s_Random.NextDouble();
-            double phi = Math.Acos(2 * Program.s_Random.NextDouble() - 1.0);
+            double theta = 2 * Math.PI * Program.random.Value.NextDouble();
+            double phi = Math.Acos(2 * Program.random.Value.NextDouble() - 1.0);
             double x = Math.Sin(theta) * Math.Cos(phi);
             double y = Math.Sin(phi) * Math.Sin(theta);
             double z = Math.Cos(theta);

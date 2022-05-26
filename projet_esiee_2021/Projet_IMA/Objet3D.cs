@@ -293,9 +293,9 @@ namespace Projet_IMA
             Couleur finalColor = new Couleur(0,0,0);
             if (Global.render_mode==Global.RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, Global.NbRayonsPT);
+                finalColor = PathTracer(PixelPosition, u, v, Global.OptionsValue);
             }
-            else if (Global.render_mode == Global.RenderMode.SIMPLE)
+            else if ((Global.render_mode == Global.RenderMode.SIMPLE) || (Global.render_mode == Global.RenderMode.VPL))
             {
                 finalColor = SimpleRender(PixelPosition, u, v);
             }
