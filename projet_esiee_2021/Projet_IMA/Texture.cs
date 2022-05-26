@@ -135,9 +135,3 @@ namespace Projet_IMA
         #endregion
     }
 }
-
-
-
-// une pour les rayons
-// coeur
-//Rendermode enum

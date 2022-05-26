@@ -25,7 +25,7 @@
         /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
         /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
         /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
-        public Sphere3D(V3 centre, float rayon, Texture texture, Texture bump_texture, float coefficient_diffus = 1f, float coefficient_speculaire = .5f, float puissance_speculaire=50, float coefficient_bumpmap=.005f, float pas=.005f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
+        public Sphere3D(V3 centre, float rayon, Texture texture = null, Texture bump_texture = null, float coefficient_diffus = 1f, float coefficient_speculaire = .5f, float puissance_speculaire = 50, float coefficient_bumpmap = .005f, float pas = .005f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
         {
             this.m_Rayon = rayon;
         }
@@ -126,26 +126,6 @@
             return normal;
         }
 
-        /// <summary>
-        /// Fonction permettant de dessiner une Sphere3D dans son entièreté
-        /// </summary>
-        public override void Draw()
-        {
-            for (float u = 0; u < 2 * IMA.PI; u += m_Pas)
-            {
-                for (float v = -IMA.PI / 2; v < IMA.PI / 2; v += m_Pas)
-                {
-                    // Calcul des coordoonées dans la scène 3D
-                    V3 PixelPosition = getCoords(u,v);
-
-                    // Projection orthographique => repère écran
-                    int x_ecran = (int)(PixelPosition.x);
-                    int y_ecran = (int)(PixelPosition.z);
-
-                    //BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(PixelPosition,u,v, RenderMode.SIMPLE));
-                }
-            }
-        }
         #endregion
     }
 }

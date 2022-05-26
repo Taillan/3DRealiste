@@ -94,11 +94,6 @@ namespace Projet_IMA
         /// <returns>Normale du pixel passé en paramètre</returns>
         protected abstract V3 getNormal(V3 PixelPosition);
 
-        /// <summary>
-        /// Classe abstraite définissant comment dessiner l'objet héritant de cette classe
-        /// </summary>
-        /// <param name="pas">Écart entre chaque point tracé à l'écran</param>
-        public abstract void Draw();
           
         /// <summary>
         /// Permet de savoir si le rayon passé en paramètre rentre en intersection avec l'Objet3D.
@@ -239,12 +234,17 @@ namespace Projet_IMA
         private V3 getBumpedNormal(V3 PixelPosition, float u, float v)
         {
             V3 N = getNormal(PixelPosition);
-
-            float K = m_CoefficientBumpMap;
-            getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
-            this.m_BumpTexture.Bump(u, v, out float dhdu, out float dhdv);
-
-            return N + K * ((dMdu ^ (N * dhdv)) + ((N * dhdu) ^ dMdv));
+            if (this.m_BumpTexture != null)
+            {
+                float K = m_CoefficientBumpMap;
+                getDerivedCoords(u, v, out V3 dMdu, out V3 dMdv);
+                this.m_BumpTexture.Bump(u, v, out float dhdu, out float dhdv);
+                return N + K * ((dMdu ^ (N * dhdv)) + ((N * dhdu) ^ dMdv));
+            }
+            else
+            {
+                return N;
+            }
         }
 
         /// <summary>
@@ -280,15 +280,15 @@ namespace Projet_IMA
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
         /// <returns>Couleur totale du pixel passé en paramètre</returns>
-        public virtual Couleur getCouleur(V3 PixelPosition, float u, float v, Global.RenderMode RM, int PathTracerLevel=0)
+        public virtual Couleur getCouleur(V3 PixelPosition, float u, float v)
         {
             
             Couleur finalColor = new Couleur(0,0,0);
-            if (RM==Global.RenderMode.PATH_TRACING)
+            if (Global.render_mode==Global.RenderMode.PATH_TRACING)
             {
-                finalColor = PathTracer(PixelPosition, u, v, PathTracerLevel);
+                finalColor = PathTracer(PixelPosition, u, v, Global.NbRayonsPT);
             }
-            else if (RM == Global.RenderMode.SIMPLE)
+            else if (Global.render_mode == Global.RenderMode.SIMPLE)
             {
                 finalColor = SimpleRender(PixelPosition, u, v);
             }

@@ -45,20 +45,20 @@
         /// <param name="hauteur">Hauteur de l'objet</param>
         /// <param name="lumiere">Lumiere applique à l'objet</param>
         /// <param name="texture">Texture applique à l'objet</param>
-        /// <param name="bump_texture"></param>
-        /// <param name="coefficient_diffus"></param>
-        /// <param name="coefficient_speculaire"></param>
-        /// <param name="puissance_speculaire"></param>
-        /// <param name="coefficient_bumpmap"></param>
-        public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Texture texture, Texture bump_texture, float coefficient_diffus = 1f, float coefficient_speculaire = .001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
+        /// <param name="bump_texture">Texture de bump appliquée sur la sphère</param>
+        /// <param name="coefficient_diffus">Coefficient de diffus de la sphère, plus le coefficient est faible, plus le diffus sera "fondu"</param>
+        /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
+        /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
+        /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
+        public Parallelogramme3D(V3 centre, V3 longueur, V3 largeur, Texture texture = null, Texture bump_texture = null, float coefficient_diffus = 1f, float coefficient_speculaire = .001f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .001f) : base(centre, texture, bump_texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
         {
             m_Longueur = longueur;
             m_Largeur = largeur;
             m_Origine = centre;
             //m_Origine = centre - (1 / 2) * longueur - (1 / 2) * largeur;
-            m_Normale = getNormal(new V3(0,0,0));
+            m_Normale = getNormal(new V3(0, 0, 0));
             m_K = (m_Largeur ^ m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
-            m_K2 = (m_Longueur ^ - m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
+            m_K2 = (m_Longueur ^ -m_Normale) / ((m_Longueur ^ m_Largeur).Norm());
         }
         #endregion
 
@@ -141,27 +141,6 @@
             else
             {
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// Fonction permettant de dessiner un ParallelogrammeD dans son entièreté
-        /// </summary>
-        public override void Draw()
-        {
-            for (float u = 0; u < 1; u += m_Pas)
-            {
-                for (float v = 0; v < 1; v += m_Pas)
-                {
-                    V3 PixelPosition = getCoords(u, v);
-
-                    // projection orthographique => repère écran
-
-                    int x_ecran = (int)(PixelPosition.x);
-                    int y_ecran = (int)(PixelPosition.z);
-
-                    //BitmapEcran.DrawPixel(x_ecran, y_ecran, getCouleur(PixelPosition, u, v, RenderMode.SIMPLE));
-                }
             }
         }
         #endregion

@@ -9,41 +9,28 @@ using System.Windows.Forms;
 namespace Projet_IMA
 {
     enum ModeAff { SLOW_MODE, FULL_SPEED};
-    //enum RenderMode { SIMPLE, PATH_TRACING };
 
     class BitmapEcran
     {
         /// <summary>
         /// Nombre de rayons
         /// </summary>
-        readonly int rayon = Global.rayon;
+        readonly int rayon = Global.NbRayonsPT;
 
         /// <summary>
         /// Nombre de threads
         /// </summary>
-        readonly int thread = Global.thread;
+        readonly int thread = Global.NbThreads;
 
         /// <summary>
         /// Force l'affiche tous les xx pix
         /// </summary>
         const int refresh_every = 1000; // force l'affiche tous les xx pix
-        
-        /// <summary>
-        /// Comptage des pixels
-        /// </summary>
-        static int nb_pix = 0;
 
         /// <summary>
         /// Image bitmap générée par l'affichage de tous les objets
         /// </summary>
         static private Bitmap B;
-
-        /// <summary>
-        /// Mode d'affichage (SLOW_MODE pour voir la génération, FULL_SPEED pour que l'image s'affiche directement)
-        /// </summary>
-        static private ModeAff Mode;
-        static private int stride;
-        static private BitmapData data;
 
         /// <summary>
         /// Couleur du fond de la scène
@@ -84,20 +71,28 @@ namespace Projet_IMA
         static internal List<Thread> LThreads { get; set; }
 
         /// <summary>
-        /// largeur de la zone carrée
-        /// </summary>
-        static internal int LargZonePix { get; set; }
-
-        /// <summary>
-        /// liste des zones carré à traiter
+        /// Liste des zones carré à traiter
         /// </summary>
         static internal ConcurrentBag<Point> JobList { get; set; }
 
+        /// <summary>
+        /// Zone de dessin
+        /// </summary>
         static internal Graphics canvas;
 
+        /// <summary>
+        /// Image finale sur la fenêtre de l'application
+        /// </summary>
         static internal PictureBox pictureBox1;
 
+        /// <summary>
+        /// Largeur de la zone de travail d'un thread
+        /// </summary>
         static internal int LargeurZonePix { get; set; }
+
+        /// <summary>
+        /// Hauteur de la zone de travail d'un thread
+        /// </summary>
         static internal int HauteurZonePix { get; set; }
 
         #endregion
@@ -109,6 +104,7 @@ namespace Projet_IMA
         /// </summary>
         /// <param name="LargeurEcran">Largeur de l'Ecran</param>
         /// <param name="HauteurEcran">Hauteur de l'Ecran</param>
+        /// <param name="pictureBox">Zone de l'application où l'image sera créée</param>
         /// <returns>Image bitmap générée</returns>
         static internal Bitmap Init(int LargeurEcran, int HauteurEcran,PictureBox pictureBox)
         {
@@ -127,48 +123,6 @@ namespace Projet_IMA
         #region Méthodes privées
 
         /// <summary>
-        /// Dessine directement un pixel sans refresh_rate
-        /// </summary>
-        /// <param name="x">Coordonnées en abscisse de l'écran</param>
-        /// <param name="y">Coordonnées en ordonnées de l'écran</param>
-        /// <param name="c">Couleur du pixel</param>
-        static private void DrawFastPixel(int x, int y, Couleur c)
-        {
-            unsafe
-            {
-                byte RR, VV, BB;
-                c.check();
-                c.To255(out RR, out VV, out BB);
-
-                byte* ptr = (byte*)data.Scan0;
-                ptr[(x * 3) + y * stride] = BB;
-                ptr[(x * 3) + y * stride + 1] = VV;
-                ptr[(x * 3) + y * stride + 2] = RR;
-            }
-        }
-
-        /// <summary>
-        /// Dessine un pixel l'un après l'autre avec un refresh_rate pour voir la "génération" de la scène
-        /// </summary>
-        /// <param name="x">Coordonnées en abscisse de l'écran</param>
-        /// <param name="y">Coordonnées en ordonnées de l'écran</param>
-        /// <param name="c">Couleur du pixel</param>
-        static private void DrawSlowPixel(int x, int y, Couleur c,Bitmap Bp, Point CoordZone)
-        {
-            Color cc = c.Convertion();
-            Bp.SetPixel(x , y , cc);
-            //Bp.SetPixel(x - CoordZone.X, y - CoordZone.Y, cc);
-
-
-           // Program.MyForm.PictureBoxInvalidate();
-            /*nb_pix++;
-            if (nb_pix > refresh_every)  // force l'affichage à l'écran tous les 1000pix
-            {
-                nb_pix = 0;
-            }*/
-        }
-
-        /// <summary>
         /// Retourne la couleur associée au pixel pointé par le rayon passé en paramètre
         /// Utilise la méthode du ray casting pour n'afficher que les pixels visibles par la caméra
         /// </summary>
@@ -176,71 +130,22 @@ namespace Projet_IMA
         /// <param name="DirectionRayon">Direction du rayon utilisé pour le raycasting</param>
         /// <param name="objets">Liste des objets de la scène</param>
         /// <returns>Couleur associée au pixel pointé par le rayon</returns>
-        static private Couleur RayCast( V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets, Global.RenderMode RM)
+        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets)
         {
-            
-            List<Objet3D> copy = new List<Objet3D>(objets);
-
             float DistanceIntersectionMax = float.MaxValue;
             Couleur finalColor = background;
-            foreach (Objet3D objet in copy)
+            foreach (Objet3D objet in objets)
             {
                 if (objet.IntersectionRayon(PositionCamera, DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
                 {
                     if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
                     {
                         DistanceIntersectionMax = DistanceIntersection;
-                        finalColor = objet.getCouleur(PixelPosition, u, v, Global.render_mode, Global.rayon);
+                        finalColor = objet.getCouleur(PixelPosition, u, v);
                     }
                 }
             }
             return finalColor;
-        }
-
-        #endregion
-
-        #region Méthodes publiques
-        /// <summary>
-        /// Permet de raffraichir l'écran en y dessinant tous les pixels qui y ont été tracés
-        /// </summary>
-        static internal void RefreshScreen()
-        {
-            Couleur c = background;
-            if (Program.MyForm.Checked())
-            {
-                Mode = ModeAff.SLOW_MODE;
-                Graphics g = Graphics.FromImage(B);
-                Color cc = c.Convertion();
-                g.Clear(cc);
-            }
-            else
-            {
-                Mode = ModeAff.FULL_SPEED;
-                data = B.LockBits(new Rectangle(0, 0, B.Width, B.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-                stride = data.Stride;
-                for (int x = 0; x < s_LargeurEcran; x++)
-                    for (int y = 0; y < s_HauteurEcran; y++)
-                        DrawFastPixel(x, y, c);
-            }
-        }
-
-        /// <summary>
-        /// Affiche l'entièreté de la scène
-        /// </summary>
-        static internal void Show()
-        {
-            if (Mode == ModeAff.FULL_SPEED)
-                B.UnlockBits(data);
-
-            Program.MyForm.PictureBoxInvalidate();
-        }
-        /// <summary>
-        /// Permet de set la couleur de l'arrière-plan de l'écran en fonction de la couleur passée en paramètre
-        /// </summary>
-        /// <param name="c">Couleur de l'arrière-plan</param>
-        static internal void setBackground(Couleur c)
-        {
-            background = c;
         }
 
         /// <summary>
@@ -249,15 +154,13 @@ namespace Projet_IMA
         /// <param name="x">Coordonnées en abscisse de l'Ecran</param>
         /// <param name="y">Coordonnées en ordonnées de l'Ecran</param>
         /// <param name="c">Couleur du pixel qu'on veut dessiner</param>
-        internal static void DrawPixel(int x, int y, Couleur c,Bitmap B, Point CoordZone)
+        private static void DrawPixel(int x, int y, Couleur c,Bitmap B, Point CoordZone)
         {
-            int x_ecran = x;
-            int y_ecran = y;
-            
-
-            if ((x_ecran >= 0) && (x_ecran < s_LargeurEcran) && (y_ecran >= 0) && (y_ecran < s_HauteurEcran))
-                if (Mode == ModeAff.SLOW_MODE) DrawSlowPixel(x_ecran, y_ecran, c,B,  CoordZone);
-                else DrawFastPixel(x_ecran, y_ecran, c);
+            if ((x >= 0) && (x < s_LargeurEcran) && (y >= 0) && (y < s_HauteurEcran))
+            {
+                Color cc = c.Convertion();
+                B.SetPixel(x, y, cc);
+            }
         }
 
         /// <summary>
@@ -279,16 +182,14 @@ namespace Projet_IMA
                     JobList.Add(new Point(x, y));
 
             // crée et lance le pool de threads
-            for (int i = 0; i < 6 ; i++)  // 4: nb de threads
+            for (int i = 0; i <= Global.NbThreads ; i++)
             {
                 int idThread = i; // capture correctement la valeur de i pour le délégué ci-dessous
                 Thread T = new Thread(delegate () { FntThread(idThread); });
                 LThreads.Add(T);
                 T.Start();        // demarre le thread enfant
             }
-
         }
-
 
         /// <summary>
         /// fonction appelée dans le thread principal suite à l'envoi d'un évènement
@@ -302,10 +203,10 @@ namespace Projet_IMA
         }
 
         /// <summary>
-        /// methode déclenchée par chaque thread
+        /// Méthode déclenchée par chaque thread
         /// le code ci-dessous s'exécute dans les threads enfants
         /// </summary>
-        /// <param name="idThread"></param>
+        /// <param name="idThread">Id du thread</param>
         private static void FntThread(int idThread)
         {
             Random aleatoire = new Random();
@@ -323,7 +224,7 @@ namespace Projet_IMA
                     {
                         V3 PosPixScene = new V3(CoordZone.X + x_ecran, 0, s_HauteurEcran  - (CoordZone.Y + y_ecran));
                         V3 DirRayon = PosPixScene - s_CameraPosition;
-                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets, Global.render_mode);
+                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets);
                         DrawPixel(x_ecran, y_ecran, C,Bp,CoordZone);
                     }
                 }
@@ -338,9 +239,31 @@ namespace Projet_IMA
 
         delegate void SafeCallDelegate(Point P, Bitmap B);
 
+        #endregion
 
+        #region Méthodes publiques
 
-        // arrête les threads si fermeture de la fenêtre
+        /// <summary>
+        /// Affiche l'entièreté de la scène
+        /// </summary>
+        static internal void Show()
+        {
+            Program.MyForm.PictureBoxInvalidate();
+        }
+        /// <summary>
+        /// Permet de set la couleur de l'arrière-plan de l'écran en fonction de la couleur passée en paramètre
+        /// </summary>
+        /// <param name="c">Couleur de l'arrière-plan</param>
+        static internal void setBackground(Couleur c)
+        {
+            background = c;
+        }
+
+        /// <summary>
+        /// Arrête tous les threads si la fenêtre de l'application est fermée
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">Event fermeture</param>
         public static void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             foreach (Thread T in LThreads)

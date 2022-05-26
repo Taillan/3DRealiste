@@ -15,18 +15,12 @@
 
         #region Constructeurs
         /// <summary>
-        /// Constructeur d'une Sphere3D
+        /// Constructeur d'une Sphere3D lumiere
         /// </summary>
         /// <param name="centre">Centre de la sphère</param>
         /// <param name="rayon">Rayon de la sphère</param>
-        /// <param name="lumiere">Lumière appliquée sur la sphère</param>
-        /// <param name="texture">Texture appliquée sur la sphère</param>
-        /// <param name="bump_texture">Texture de bump appliquée sur la sphère</param>
-        /// <param name="coefficient_diffus">Coefficient de diffus de la sphère, plus le coefficient est faible, plus le diffus sera "fondu"</param>
-        /// <param name="coefficient_speculaire">Coefficient spéculaire, plus le coefficient est faible, plus le spéculaire sera "fondu"</param>
-        /// <param name="puissance_speculaire">Puissance spéculaire, plus la puissance est élevée, moins le spéculaire sera grand</param>
-        /// <param name="coefficient_bumpmap">Coefficient de Bump Mapping, plus il sera élevé, plus l'effet 3D sera élevé.</param>
-        public Sphere3D_Lumiere(Couleur couleur, V3 centre, float rayon, Texture texture, Texture bump_texture, float coefficient_diffus = .005f, float coefficient_speculaire = .00005f, float puissance_speculaire = 60, float coefficient_bumpmap = .005f, float pas = .005f) : base(centre,rayon, bump_texture, texture, coefficient_diffus, coefficient_speculaire, puissance_speculaire, coefficient_bumpmap, pas)
+        /// <param name="couleur">Couleur de la lumière</param>
+        public Sphere3D_Lumiere(V3 centre, float rayon, Couleur couleur) : base(centre, rayon, null, null, 0, 0, 0, 0, 0)
         {
             this.m_Couleur = couleur;
         }
@@ -63,8 +57,8 @@
         /// <param name="PixelPosition">Position du pixel sur l'Objet3D dont on veut connaître la couleur</param>
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
-        /// <returns></returns>
-        public override Couleur getCouleur(V3 PixelPosition, float u, float v, Global.RenderMode RM, int PathTracerLevel = 0 )
+        /// <returns>Couleur de la lumière</returns>
+        public override Couleur getCouleur(V3 PixelPosition, float u, float v)
         {
             return m_Couleur;
         }
