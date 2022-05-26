@@ -130,36 +130,6 @@ namespace Projet_IMA
                 return new Couleur(1, 1, 1);
             }
         }
-
-        /// <summary>
-        /// Permet d'obtenir un vecteur aléatoire normalisé. Utilisé dans plusieurs méthodes
-        /// notamment le PathTracer, pour permettre de générer un vecteur aléatoire depuis un point
-        /// pour calculer des potentielles intersections avec une lampe.
-        /// </summary>
-        /// <returns>Retourne un vecteur aléatoire normalisé</returns>
-        private V3 getRandomVector()
-        {
-
-            V3 vec;
-            double theta = 2 * IMA.PI * Program.random.Value.NextDouble();
-            double phi = Math.Acos(2 * Program.random.Value.NextDouble() - 1.0);
-            double x = Math.Sin(theta) * Math.Cos(phi);
-            double y = Math.Cos(theta);
-            double z = Math.Sin(phi) * Math.Sin(theta);
-            vec = new V3((float)x, (float)y, (float)z);
-            vec.Normalize();
-            return vec;
-        }
-
-        private V3 getRandomVectorInHemisphere(V3 N)
-        {
-            V3 vec = getRandomVector();
-            if (vec * N < 0)
-            {
-                vec = -vec;
-            }
-            return vec;
-        }
         /// <summary>
         /// Renvoie la couleur ambiante du pixel correspondant aux coordonnées de la texture de l'objet.
         /// </summary>
@@ -372,7 +342,7 @@ namespace Projet_IMA
             Couleur total = new Couleur(0, 0, 0);
             for (int i = 0; i < nbVectors; i++)
             {
-                V3 R = getRandomVectorInHemisphere(N);
+                V3 R = V3.getRandomVectorInHemisphere(N);
                 float DistanceIntersectionMax = float.MaxValue;
                 foreach (Objet3D objet in BitmapEcran.s_Objets)
                 {
@@ -383,7 +353,7 @@ namespace Projet_IMA
                             DistanceIntersectionMax = DistanceIntersection;
                             if (objet.isLumiere())
                             {
-                                total = objet.getCouleurPixel(pU, pV) * 2f;
+                                total = objet.getCouleurPixel(pU, pV)*3f;
                             }
                             else
                             {
@@ -397,7 +367,7 @@ namespace Projet_IMA
                 Lumiere lumiere_totale = new Lumiere(R, total);
                 finalColor += getCouleurDiffuse(lumiere_totale, N, u, v) + getCouleurSpeculaire(lumiere_totale, PixelPosition, N, u, v);
             }
-            return finalColor / (float)nbVectors;
+            return (finalColor / (float)nbVectors);
         }
 
         /// <summary>
