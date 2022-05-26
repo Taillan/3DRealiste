@@ -119,9 +119,16 @@ namespace Projet_IMA
         /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
         /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
         /// <returns>Couleur du pixel pointé</returns>
-        protected virtual Couleur getCouleurPixel(float u, float v)
+        public virtual Couleur getCouleurPixel(float u, float v)
         {
-            return m_Texture.LireCouleur(u, v);
+            if (m_Texture != null)
+            {
+                return m_Texture.LireCouleur(u, v);
+            }
+            else
+            {
+                return new Couleur(1, 1, 1);
+            }
         }
 
         /// <summary>
@@ -216,7 +223,7 @@ namespace Projet_IMA
             float RD = R * D;
             if ((RD) > 0)
             {
-                return lumiere.m_Couleur * getCouleurAmbiante(lumiere, u, v)  * (float)Math.Pow(RD, m_PuissanceSpeculaire); // *m_CoefficientSpeculaire
+                return lumiere.m_Couleur * getCouleurAmbiante(lumiere, u, v)  * (float)Math.Pow(RD, m_PuissanceSpeculaire) * m_CoefficientSpeculaire;
             }
             else
             {
@@ -231,7 +238,7 @@ namespace Projet_IMA
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
         /// <returns>Normale bumpée du pixel actuel</returns>
-        private V3 getBumpedNormal(V3 PixelPosition, float u, float v)
+        public V3 getBumpedNormal(V3 PixelPosition, float u, float v)
         {
             V3 N = getNormal(PixelPosition);
             if (this.m_BumpTexture != null)
@@ -353,14 +360,15 @@ namespace Projet_IMA
         /// <param name="PixelPosition">Pixel dont on veut obtenir la couleur</param>
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
-        /// <param name="PathTracerLevel"></param>
+        /// <param name="nbVectors">Nombre de vecteurs aléatoires utilisés pour trouver une intersection</param>
+        /// <param name="PathTracerLevel">Niveau actuel du rebond du path tracing</param>
+        /// <param name="MaxPathTracerLevel">Nombre de niveaux de rebonds maximum pour le PathTracing</param>
         /// <returns>Retourne la couleur du pixel passé en paramètre en utilisant le PathTracing</returns>
         public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors)
         {
             Couleur finalColor = new Couleur(0, 0, 0);
 
             V3 N = getBumpedNormal(PixelPosition, u, v);
-
             Couleur total = new Couleur(0, 0, 0);
             for (int i = 0; i < nbVectors; i++)
             {
@@ -380,9 +388,7 @@ namespace Projet_IMA
                             else
                             {
                                 Lumiere lumiere_locale = new Lumiere(R, objet.getCouleurPixel(pU, pV));
-                                Couleur Diffus = getCouleurDiffuse(lumiere_locale, N, u, v);
-                                Couleur Speculaire = getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v);
-                                total = (Diffus + Speculaire);
+                                total = (getCouleurDiffuse(lumiere_locale, N, u, v) + getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v));
                             }
                             
                         }

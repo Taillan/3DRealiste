@@ -46,7 +46,7 @@
         /// <param name="u">Position du vecteur u qui pointe sur le pixel de l'objet</param>
         /// <param name="v">Position du vecteur v qui pointe sur le pixel de l'objet</param>
         /// <returns>Couleur du pixel pointé</returns>
-        protected override Couleur getCouleurPixel(float u, float v)
+        public override Couleur getCouleurPixel(float u, float v)
         {
             return m_Couleur;
         }
@@ -59,7 +59,7 @@
         /// <param name="PixelPosition">Position du pixel sur l'Objet3D dont on veut connaître la couleur</param>
         /// <param name="u">Position des coordonnées en abscisses de la texture l'objet</param>
         /// <param name="v">Position des coordonnées en ordonnées de la texture l'objet</param>
-        /// <returns></returns>
+        /// <returns>Couleur de la lumière</returns>
         public override Couleur getCouleur(V3 PixelPosition, float u, float v)
         {
             return m_Couleur;

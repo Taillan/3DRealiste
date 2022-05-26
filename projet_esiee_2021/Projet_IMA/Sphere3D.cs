@@ -1,4 +1,5 @@
-﻿namespace Projet_IMA
+﻿using System;
+namespace Projet_IMA
 {
     /// <summary>
     /// Définit une sphère qu'on peut placer dans l'espace, héritant directement de la classe Objet3D.
@@ -58,6 +59,7 @@
         /// <param name="dMdv">Dérivée de M (position du point actuel) en fonction d v</param>
         protected override void getDerivedCoords(float u, float v, out V3 dMdu, out V3 dMdv)
         {
+            //Console.WriteLine("u " + u + " v " + v);
             float dxdu = m_Rayon * IMA.Cosf(v) * (-IMA.Sinf(u));
             float dxdv = m_Rayon * (-IMA.Sinf(v)) * IMA.Cosf(v);
 
@@ -66,6 +68,11 @@
 
             float dzdu = 0;
             float dzdv = m_Rayon * IMA.Cosf(v);
+
+            /*if (dxdu == float.NaN)
+            {
+                dxdu = 0;
+            }*/
 
             dMdu = new V3(dxdu, dydu, dzdu);
             dMdv = new V3(dxdv, dydv, dzdv);
@@ -107,8 +114,10 @@
                     PixelPosition = OrigineRayon + (t2 * DirectionRayon);
                     DistanceIntersection = t2;
                 }
-                v = -IMA.Asinf((PixelPosition.z - this.m_CentreObjet.z) / m_Rayon);
-                u = -IMA.Acosf((PixelPosition.x - this.m_CentreObjet.x) / (m_Rayon * IMA.Cosf(v)));
+                //v = -IMA.Asinf((PixelPosition.z - this.m_CentreObjet.z) / m_Rayon);
+                //u = -IMA.Acosf((PixelPosition.x - this.m_CentreObjet.x) / (m_Rayon * IMA.Cosf(v)));
+                IMA.Invert_Coord_Spherique(PixelPosition, m_Rayon, out u, out v);
+                //Console.WriteLine(" u intersection " + u);
                 return true;
             }
             return false;
@@ -125,7 +134,6 @@
             normal.Normalize();
             return normal;
         }
-
         #endregion
     }
 }

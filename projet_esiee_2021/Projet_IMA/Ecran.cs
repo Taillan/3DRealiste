@@ -92,7 +92,7 @@ namespace Projet_IMA
         /// <param name="HauteurEcran">Hauteur de l'Ecran</param>
         /// <param name="pictureBox">Zone de l'application où l'image sera créée</param>
         /// <returns>Image bitmap générée</returns>
-        static internal Bitmap Init(int LargeurEcran, int HauteurEcran,PictureBox pictureBox)
+        static internal Bitmap Init(int LargeurEcran, int HauteurEcran, PictureBox pictureBox)
         {
             pictureBox1 = pictureBox;
             LThreads = new List<Thread>();
@@ -107,6 +107,36 @@ namespace Projet_IMA
         #endregion
 
         #region Méthodes privées
+        static private void SetVirtualPointLights(int VPL_LEVEL, List<Objet3D> objets)
+        {
+            List <Lumiere> MainLumieres = new List<Lumiere>();
+            foreach(Lumiere lumiere in s_Lumieres)
+            {
+                MainLumieres.Add(lumiere);
+            }
+            foreach(Lumiere lumiere in MainLumieres)
+            {
+                V3 PositionLumiere = lumiere.m_Position;
+                for (int i = 0; i < VPL_LEVEL; i++)
+                {
+                    V3 DirectionLumiere = V3.getRandomVectorInHemisphere(lumiere.m_NormalizedDirection);
+                    Lumiere newLumiere = new Lumiere(DirectionLumiere,lumiere.m_Couleur,PositionLumiere);
+                    float DistanceIntersectionMax = float.MaxValue;
+                    foreach (Objet3D objet in objets)
+                    {
+                        if (objet.IntersectionRayon(PositionLumiere, DirectionLumiere, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
+                        {
+                            if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
+                            {
+                                DistanceIntersectionMax = DistanceIntersection;
+                                newLumiere = new Lumiere(V3.getRandomVectorInHemisphere(objet.getBumpedNormal(PixelPosition,u,v)), objet.getCouleurPixel(u, v)*.2f, PixelPosition);
+                            }
+                        }
+                    }
+                    s_Lumieres.Add(newLumiere);
+                }
+            }
+        }
 
         /// <summary>
         /// Retourne la couleur associée au pixel pointé par le rayon passé en paramètre
@@ -157,7 +187,12 @@ namespace Projet_IMA
         {
             int LargAff = s_LargeurEcran;
             int HautAff = s_HauteurEcran;
-
+            if (Global.render_mode == Global.RenderMode.VPL)
+            {
+                Global.render_mode = Global.RenderMode.SIMPLE;
+                SetVirtualPointLights(VPL_LEVEL, s_Objets);
+            }
+          
             //Initialise les composant pour le multithread
             LargeurZonePix = s_LargeurEcran / 10;
             HauteurZonePix = s_HauteurEcran / 10;

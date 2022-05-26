@@ -1,4 +1,5 @@
-﻿namespace Projet_IMA
+﻿using System;
+namespace Projet_IMA
 {
     /// <summary>
     /// Permet de définir un vecteur 3D avec une composante x pour la largeur, y pour la profondeur et z pour la hauteur
@@ -92,6 +93,42 @@
             x /= n;
             y /= n;
             z /= n;
+        }
+
+        /// <summary>
+        /// Permet d'obtenir un vecteur aléatoire normalisé. Utilisé dans plusieurs méthodes
+        /// notamment le PathTracer, pour permettre de générer un vecteur aléatoire depuis un point
+        /// pour calculer des potentielles intersections avec une lampe.
+        /// </summary>
+        /// <returns>Retourne un vecteur aléatoire normalisé</returns>
+        public static V3 getRandomVector()
+        {
+            V3 vec;
+            double theta = 2 * Math.PI * Program.s_Random.NextDouble();
+            double phi = Math.Acos(2 * Program.s_Random.NextDouble() - 1.0);
+            double x = Math.Sin(theta) * Math.Cos(phi);
+            double y = Math.Sin(phi) * Math.Sin(theta);
+            double z = Math.Cos(theta);
+            vec = new V3((float)x, (float)y, (float)z);
+            vec.Normalize();
+            return vec;
+        }
+
+        /// <summary>
+        /// Permet d'obtenir un vecteur aléatoire normalisé. Utilisé dans plusieurs méthodes
+        /// notamment le PathTracer, pour permettre de générer un vecteur aléatoire depuis un point
+        /// pour calculer des potentielles intersections avec une lampe.
+        /// </summary>
+        /// <returns>Retourne un vecteur aléatoire normalisé</returns>
+        public static V3 getRandomVectorInHemisphere(V3 N)
+        {
+            V3 vec = getRandomVector();
+            if (vec * N < 0)
+            {
+                vec = -vec;
+            }
+            return vec;
+
         }
         #endregion
 

@@ -73,6 +73,7 @@ namespace Projet_IMA
             Sphere3D SphereRouge2 = new Sphere3D(new V3(120, Profondeur - 60, 60), 60, Texture.s_Red);
             Parallelepipede3D CubeViolet2 = new Parallelepipede3D(new V3(50, Profondeur / 2.1f, 0f), new V3(0f, 100, 0f), new V3(100, 0f, 0f), new V3(0f, 0f, 100), Texture.s_Purple, Texture.s_Purple);
             Parallelepipede3D Parrallelepipede2 = new Parallelepipede3D(new V3(10, Profondeur / 2.5f, 0f), new V3(0f, 100, 0f), new V3(100, 0f, 0f), new V3(0f, 0f, 400), Texture.s_Purple);
+            
             //Scene2.Add(SolLumiere2);
             Scene2.Add(Sol2);
             Scene2.Add(MurGauche2);
@@ -161,9 +162,7 @@ namespace Projet_IMA
             {
                 BitmapEcran.s_Objets = Scene4;
             }
-            
-
-            //RayCast
+            /* Fonction d'affichage */
             BitmapEcran.DrawAll();
         }
     }

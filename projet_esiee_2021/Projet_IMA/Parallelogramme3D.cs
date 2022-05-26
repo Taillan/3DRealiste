@@ -108,6 +108,7 @@
         /// <returns>Normale du pixel passé en paramètre</returns>
         protected override V3 getNormal(V3 PixelPosition)
         {
+            
             V3 normal = m_Longueur ^ m_Largeur;
             normal.Normalize();
             return normal;
@@ -140,6 +141,7 @@
             }
             else
             {
+
                 return false;
             }
         }
