@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -102,7 +101,11 @@ namespace Projet_IMA
         #endregion
 
         #region Méthodes privées
-        static private void SetVirtualPointLights(int VPL_LEVEL, List<Objet3D> objets)
+        /// <summary>
+        /// Créée des VPL dans la scène si jamais le mode sélectionné est VPL
+        /// </summary>
+        /// <param name="VPL_LEVEL">Nombre de VPL voulus</param>
+        static private void SetVirtualPointLights(int VPL_LEVEL)
         {
             List <Lumiere> MainLumieres = new List<Lumiere>();
             foreach(Lumiere lumiere in s_Lumieres)
@@ -117,7 +120,7 @@ namespace Projet_IMA
                     V3 DirectionLumiere = V3.getRandomVectorInHemisphere(lumiere.m_NormalizedDirection);
                     Lumiere newLumiere = new Lumiere(DirectionLumiere,lumiere.m_Couleur,PositionLumiere);
                     float DistanceIntersectionMax = float.MaxValue;
-                    foreach (Objet3D objet in objets)
+                    foreach (Objet3D objet in s_Objets)
                     {
                         if (objet.IntersectionRayon(PositionLumiere, DirectionLumiere, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
                         {
@@ -141,11 +144,11 @@ namespace Projet_IMA
         /// <param name="DirectionRayon">Direction du rayon utilisé pour le raycasting</param>
         /// <param name="objets">Liste des objets de la scène</param>
         /// <returns>Couleur associée au pixel pointé par le rayon</returns>
-        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon, List<Objet3D> objets)
+        static private Couleur RayCast(V3 PositionCamera, V3 DirectionRayon)
         {
             float DistanceIntersectionMax = float.MaxValue;
             Couleur finalColor = Couleur.s_Void;
-            foreach (Objet3D objet in objets)
+            foreach (Objet3D objet in s_Objets)
             {
                 if (objet.IntersectionRayon(PositionCamera, DirectionRayon, out float DistanceIntersection, out V3 PixelPosition, out float u, out float v))
                 {
@@ -165,7 +168,7 @@ namespace Projet_IMA
         /// <param name="x">Coordonnées en abscisse de l'Ecran</param>
         /// <param name="y">Coordonnées en ordonnées de l'Ecran</param>
         /// <param name="c">Couleur du pixel qu'on veut dessiner</param>
-        private static void DrawPixel(int x, int y, Couleur c,Bitmap B, Point CoordZone)
+        private static void DrawPixel(int x, int y, Couleur c,Bitmap B)
         {
             if ((x >= 0) && (x < s_LargeurEcran) && (y >= 0) && (y < s_HauteurEcran))
             {
@@ -184,7 +187,7 @@ namespace Projet_IMA
             int HautAff = s_HauteurEcran;
             if (Global.render_mode == Global.RenderMode.VPL)
             {
-                SetVirtualPointLights(Global.OptionsValue, s_Objets);
+                SetVirtualPointLights(Global.OptionsValue);
             }
           
             //Initialise les composant pour le multithread
@@ -239,8 +242,8 @@ namespace Projet_IMA
                     {
                         V3 PosPixScene = new V3(CoordZone.X + x_ecran, 0, s_HauteurEcran  - (CoordZone.Y + y_ecran));
                         V3 DirRayon = PosPixScene - s_CameraPosition;
-                        Couleur C = RayCast(s_CameraPosition, DirRayon, s_Objets);
-                        DrawPixel(x_ecran, y_ecran, C,Bp,CoordZone);
+                        Couleur C = RayCast(s_CameraPosition, DirRayon);
+                        DrawPixel(x_ecran, y_ecran, C,Bp);
                     }
                 }
 
