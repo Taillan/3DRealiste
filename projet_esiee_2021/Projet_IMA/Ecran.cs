@@ -16,6 +16,11 @@ namespace Projet_IMA
         static private Bitmap B;
 
         /// <summary>
+        /// Compteur total de la génération de l'image
+        /// </summary>
+        static private int TotalCount;
+
+        /// <summary>
         /// Largeur de la fenêtre
         /// </summary>
         static internal int s_LargeurEcran { get; set; }
@@ -183,6 +188,8 @@ namespace Projet_IMA
         /// </summary>
         static internal void DrawAll()
         {
+            TotalCount = 0;
+            Fenetre.progressBar.Invoke(new ThreadStart(delegate { UploadProgressBar(TotalCount); }));
             int LargAff = s_LargeurEcran;
             int HautAff = s_HauteurEcran;
             if (Global.render_mode == Global.RenderMode.VPL)
@@ -191,8 +198,8 @@ namespace Projet_IMA
             }
           
             //Initialise les composant pour le multithread
-            LargeurZonePix = s_LargeurEcran / 10;
-            HauteurZonePix = s_HauteurEcran / 10;
+            LargeurZonePix = s_LargeurEcran / 15;
+            HauteurZonePix = s_HauteurEcran / 15;
 
             // crée la liste des zones à afficher
             for (int x = 0; x < LargAff; x += LargeurZonePix)
@@ -227,9 +234,7 @@ namespace Projet_IMA
         /// <param name="idThread">Id du thread</param>
         private static void FntThread(int idThread)
         {
-            Random aleatoire = new Random();
             Point CoordZone;
-
             // capture une zone dans la liste des zones à traiter
             while (JobList.TryTake(out CoordZone))
             {
@@ -244,17 +249,44 @@ namespace Projet_IMA
                         V3 DirRayon = PosPixScene - s_CameraPosition;
                         Couleur C = RayCast(s_CameraPosition, DirRayon);
                         DrawPixel(x_ecran, y_ecran, C,Bp);
+                        if (TotalCount++ % 1000 == 0)
+                        {
+                            Fenetre.progressBar.Invoke(new ThreadStart(delegate { UploadProgressBar(TotalCount); }));
+                        }
                     }
                 }
-
                 Console.WriteLine("RayCast thread fin   " + idThread + "    time:   " + DateTime.Now);
                 var d = new SafeCallDelegate(DrawInMainThread);
                 Console.WriteLine("Fin thread           " + idThread + "    time:   " + DateTime.Now);
                 pictureBox1.Invoke(d, new object[] { CoordZone, Bp });
-                Console.WriteLine("Invoke thread        " + idThread + "    time:   " + DateTime.Now);
+                Console.WriteLine("Invoke thread        " + idThread + "    time:   " + DateTime.Now);    
             }
         }
 
+        /// <summary>
+        /// Permet de mettre à jour la progress bar sur l'UI
+        /// </summary>
+        /// <param name="value">Nombre de pixels dessinés</param>
+        private static void UploadProgressBar(float value)
+        {
+            if (Fenetre.progressBar.InvokeRequired)
+            {
+                Action safeUpload = delegate { UploadProgressBar(value); };
+                Fenetre.progressBar.Invoke(safeUpload);
+            }
+            else
+            {
+                int progressValue = (int)Math.Floor((value / (float)(s_LargeurEcran * s_HauteurEcran)) * 100);
+                if (progressValue < 100)
+                {
+                    Fenetre.progressBar.Value = progressValue;
+                }
+                else
+                {
+                    Fenetre.progressBar.Value = 100;
+                }
+            }
+        }
         delegate void SafeCallDelegate(Point P, Bitmap B);
 
         #endregion

@@ -144,7 +144,7 @@ namespace Projet_IMA
             Scene4.Add(SphereStone4);
             Scene4.Add(SphereOr4);
             //Scene4.Add(SphereLumiere4);
-            //Scene4.Add(SphereLumiere5);
+            Scene4.Add(SphereLumiere5);
             Scene4.Add(SphereVerte4);
             Scene4.Add(SphereRouge4);
             Scene4.Add(LumierePlafond4);

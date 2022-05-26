@@ -113,5 +113,10 @@ namespace Projet_IMA
                 renderButton.Enabled = false;
             }
         }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

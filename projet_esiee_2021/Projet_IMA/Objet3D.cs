@@ -334,40 +334,41 @@ namespace Projet_IMA
         /// <param name="PathTracerLevel">Niveau actuel du rebond du path tracing</param>
         /// <param name="MaxPathTracerLevel">Nombre de niveaux de rebonds maximum pour le PathTracing</param>
         /// <returns>Retourne la couleur du pixel passé en paramètre en utilisant le PathTracing</returns>
-        public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors)
+        public Couleur PathTracer(V3 PixelPosition, float u, float v, int nbVectors, int Max = 0)
         {
             Couleur finalColor = new Couleur(0, 0, 0);
-
-            V3 N = getBumpedNormal(PixelPosition, u, v);
-            Couleur total = new Couleur(0, 0, 0);
-            for (int i = 0; i < nbVectors; i++)
-            {
-                V3 R = V3.getRandomVectorInHemisphere(N);
-                float DistanceIntersectionMax = float.MaxValue;
-                foreach (Objet3D objet in BitmapEcran.s_Objets)
+            if (Max < 2) { 
+                V3 N = getBumpedNormal(PixelPosition, u, v);
+                Couleur total = new Couleur(0, 0, 0);
+                for (int i = 0; i < nbVectors; i++)
                 {
-                    if (objet.IntersectionRayon(PixelPosition, R, out float DistanceIntersection, out V3 IntersectedPixel, out float pU, out float pV))
+                    V3 R = V3.getRandomVectorInHemisphere(N);
+                    float DistanceIntersectionMax = float.MaxValue;
+                    foreach (Objet3D objet in BitmapEcran.s_Objets)
                     {
-                        if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
+                        if (objet.IntersectionRayon(PixelPosition, R, out float DistanceIntersection, out V3 IntersectedPixel, out float pU, out float pV))
                         {
-                            DistanceIntersectionMax = DistanceIntersection;
-                            if (objet.isLumiere())
+                            if (DistanceIntersection > 0 && DistanceIntersection < DistanceIntersectionMax)
                             {
-                                total = objet.getCouleurPixel(pU, pV)*3f;
+                                DistanceIntersectionMax = DistanceIntersection;
+                                if (objet.isLumiere())
+                                {
+                                    total = objet.getCouleurPixel(pU, pV);
+                                }
+                                else
+                                {
+                                    Lumiere lumiere_locale = new Lumiere(R, objet.PathTracer(IntersectedPixel, pU, pV, 8, Max + 1));
+                                    total = (getCouleurDiffuse(lumiere_locale, N, u, v) + getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v));
+                                }
                             }
-                            else
-                            {
-                                Lumiere lumiere_locale = new Lumiere(R, objet.getCouleurPixel(pU, pV));
-                                total = (getCouleurDiffuse(lumiere_locale, N, u, v) + getCouleurSpeculaire(lumiere_locale, PixelPosition, N, u, v));
-                            }
-                            
                         }
                     }
+                    Lumiere lumiere_totale = new Lumiere(R, total);
+                    finalColor += getCouleurDiffuse(lumiere_totale, N, u, v) + getCouleurSpeculaire(lumiere_totale, PixelPosition, N, u, v);
                 }
-                Lumiere lumiere_totale = new Lumiere(R, total);
-                finalColor += getCouleurDiffuse(lumiere_totale, N, u, v) + getCouleurSpeculaire(lumiere_totale, PixelPosition, N, u, v);
             }
-            return (finalColor / (float)nbVectors);
+            return (finalColor / (float)nbVectors)*3.75f;
+            
         }
 
         /// <summary>

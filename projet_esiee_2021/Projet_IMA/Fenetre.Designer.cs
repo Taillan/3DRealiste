@@ -37,6 +37,7 @@
             this.renderComboBox = new System.Windows.Forms.ComboBox();
             this.labelRender = new System.Windows.Forms.Label();
             this.optionsTextBox = new System.Windows.Forms.TextBox();
+            Fenetre.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -139,12 +140,21 @@
             this.optionsTextBox.TabIndex = 13;
             this.optionsTextBox.TextChanged += new System.EventHandler(this.optionsTextBox_TextChanged);
             // 
+            // progressBar
+            // 
+            Fenetre.progressBar.Location = new System.Drawing.Point(743, 72);
+            Fenetre.progressBar.Name = "progressBar";
+            Fenetre.progressBar.Size = new System.Drawing.Size(563, 23);
+            Fenetre.progressBar.TabIndex = 14;
+            Fenetre.progressBar.Click += new System.EventHandler(this.progressBar1_Click);
+            // 
             // Fenetre
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1323, 842);
+            this.Controls.Add(Fenetre.progressBar);
             this.Controls.Add(this.optionsTextBox);
             this.Controls.Add(this.labelRender);
             this.Controls.Add(this.renderComboBox);
@@ -176,6 +186,7 @@
         private System.Windows.Forms.ComboBox renderComboBox;
         private System.Windows.Forms.Label labelRender;
         private System.Windows.Forms.TextBox optionsTextBox;
+        public static System.Windows.Forms.ProgressBar progressBar;
     }
 }
 
