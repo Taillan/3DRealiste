@@ -18,8 +18,12 @@ namespace Projet_IMA
 
         private void renderButton_Click(object sender, EventArgs e)
         {
+            renderButton.Enabled = false;
+            renderComboBox.Enabled = false; 
+            threadComboBox.Enabled = false;
+            optionsTextBox.Enabled = false;
             ProjetEleve.Go();
-            BitmapEcran.Show();          
+            BitmapEcran.Show();
         }
 
         /// <summary>
@@ -39,7 +43,6 @@ namespace Projet_IMA
 
         private void label1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void label3_Click(object sender, EventArgs e)

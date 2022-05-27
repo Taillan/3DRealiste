@@ -85,7 +85,10 @@
             "5",
             "6",
             "7",
-            "8"});
+            "8",
+            "9",
+            "10",
+            "11"});
             this.threadComboBox.Location = new System.Drawing.Point(463, 70);
             this.threadComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.threadComboBox.Name = "threadComboBox";
