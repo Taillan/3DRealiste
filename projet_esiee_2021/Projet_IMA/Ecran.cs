@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Projet_IMA
 {
@@ -207,7 +208,7 @@ namespace Projet_IMA
                     JobList.Add(new Point(x, y));
 
             // crée et lance le pool de threads
-            for (int i = 0; i <= Global.NbThreads ; i++)
+            for (int i = 1; i <= Global.NbThreads ; i++)
             {
                 int idThread = i; // capture correctement la valeur de i pour le délégué ci-dessous
                 Thread T = new Thread(delegate () { FntThread(idThread); });
@@ -240,7 +241,7 @@ namespace Projet_IMA
             {
                 Bitmap Bp = new Bitmap(LargeurZonePix, HauteurZonePix);
 
-                Console.WriteLine("Debut thread         " + idThread + " time:" + DateTime.Now);
+                Debug.WriteLine("Debut thread         " + idThread + " time:" + DateTime.Now);
                 for (int x_ecran =0; x_ecran < LargeurZonePix; x_ecran++)
                 {
                     for (int y_ecran =0; y_ecran < HauteurZonePix; y_ecran++)
@@ -255,11 +256,11 @@ namespace Projet_IMA
                         }
                     }
                 }
-                Console.WriteLine("RayCast thread fin   " + idThread + "    time:   " + DateTime.Now);
+                Debug.WriteLine("RayCast thread fin   " + idThread + "    time:   " + DateTime.Now);
                 var d = new SafeCallDelegate(DrawInMainThread);
-                Console.WriteLine("Fin thread           " + idThread + "    time:   " + DateTime.Now);
+                Debug.WriteLine("Fin thread           " + idThread + "    time:   " + DateTime.Now);
                 pictureBox1.Invoke(d, new object[] { CoordZone, Bp });
-                Console.WriteLine("Invoke thread        " + idThread + "    time:   " + DateTime.Now);    
+                Debug.WriteLine("Invoke thread        " + idThread + "    time:   " + DateTime.Now);    
             }
         }
 
